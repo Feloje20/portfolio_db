@@ -1,0 +1,7 @@
+RewriteEngine On
+
+RewriteRule ^(css|script|imagenes)($|/) - [L]
+RewriteRule ^(.*)$ index.php [L]
+
+RewriteCond %{HTTP:Authorization} ^(.+)$
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
