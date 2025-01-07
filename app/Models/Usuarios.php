@@ -126,5 +126,54 @@ class Usuarios extends DBAbstractModel
         return $this->rows;
     }
 
+    // Función para comprobar si un email que se le pasa ya se encuentra en la base de datos
+    public function emailExists($email){
+        $this->query = "SELECT * FROM usuarios WHERE email = :email";
+        $this->parametros['email'] = $email;
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Función parar comprobar que un email y una contraseña coinciden
+    public function emailPasswordExists($email, $password){
+        $this->query = "SELECT * FROM usuarios WHERE email = :email AND password = :password";
+        $this->parametros['email'] = $email;
+        $this->parametros['password'] = $password;
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Función para obtener el nombre usando el email
+    public function getNameByEmail($email){
+        $this->query = "SELECT nombre FROM usuarios WHERE email = :email";
+        $this->parametros['email'] = $email;
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return $this->rows[0]['nombre'];
+        } else {
+            return null;
+        }
+    }
+
+    // Función para obtener el apellido usando el email
+    public function getLastNameByEmail($email){
+        $this->query = "SELECT apellidos FROM usuarios WHERE email = :email";
+        $this->parametros['email'] = $email;
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return $this->rows[0]['apellidos'];
+        } else {
+            return null;
+        }
+    }
+
 }
 ?>

@@ -20,6 +20,14 @@ $router->add([  'name' => 'añadir',
                 'path' => '/^\/usuarios\/add$/',
                 'action' => [UsuarioController::class, 'AddAction']]);
 
+$router->add([  'name' => 'Iniciar sesión de usuario',
+                'path' => '/^\/usuarios\/login$/',
+                'action' => [UsuarioController::class, 'LoginAction']]);
+
+$router->add([  'name' => 'Cerrar sesión de usuario',
+                'path' => '/^\/usuarios\/logout$/',
+                'action' => [UsuarioController::class, 'LogoutAction']]);
+
 //$request = $_SERVER['REQUEST_URI'];
 // Esto limpia la ruta de la petición
 $request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

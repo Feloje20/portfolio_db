@@ -17,6 +17,7 @@ class UsuarioController extends BaseController
         $this->renderHTML('../app/views/index_test.php', $data);
     }
 
+    // Manejo de creaciónn de usuarios en la base de datos.
     public function AddAction()
     {
         $lprocesaFormulario = false;
@@ -33,6 +34,9 @@ class UsuarioController extends BaseController
             $data['password'] = $_POST['password'];
             $data['password_confirmation'] = $_POST['password_confirmation'];
             $data['profile_summary'] = $_POST['profile_summary'];
+
+            // Creamos una instancia de usuarios
+            $objUsuario = Usuarios::getInstancia();
 
             $lprocesaFormulario = true;
 
@@ -54,7 +58,11 @@ class UsuarioController extends BaseController
                 $data['msjErrorEmail'] = "* El email no puede estar vacío";
             }
 
-            // HAY QUE COMPROBAR QUE EL EMAIL NO ESTÁ EN USO ****************************************************
+            // Validamos que el email no se encuentre ya en la base de datos
+            if ($objUsuario->emailExists($data['email'])) {
+                $lprocesaFormulario = false;
+                $data['msjErrorEmail'] = "* El email ya está en uso";
+            }
 
             // Validamos que el campo password no esté vacío
             if (empty($data['password'])) {
@@ -77,7 +85,6 @@ class UsuarioController extends BaseController
             $secureToken = uniqid("",true) . $token;
 
             // Guardar el usuario en la base de datos
-            $objUsuario = Usuarios::getInstancia();
             $objUsuario->setNombre($data['nombre']);
             $objUsuario->setApellidos($data['apellidos']);
             $objUsuario->setEmail($data['email']);
@@ -90,5 +97,65 @@ class UsuarioController extends BaseController
             // Mostrar la vista de agregar usuario con los datos y errores
             $this->renderHTML('../app/views/register.php', $data);
         }
+    }
+
+    // Manejo del login de usuarios en la base de datos
+    public function LoginAction()
+    {
+        $data = array();
+        $data['email'] = $data['password'] = '';
+        $data['msjErrorEmail'] = $data['msjErrorPassword'] = $data['msjErrorMissmatch'] = '';
+
+        if(!empty($_POST)){
+            // Saneamos las entradas antes de utilizarlas
+            // HAY QUE SANEAR LOS DATOS ****************************************************
+            $data['email'] = $_POST['email'];
+            $data['password'] = $_POST['password'];
+
+            // Creamos una instancia de usuarios
+            $objUsuario = Usuarios::getInstancia();
+
+            // Validamos que el campo email no esté vacío
+            if (empty($data['email'])) {
+                $data['msjErrorEmail'] = "* El email no puede estar vacío";
+            }
+
+            // PODRÍA COMPROBAR SI EL EMAIL EXISTE EN LA BASE DE DATOS ****************************************************
+
+            // Validamos que el campo password no esté vacío
+            if (empty($data['password'])) {
+                $data['msjErrorPassword'] = "* La contraseña no puede estar vacía";
+            }
+
+            // Validamos que el email y la contraseña coincidan
+            if ($objUsuario->emailPasswordExists($data['email'], $data['password'])) {
+                // Iniciar sesión
+                session_start();
+
+                // Guardamos el email y el nombre y apellidos del usuario en la sesión
+                $_SESSION['email'] = $data['email'];
+                $_SESSION['nombre'] = $objUsuario->getNameByEmail($data['email']);
+                $_SESSION['apellidos'] = $objUsuario->getLastNameByEmail($data['email']);
+
+                header('Location: ..');
+            } else {
+                $data['msjErrorMissmatch'] = "El email o la contraseña no son correctos";
+            }
+        }
+
+        // Mostrar la vista de login con los datos y errores
+        $this->renderHTML('../app/views/login.php', $data);
+    }
+
+    // Manejo del logout de usuarios en la base de datos
+    public function LogoutAction()
+    {
+        // Iniciar sesión
+        session_start();
+
+        // Destruir la sesión
+        session_destroy();
+
+        header('Location: ..');
     }
 }

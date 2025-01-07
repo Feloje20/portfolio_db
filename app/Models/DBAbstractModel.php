@@ -1,7 +1,8 @@
 <?php
 namespace App\Models;
 
-use Dotenv\Dotenv;
+require_once __DIR__ . '/../../vendor/autoload.php';
+
 
 /* ES NECESARIO PONER BIEN TODO EL TEMA DEL .ENV PARA QUE LAS VARIABLES ESTÉN PROTEGIDAS 
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../../..'); // Ajusta la ruta si es necesario
@@ -9,16 +10,12 @@ $dotenv->load(); */
 
 abstract class DBAbstractModel
 {
-    /*
-    ***************************************************
-    LA CONEXIÓN FUNCIONA CON ESTAS VARIABLES DE EJEMPLO
-    ***************************************************
-    */
-    private static $db_host = "localhost";
-    private static $db_user = "root";
-    private static $db_pass = "root";
-    private static $db_name = "portfolio_db";
-    private static $db_port = "3306";
+    // Estas variables globales están definidas en el archivo boosttrap.php
+    private static $db_host = DB_HOST;
+    private static $db_user = DB_USER;
+    private static $db_pass = DB_PASS;
+    private static $db_name = DB_NAME;
+    private static $db_port = DB_PORT;
     protected $mensaje = '';
     protected $conn; // Manejador de la BD
     // Manejo básico para consultas.

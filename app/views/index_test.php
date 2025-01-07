@@ -2,6 +2,16 @@
 // requerimos el boostrap y autoload
 // require_once "../../boosttrap.php";
 // require_once "../vendor/autoload.php";
+
+// Inicialización de variables
+$isLogged = false;
+
+// Iniciamos sesión si existe
+session_start();
+if (isset($_SESSION['email'])) {
+    $isLogged = true;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -15,8 +25,13 @@
     <header>
         <nav>
             <ul>
+            <?php if (!$isLogged): ?>
                 <li><a href="usuarios/add">Registro</a></li>
-                <li><a href="">Iniciar Sesión</a></li>
+                <li><a href="usuarios/login">Iniciar Sesión</a></li>
+            <?php else: ?>
+                <li>Hola, <?php echo $_SESSION['nombre'] . ' ' . $_SESSION['apellidos']; ?></li>
+                <li><a href="usuarios/logout">Cerrar Sesión</a></li>
+            <?php endif; ?>
             </ul>
         </nav>
     </header>
