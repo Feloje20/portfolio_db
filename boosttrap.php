@@ -12,6 +12,8 @@ define('DB_PASS', $_ENV['DB_PASS']);
 define('DB_NAME', $_ENV['DB_NAME']);
 define('DB_PORT', $_ENV['DB_PORT']);
 
+define('BASE_URL', 'http://portfoliodb.local/');
+
 ini_set("display_errors", 1);
 ini_Set("display_startup_errors", 1);
 error_reporting(E_ALL);

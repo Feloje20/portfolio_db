@@ -85,8 +85,10 @@ class Usuarios extends DBAbstractModel
         $this->parametros['id'] = $id;
         $this->get_results_from_query();
         if (count($this->rows) == 1) {
-            foreach ($this->rows[0] as $propiedad=>$valor) {
-                $this->$propiedad = $valor;
+            foreach ($this->rows[0] as $propiedad => $valor) {
+                if (!empty($valor)) {
+                    $this->$propiedad = $valor;
+                }
             }
             $this->mensaje = 'Usuario encontrada';
         } else {

@@ -7,6 +7,7 @@ require_once "../app/Controllers/UsuarioController.php";
 // Usamos el espacio de nombre
 use App\Core\Router;
 use App\Controllers\UsuarioController;
+use App\Controllers\PortfolioController;
 
 // Creamos una instancia de la clase Router
 $router = new Router();
@@ -27,6 +28,10 @@ $router->add([  'name' => 'Iniciar sesión de usuario',
 $router->add([  'name' => 'Cerrar sesión de usuario',
                 'path' => '/^\/usuarios\/logout$/',
                 'action' => [UsuarioController::class, 'LogoutAction']]);
+
+$router->add([  'name' => 'Ver portfolio',
+                'path' => '/^\/view\/([a-zA-Z0-9_-]+)$/',
+                'action' => [PortfolioController::class, 'viewPortfolio']]);
 
 //$request = $_SERVER['REQUEST_URI'];
 // Esto limpia la ruta de la petición
