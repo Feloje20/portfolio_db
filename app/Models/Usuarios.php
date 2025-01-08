@@ -22,6 +22,7 @@ class Usuarios extends DBAbstractModel
     private $id;
     private $nombre;
     private $apellidos;
+    private $foto;
     private $email;
     private $password;
     private $resumen_perfil;
@@ -41,6 +42,9 @@ class Usuarios extends DBAbstractModel
     public function setEmail($email) {
         $this->email = $email ;
     }
+    public function setFoto($foto) {
+        $this->foto = $foto;
+    }
     public function setPassword($password) {
         $this->password = $password ;
     }
@@ -55,15 +59,16 @@ class Usuarios extends DBAbstractModel
         return $this->mensaje;
     }
 
-    /*Método para insertar datos en la tabla usuario*/
+    /*Método para registrar un usuario en la base de datos*/
     public function set() {
         $fecha = new \DateTime();
-        $this->query = "INSERT INTO usuarios(nombre, apellidos, email, password, resumen_perfil, token, created_at, visible, cuenta_activa)
-        VALUES(:nombre, :apellidos, :email, :password, :resumen_perfil, :token, :created_at, :visible, :cuenta_activa)";
+        $this->query = "INSERT INTO usuarios(nombre, apellidos, foto, email, password, resumen_perfil, token, created_at, visible, cuenta_activa)
+        VALUES(:nombre, :apellidos, :foto, :email, :password, :resumen_perfil, :token, :created_at, :visible, :cuenta_activa)";
         
         $this->parametros['nombre']= $this->nombre;
         $this->parametros['apellidos']= $this->apellidos;
         $this->parametros['email']= $this->email;
+        $this->parametros['foto'] = $this->foto;
         $this->parametros['password']= $this->password;
         $this->parametros['resumen_perfil']= $this->resumen_perfil;
         $this->parametros['token']= $this->token;
@@ -95,10 +100,11 @@ class Usuarios extends DBAbstractModel
     public function edit(){
         $fecha = new \DateTime();
         $this->query = "UPDATE usuarios 
-                        SET nombre = :nombre, apellidos = :apellidos, email = :email, password = :password, resumen_perfil = :resumen_perfil, token = :token, updated_at = :update_at, visible = :visible, cuenta_activa = :cuenta_activa
+                        SET nombre = :nombre, apellidos = :apellidos, foto = :foto, email = :email, password = :password, resumen_perfil = :resumen_perfil, token = :token, updated_at = :update_at, visible = :visible, cuenta_activa = :cuenta_activa
                         WHERE id = :id";
         $this->parametros['nombre'] = $this->nombre;
         $this->parametros['apellidos'] = $this->apellidos;
+        $this->parametros['foto'] = $this->foto;
         $this->parametros['email'] = $this->email;
         $this->parametros['password'] = $this->password;
         $this->parametros['resumen_perfil'] = $this->resumen_perfil;
@@ -172,6 +178,19 @@ class Usuarios extends DBAbstractModel
             return $this->rows[0]['apellidos'];
         } else {
             return null;
+        }
+    }
+
+    // Función que determina si la cuenta se encuentra activa
+    public function isActive($email){
+        $this->query = "SELECT cuenta_activa FROM usuarios WHERE email = :email";
+        $this->parametros['email'] = $email;
+        $this->get_results_from_query();
+        // Hay que determinar si es un 0 o un 1
+        if ($this->rows[0]['cuenta_activa'] == 1) {
+            return true;
+        } else {
+            return false;
         }
     }
 

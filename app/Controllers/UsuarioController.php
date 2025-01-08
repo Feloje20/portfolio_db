@@ -22,8 +22,8 @@ class UsuarioController extends BaseController
     {
         $lprocesaFormulario = false;
         $data = array();
-        $data['nombre'] = $data['apellidos'] = $data['email'] = $data['password'] = $data['password_confirmation'] = $data['profile_summary'] = '';
-        $data['msjErrorNombre'] = $data['msjErrorApellidos'] = $data['msjErrorEmail'] = $data['msjErrorPassword'] = $data['msjErrorPassword2'] = '';
+        $data['nombre'] = $data['apellidos'] = $data['email'] = $data['password'] = $data['password_confirmation'] = $data['profile_summary'] = $data['picture'] = '';
+        $data['msjErrorNombre'] = $data['msjErrorApellidos'] = $data['msjErrorEmail'] = $data['msjErrorPassword'] = $data['msjErrorPassword2'] = $data['msjErrorImagen'] = '';
 
         if(!empty($_POST)){
             // Saneamos las entradas antes de utilizarlas
@@ -34,6 +34,7 @@ class UsuarioController extends BaseController
             $data['password'] = $_POST['password'];
             $data['password_confirmation'] = $_POST['password_confirmation'];
             $data['profile_summary'] = $_POST['profile_summary'];
+            $data['picture'] = $_FILES['profile_picture'];
 
             // Creamos una instancia de usuarios
             $objUsuario = Usuarios::getInstancia();
@@ -76,6 +77,26 @@ class UsuarioController extends BaseController
                 $data['msjErrorPassword2'] = "* Las contraseñas no coinciden";
             }
 
+            // Comprobamos si se ha subido una imagen
+            if ($data['picture']['error'] == 0) {
+                // Comprobamos si el archivo subido es una imagen
+                if ($data['picture']['type'] == 'image/jpeg' || $data['picture']['type'] == 'image/png') {
+                    // Comprobamos si el archivo subido no supera los 2MB
+                    if ($data['picture']['size'] <= 2000000) {
+                        // Generamos un nombre para la imagen al azar
+                        $data['picture']['name'] = uniqid() . $data['picture']['name'];
+                        // Movemos el archivo a la carpeta de imágenes
+                        move_uploaded_file($data['picture']['tmp_name'], dirname(__DIR__, 2) . '/public/img/' . $data['picture']['name']);
+                    } else {
+                        $lprocesaFormulario = false;
+                        $data['msjErrorImagen'] = "* La imagen no puede superar los 2MB";
+                    }
+                } else {
+                    $lprocesaFormulario = false;
+                    $data['msjErrorImagen'] = "* El archivo subido no es una imagen";
+                }
+            }
+
         }
 
         if ($lprocesaFormulario) {
@@ -87,6 +108,7 @@ class UsuarioController extends BaseController
             // Guardar el usuario en la base de datos
             $objUsuario->setNombre($data['nombre']);
             $objUsuario->setApellidos($data['apellidos']);
+            $objUsuario->setFoto($data['picture']['name']);
             $objUsuario->setEmail($data['email']);
             $objUsuario->setPassword($data['password']);
             $objUsuario->setProfileSummary($data['profile_summary']);
@@ -120,15 +142,18 @@ class UsuarioController extends BaseController
                 $data['msjErrorEmail'] = "* El email no puede estar vacío";
             }
 
-            // PODRÍA COMPROBAR SI EL EMAIL EXISTE EN LA BASE DE DATOS ****************************************************
+            // Validamos si el correo existe en la base de datos
+            if (!$objUsuario->emailExists($data['email'])) {
+                $data['msjErrorEmail'] = "* El email no está registrado";
+            }
 
             // Validamos que el campo password no esté vacío
             if (empty($data['password'])) {
                 $data['msjErrorPassword'] = "* La contraseña no puede estar vacía";
             }
 
-            // Validamos que el email y la contraseña coincidan
-            if ($objUsuario->emailPasswordExists($data['email'], $data['password'])) {
+            // Validamos que el email y la contraseña coincidan, además de comprobar si la cuenta está activa
+            if ($objUsuario->emailPasswordExists($data['email'], $data['password']) && $objUsuario->isActive($data['email'])) {
                 // Iniciar sesión
                 session_start();
 
@@ -138,8 +163,13 @@ class UsuarioController extends BaseController
                 $_SESSION['apellidos'] = $objUsuario->getLastNameByEmail($data['email']);
 
                 header('Location: ..');
-            } else {
+            } 
+
+            // Validamos que la cuenta se encuentra activa
+            if (!$objUsuario->emailPasswordExists($data['email'], $data['password'])) {
                 $data['msjErrorMissmatch'] = "El email o la contraseña no son correctos";
+            } else if (!$objUsuario->isActive($data['email'])) {
+                $data['msjErrorMissmatch'] = "* La cuenta no está activa";
             }
         }
 
