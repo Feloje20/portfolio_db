@@ -42,4 +42,24 @@ class Portfolios extends DBAbstractModel
         return [];
     }
 
+    function checkVisibility($id) {
+        $this->query = "SELECT visible FROM usuarios WHERE id = '$id'";
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return $this->rows[0]['visible'];
+        }
+        return [];
+    }
+
+    // Función de búsqueda en la base de datos coincidencias con el parametro pasado
+    function searchPortfolios($search) {
+        // Se revisan los campos de nombre, apellidos y resumen de perfil
+        $this->query = "SELECT * FROM usuarios WHERE (nombre LIKE '%$search%' OR apellidos LIKE '%$search%') AND visible = 1";
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return $this->rows;
+        }
+        return [];
+    }
+
 }

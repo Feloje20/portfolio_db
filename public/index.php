@@ -13,22 +13,27 @@ use App\Controllers\PortfolioController;
 $router = new Router();
 
 // Añadimos rutas al array
+// Landing page con un buscador y todos los portfolios que sean públicos
 $router->add([  'name' => 'Todos los usuarios',
                 'path' => '/^\/$/',
                 'action' => [PortfolioController::class, 'viewPublicPortfoliosAction']]);
 
+                // Ruta de registro de usuarios nuevos
 $router->add([  'name' => 'añadir',
                 'path' => '/^\/usuarios\/add$/',
                 'action' => [UsuarioController::class, 'AddAction']]);
 
+                // Ruta de inicio de sesión de usuarios
 $router->add([  'name' => 'Iniciar sesión de usuario',
                 'path' => '/^\/usuarios\/login$/',
                 'action' => [UsuarioController::class, 'LoginAction']]);
 
+                // Ruta de cierre de sesión de usuarios
 $router->add([  'name' => 'Cerrar sesión de usuario',
                 'path' => '/^\/usuarios\/logout$/',
                 'action' => [UsuarioController::class, 'LogoutAction']]);
 
+                // Ruta de ver portfolio individual.
 $router->add([  'name' => 'Ver portfolio',
                 'path' => '/^\/view\/([a-zA-Z0-9_-]+)$/',
                 'action' => [PortfolioController::class, 'viewPortfolio']]);

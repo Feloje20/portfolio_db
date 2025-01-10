@@ -43,19 +43,23 @@ if (isset($_SESSION['email'])) {
         </nav>
     </header>
     <h2>PORFOLIOS INDEX</h2>
-    <form action="search.php" method="POST" class="search-form">
+    <form action="" method="POST" class="search-form">
         <input type="text" name="query" placeholder="Buscar usuarios..." class="search-input">
-        <button type="submit" class="search-button">Buscar</button>
+        <button type="submit" class="search-button" name="search">Buscar</button>
     </form>
     <div class="user-cards">
-        <?php foreach ($data['usuarios'] as $user): ?>
+        <?php 
+        if (empty($data['usuarios'])) {
+            echo '<p>No se han encontrado usuarios</p>';
+        } else {
+            foreach ($data['usuarios'] as $user): ?>
             <div class="user-card" onclick="location.href='view/<?php echo $user['id']; ?>'">
                 <h2><?php echo $user['nombre'] . ' ' . $user['apellidos']; ?></h2>
                 <img src="<?php echo 'img/' . $user['foto']; ?>" alt="Imagen de <?php echo $user['nombre']; ?>">
                 <p>Email: <?php echo $user['email']; ?></p>
                 <p>Resumen: <?php echo $user['resumen_perfil']; ?></p>
             </div>
-        <?php endforeach; ?>
+        <?php endforeach; } ?>
     </div>
 </body>
 </html>
