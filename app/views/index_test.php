@@ -20,42 +20,13 @@ if (isset($_SESSION['email'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        .user-cards {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .user-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border: 1px solid #ccc;
-            padding: 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            box-sizing: border-box;
-            text-align: center;
-            flex: 1 1 20%;
-            min-width: 100px; /* Set the minimum width of the card */
-        }
-
-        .user-card:hover {
-            background-color: #f0f0f0;
-        }
-
-        .user-card img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <header>
+        <div class="tittle-box" onclick="location.href='/'" style="cursor: pointer;">
+            <h1 class="site-title">Portfolio Manager</h1>
+        </div>
         <nav>
             <ul>
             <?php if (!$isLogged): ?>
@@ -64,18 +35,25 @@ if (isset($_SESSION['email'])) {
             <?php else: ?>
                 <li>Hola, <?php echo $_SESSION['nombre'] . ' ' . $_SESSION['apellidos']; ?></li>
                 <li><a href="usuarios/logout">Cerrar Sesión</a></li>
+                <li><a href="">Crear portfolio</a></li>
+                <li><a href="">Editar portfolio</a></li>
+                <li><a href="">Borrar portfolio</a></li>
             <?php endif; ?>
             </ul>
         </nav>
     </header>
-    <h1>PORFOLIOS INDEX</h1>
+    <h2>PORFOLIOS INDEX</h2>
+    <form action="search.php" method="POST" class="search-form">
+        <input type="text" name="query" placeholder="Buscar usuarios..." class="search-input">
+        <button type="submit" class="search-button">Buscar</button>
+    </form>
     <div class="user-cards">
         <?php foreach ($data['usuarios'] as $user): ?>
             <div class="user-card" onclick="location.href='view/<?php echo $user['id']; ?>'">
                 <h2><?php echo $user['nombre'] . ' ' . $user['apellidos']; ?></h2>
+                <img src="<?php echo 'img/' . $user['foto']; ?>" alt="Imagen de <?php echo $user['nombre']; ?>">
                 <p>Email: <?php echo $user['email']; ?></p>
                 <p>Resumen: <?php echo $user['resumen_perfil']; ?></p>
-                <img src="<?php echo 'img/' . $user['foto']; ?>" alt="Imagen de <?php echo $user['nombre']; ?>">
             </div>
         <?php endforeach; ?>
     </div>

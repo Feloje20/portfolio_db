@@ -80,10 +80,11 @@ class UsuarioController extends BaseController
             // Comprobamos si se ha subido una imagen
             if ($data['picture']['error'] == 0) {
                 // Comprobamos si el archivo subido es una imagen
-                if ($data['picture']['type'] == 'image/jpeg' || $data['picture']['type'] == 'image/png') {
+                if ($data['picture']['type'] == 'image/jpeg' || $data['picture']['type'] == 'image/png' || $data['picture']['type'] == 'image/PNG') {
                     // Comprobamos si el archivo subido no supera los 2MB
                     if ($data['picture']['size'] <= 2000000) {
                         // Generamos un nombre para la imagen al azar
+                        // OPCIONAL GUARDAR SOLO EL UNIQID Y LA EXTENSIÓN ******************************
                         $data['picture']['name'] = uniqid() . $data['picture']['name'];
                         // Movemos el archivo a la carpeta de imágenes
                         move_uploaded_file($data['picture']['tmp_name'], dirname(__DIR__, 2) . '/public/img/' . $data['picture']['name']);
@@ -186,6 +187,6 @@ class UsuarioController extends BaseController
         // Destruir la sesión
         session_destroy();
 
-        header('Location: ..');
+        header('Location: ' . BASE_URL);
     }
 }

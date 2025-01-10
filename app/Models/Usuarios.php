@@ -19,6 +19,7 @@ class Usuarios extends DBAbstractModel
     {
         trigger_error('La clonación no es permitida!.', E_USER_ERROR);
     }
+    
     private $id;
     private $nombre;
     private $apellidos;

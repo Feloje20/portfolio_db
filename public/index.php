@@ -15,7 +15,7 @@ $router = new Router();
 // Añadimos rutas al array
 $router->add([  'name' => 'Todos los usuarios',
                 'path' => '/^\/$/',
-                'action' => [UsuarioController::class, 'IndexAction']]);
+                'action' => [PortfolioController::class, 'viewPublicPortfoliosAction']]);
 
 $router->add([  'name' => 'añadir',
                 'path' => '/^\/usuarios\/add$/',

@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="<?php echo BASE_URL . "/" ?>css/styles.css">
 </head>
 <body>
-    <h1>INICIO DE SESIÓN</h1>
+    <div class="tittle-box" onclick="location.href='/'" style="cursor: pointer;">
+            <h1 class="site-title">Portfolio Manager</h1>
+    </div>
+    <h2>INICIO DE SESIÓN</h2>
     <form action="" method="post">
         <label for="email">Correo Electrónico:</label>
         <input type="email" id="email" name="email" value="<?php echo $data["email"]?>" required><?php echo $data["msjErrorEmail"]?><br><br>
