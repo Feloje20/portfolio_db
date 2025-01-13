@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use App\Models\Usuarios;
+use App\Models\Portfolios;
 
 class UsuarioController extends BaseController
 {
@@ -86,8 +87,6 @@ class UsuarioController extends BaseController
                         // Generamos un nombre para la imagen al azar
                         // OPCIONAL GUARDAR SOLO EL UNIQID Y LA EXTENSIÓN ******************************
                         $data['picture']['name'] = uniqid() . $data['picture']['name'];
-                        // Movemos el archivo a la carpeta de imágenes
-                        move_uploaded_file($data['picture']['tmp_name'], dirname(__DIR__, 2) . '/public/img/' . $data['picture']['name']);
                     } else {
                         $lprocesaFormulario = false;
                         $data['msjErrorImagen'] = "* La imagen no puede superar los 2MB";
@@ -105,6 +104,9 @@ class UsuarioController extends BaseController
             $rb = random_bytes(32);
             $token = base64_encode($rb);
             $secureToken = uniqid("",true) . $token;
+
+            // Movemos el archivo a la carpeta de imágenes
+            move_uploaded_file($data['picture']['tmp_name'], dirname(__DIR__, 2) . '/public/img/' . $data['picture']['name']);
 
             // Guardar el usuario en la base de datos
             $objUsuario->setNombre($data['nombre']);
@@ -128,7 +130,6 @@ class UsuarioController extends BaseController
         $data = array();
         $data['email'] = $data['password'] = '';
         $data['msjErrorEmail'] = $data['msjErrorPassword'] = $data['msjErrorMissmatch'] = '';
-
         if(!empty($_POST)){
             // Saneamos las entradas antes de utilizarlas
             // HAY QUE SANEAR LOS DATOS ****************************************************
@@ -174,8 +175,12 @@ class UsuarioController extends BaseController
             }
         }
 
+        // Se envía al index la información de los usuarios públicos de nuevo.
+        $portfolio = Portfolios::getInstancia();
+        $data['usuarios'] = $portfolio->getPublic();
+
         // Mostrar la vista de login con los datos y errores
-        $this->renderHTML('../app/views/login.php', $data);
+        $this->renderHTML('../app/views/index_test.php', $data);
     }
 
     // Manejo del logout de usuarios en la base de datos

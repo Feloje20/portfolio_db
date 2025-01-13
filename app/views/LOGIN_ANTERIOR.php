@@ -20,5 +20,6 @@
         
         <?php echo $data["msjErrorMissmatch"] . "<br/>"?>
         <input type="submit" value="submit">
+    </form>
 </body>
 </html>

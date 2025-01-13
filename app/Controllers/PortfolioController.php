@@ -37,7 +37,7 @@ class PortfolioController extends BaseController
         $portfolio = Portfolios::getInstancia();
 
         // Comprobamos si se ha enviado un formulario de búsqueda
-        if (!empty($_POST)) {
+        if (isset($_POST['query'])) {
             // Almacenamos los datos en $data
             $data['usuarios'] = $portfolio->searchPortfolios($_POST['query']);
         } else {

@@ -35,10 +35,8 @@ $mailer->send($email);
     <link rel="stylesheet" href="<?php echo BASE_URL . "/" ?>css/styles.css">
 </head>
 <body>
-    <div class="tittle-box" onclick="location.href='/'" style="cursor: pointer;">
-            <h1 class="site-title">Portfolio Manager</h1>
-    </div>
-    <h1>Registro de usuario</h1>
+    <?php include 'header.php'; ?>
+    <h2>Registro de usuario</h2>
     <form action="" method="post" enctype="multipart/form-data">
         <label for="first_name">Nombre:</label>
         <input type="text" id="first_name" name="first_name" value="<?php echo $data["apellidos"]?>" required><?php echo $data["msjErrorNombre"]?><br><br>

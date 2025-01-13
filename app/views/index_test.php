@@ -1,48 +1,15 @@
-<?php
-// requerimos el boostrap y autoload
-// require_once "../../boosttrap.php";
-// require_once "../vendor/autoload.php";
-
-// Inicialización de variables
-$isLogged = false;
-
-// Iniciamos sesión si existe
-session_start();
-if (isset($_SESSION['email'])) {
-    $isLogged = true;
-}
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL . "/" ?>css/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=login" />
 </head>
 <body>
-    <header>
-        <div class="tittle-box" onclick="location.href='/'" style="cursor: pointer;">
-            <h1 class="site-title">Portfolio Manager</h1>
-        </div>
-        <nav>
-            <ul>
-            <?php if (!$isLogged): ?>
-                <li><a href="usuarios/add">Registro</a></li>
-                <li><a href="usuarios/login">Iniciar Sesión</a></li>
-            <?php else: ?>
-                <li>Hola, <?php echo $_SESSION['nombre'] . ' ' . $_SESSION['apellidos']; ?></li>
-                <li><a href="usuarios/logout">Cerrar Sesión</a></li>
-                <li><a href="">Crear portfolio</a></li>
-                <li><a href="">Editar portfolio</a></li>
-                <li><a href="">Borrar portfolio</a></li>
-            <?php endif; ?>
-            </ul>
-        </nav>
-    </header>
-    <h2>PORFOLIOS INDEX</h2>
+    <?php include 'header.php'; ?>
+    <h2>PORTFOLIOS</h2>
     <form action="" method="POST" class="search-form">
         <input type="text" name="query" placeholder="Buscar usuarios..." class="search-input">
         <button type="submit" class="search-button" name="search">Buscar</button>

@@ -25,7 +25,7 @@ $router->add([  'name' => 'añadir',
 
                 // Ruta de inicio de sesión de usuarios
 $router->add([  'name' => 'Iniciar sesión de usuario',
-                'path' => '/^\/usuarios\/login$/',
+                'path' => '/^\/login$/',
                 'action' => [UsuarioController::class, 'LoginAction']]);
 
                 // Ruta de cierre de sesión de usuarios

@@ -6,24 +6,52 @@ body {
 }
 
 h1{
-    margin: 0;
+    margin: 0; 
+    padding: 20px 20px;
 }
 
 h2 {
     text-align: center;
 }
 
-.site-title {
-    text-align: center;
-    font-family: Arial, sans-serif;
+a {
+    text-decoration: none;
     color: #333;
 }
 
-.tittle-box {
-    background-color:rgb(131, 216, 134);
-    padding: 2%;
+header {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    background-color: rgb(127, 202, 127)
 }
 
+.header-list {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    margin: 0;
+}
+
+.header-list li {
+    display: flex;
+    align-items: center;
+}
+
+.header-list form {
+    display: flex;
+    gap: 10px;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+/* Formulario de busqueda de portfolios */
 .search-form {
     display: flex;
     justify-content: center;
@@ -56,38 +84,7 @@ h2 {
     background-color: #555;
 }
 
-nav {
-    text-align: center;
-    margin-top: 20px;
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-nav ul li {
-    display: inline;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: #333;
-    font-family: Arial, sans-serif;
-    padding: 10px 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-nav ul li a:hover {
-    background-color: #f0f0f0;
-    color: #000;
-}
-
+/* USER CARDS */
 .user-cards {
     display: flex;
     flex-wrap: wrap;
