@@ -31,6 +31,7 @@ header {
     display: flex;
     gap: 10px;
     margin: 0;
+    padding: 20px 20px;
 }
 
 .header-list li {
@@ -41,6 +42,28 @@ header {
 .header-list form {
     display: flex;
     gap: 10px;
+}
+
+.loginInput {
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.loginButton {
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px 5px 5px 5px;
+    background-color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.loginButton:hover {
+    background-color: #dfdbdb;
 }
 
 .material-symbols-outlined {
@@ -90,6 +113,7 @@ header {
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
+    padding: 0 5em 0 5em;
 }
 
 .user-card {
@@ -105,10 +129,12 @@ header {
     text-align: center;
     flex: 1 1 20%;
     min-width: 100px; /* Set the minimum width of the card */
+    max-width: 33em;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .user-card:hover {
-    background-color: #f0f0f0;
+    background-color: #dfdbdb;
 }
 
 .user-card img {

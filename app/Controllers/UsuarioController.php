@@ -21,6 +21,12 @@ class UsuarioController extends BaseController
     // Manejo de creaciónn de usuarios en la base de datos.
     public function AddAction()
     {
+        // Si el usuario está logeado, no puede registrarse. 
+        if (isset($_SESSION['email'])) {
+            header('Location: ..');
+            exit();
+        }
+
         $lprocesaFormulario = false;
         $data = array();
         $data['nombre'] = $data['apellidos'] = $data['email'] = $data['password'] = $data['password_confirmation'] = $data['profile_summary'] = $data['picture'] = '';
@@ -127,6 +133,12 @@ class UsuarioController extends BaseController
     // Manejo del login de usuarios en la base de datos
     public function LoginAction()
     {
+        // Si el usuario está logeado, no puede registrarse.
+        if (isset($_SESSION['email'])) {
+            header('Location: ..');
+            exit();
+        }
+        
         $data = array();
         $data['email'] = $data['password'] = '';
         $data['msjErrorEmail'] = $data['msjErrorPassword'] = $data['msjErrorMissmatch'] = '';
