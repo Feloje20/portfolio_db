@@ -8,4 +8,12 @@ class BaseController
     {
         include($fileName);
     }
+
+    public function sanearDatos($datos)
+    {
+        $datos = trim($datos);
+        $datos = stripslashes($datos);
+        $datos = htmlspecialchars($datos);
+        return $datos;
+    }
 }

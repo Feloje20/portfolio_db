@@ -33,6 +33,11 @@ $router->add([  'name' => 'Cerrar sesión de usuario',
                 'path' => '/^\/usuarios\/logout$/',
                 'action' => [UsuarioController::class, 'LogoutAction']]);
 
+                // Ruta para crear un portfolio.
+$router->add([  'name' => 'Crear un portfolio nuevo',
+                'path' => '/^\/newPortfolio$/',
+                'action' => [PortfolioController::class, 'newPortfolio']]);
+
                 // Ruta de ver portfolio individual.
 $router->add([  'name' => 'Ver portfolio',
                 'path' => '/^\/view\/([a-zA-Z0-9_-]+)$/',

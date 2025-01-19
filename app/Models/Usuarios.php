@@ -184,6 +184,18 @@ class Usuarios extends DBAbstractModel
         }
     }
 
+    // Función para obtener el id usando el email
+    public function getIdByEmail($email){
+        $this->query = "SELECT id FROM usuarios WHERE email = :email";
+        $this->parametros['email'] = $email;
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return $this->rows[0]['id'];
+        } else {
+            return null;
+        }
+    }
+
     // Función que determina si la cuenta se encuentra activa
     public function isActive($email){
         $this->query = "SELECT cuenta_activa FROM usuarios WHERE email = :email";

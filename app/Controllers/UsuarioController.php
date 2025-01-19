@@ -35,12 +35,12 @@ class UsuarioController extends BaseController
         if(!empty($_POST)){
             // Saneamos las entradas antes de utilizarlas
             // HAY QUE SANEAR LOS DATOS ****************************************************
-            $data['nombre'] = $_POST['first_name'];
-            $data['apellidos'] = $_POST['last_name'];
-            $data['email'] = $_POST['email'];
-            $data['password'] = $_POST['password'];
-            $data['password_confirmation'] = $_POST['password_confirmation'];
-            $data['profile_summary'] = $_POST['profile_summary'];
+            $data['nombre'] = $this->sanearDatos($_POST['first_name']);
+            $data['apellidos'] = $this->sanearDatos($_POST['last_name']);
+            $data['email'] = $this->sanearDatos($_POST['email']);
+            $data['password'] = $this->sanearDatos($_POST['password']);
+            $data['password_confirmation'] = $this->sanearDatos($_POST['password_confirmation']);
+            $data['profile_summary'] = $this->sanearDatos($_POST['profile_summary']);
             $data['picture'] = $_FILES['profile_picture'];
 
             // Creamos una instancia de usuarios
