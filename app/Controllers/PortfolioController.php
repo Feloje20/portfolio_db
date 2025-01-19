@@ -55,23 +55,24 @@ class PortfolioController extends BaseController
 
     // Función que muestra el formulario para crear un nuevo portfolio
     public function newPortfolio() {
+        session_start();
         $data = [];
         $data['categorias'] = [];
-        // Comprobamos si el usuario ya ha creado su portfolio, en caso afirmativo lo redirigimos a la página de inicio
-        /*
-            $usuario = Usuarios::getInstancia();
-            $data = $usuario->getByEmail($_SESSION['email']);
-            if ($data['id'] != null) {
-                header('Location: /');
-            }
-        } else {
+
+        // Recuperamos la id del usuario logeado
+        $usuario = Usuarios::getInstancia();
+        $userId = $usuario->getIdByEmail($_SESSION['email']);
+
+        // Comprobamos si el usuario ha iniciado sesión o si ya ha creado su portfolio, si no, lo redirigimos a la página de inicio
+        $portfolio = Portfolios::getInstancia();
+
+        if (!isset($_SESSION['email']) || $portfolio->isPortfolioCreated($userId)) {
             header('Location: /');
         }
-        */
 
         // Comprobamos si se ha enviado un formulario
         if (isset($_POST['crear'])) {
-            session_start();
+            
             // Recogemos los datos mientras los saneamos usando sanearDatos
 
             // Trabajo
@@ -104,10 +105,6 @@ class PortfolioController extends BaseController
             $proyecto = Proyectos::getInstancia();
             $skills = Skills::getInstancia();
             $redes = RedesSociales::getInstancia();
-            $usuario = Usuarios::getInstancia();
-
-            // Recuperamos la id del usuario logeado
-            $userId = $usuario->getIdByEmail($_SESSION['email']);
 
             // Añadimos los datos a la base de datos
             // Añadimos los datos a la base de datos usando setters individuales
@@ -138,8 +135,11 @@ class PortfolioController extends BaseController
             $redes->setUsuariosId($userId);
             $redes->set();
 
+            // Marcamos en la sesión actual que el portfolio ha sido creado
+            $_SESSION['isPorfolioCreated'] = true;
+            
             // Redirigimos al usuario a la página de inicio
-            // header('Location: /');
+            header('Location: /');
         }
 
         // Recogemos las categorías de skills disponibles en la base de datos

@@ -10,6 +10,7 @@
     <?php include 'header.php'; ?>
     <h2>Crear portfolio</h2>
     <form action="" method="POST" class="">
+        <!---- HAY QUE PONER SI QUIERE CAMBIAR LA VISIBILIDAD A PUBLICO O PRIVADO ---->
         <h3>Trabajos</h3>
         <?php include 'crearTrabajo.php'; ?>
         

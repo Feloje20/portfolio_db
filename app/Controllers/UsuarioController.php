@@ -27,6 +27,7 @@ class UsuarioController extends BaseController
             exit();
         }
 
+
         $lprocesaFormulario = false;
         $data = array();
         $data['nombre'] = $data['apellidos'] = $data['email'] = $data['password'] = $data['password_confirmation'] = $data['profile_summary'] = $data['picture'] = '';
@@ -175,6 +176,10 @@ class UsuarioController extends BaseController
                 $_SESSION['email'] = $data['email'];
                 $_SESSION['nombre'] = $objUsuario->getNameByEmail($data['email']);
                 $_SESSION['apellidos'] = $objUsuario->getLastNameByEmail($data['email']);
+                $_SESSION['id'] = $objUsuario->getIdByEmail($data['email']);
+
+                $portfolio = Portfolios::getInstancia();
+                $_SESSION['isPorfolioCreated'] = $portfolio->isPortfolioCreated($_SESSION['id']);
 
                 header('Location: ..');
             } 

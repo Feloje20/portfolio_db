@@ -72,4 +72,15 @@ class Portfolios extends DBAbstractModel
         return false;
     }
 
+    // Función para comprobar si el usuario ya ha pasado por la creación de su portfolio
+    // Solo necesitamos comprobar si ya hay un trabajo creado
+    function isPortfolioCreated($id) {
+        $this->query = "SELECT id FROM trabajos WHERE usuarios_id = '$id'";
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return true;
+        }
+        return false;
+    }
+
 }
