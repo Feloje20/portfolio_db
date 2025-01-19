@@ -7,9 +7,7 @@
     <link rel="stylesheet" href="<?php echo BASE_URL . "/" ?>css/styles.css">
 </head>
 <body>
-    <div class="tittle-box" onclick="location.href='/'" style="cursor: pointer;">
-        <h1 class="site-title">Portfolio Manager</h1>
-    </div>
+    <?php include 'header.php'; ?>
     <h2><?php echo $data["error"]?></h2>
 </body>
 </html>

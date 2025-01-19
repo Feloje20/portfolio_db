@@ -23,6 +23,7 @@ class Usuarios extends DBAbstractModel
     private $id;
     private $nombre;
     private $apellidos;
+    private $perfil;
     private $foto;
     private $email;
     private $password;
@@ -91,12 +92,11 @@ class Usuarios extends DBAbstractModel
                     $this->$propiedad = $valor;
                 }
             }
-            $this->mensaje = 'Usuario encontrada';
+            $this->mensaje = 'Usuario encontrado';
         } else {
-            $this->mensaje = 'Usuario no encontrada';
+            $this->mensaje = 'Usuario no encontrado';
         }
         return $this->rows[0] ?? null;
-        
     }
 
     // Para editar usuarios
