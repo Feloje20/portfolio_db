@@ -108,4 +108,14 @@ class Proyectos extends DBAbstractModel
         $this->get_results_from_query();
         $this->mensaje = 'Proyecto eliminado';
     }
+
+    public function getProyectosVisibles($userId) {
+        $this->query = "SELECT * FROM proyectos WHERE usuarios_id = :usuarios_id AND visible = 1";
+        $this->parametros['usuarios_id'] = $userId;
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return $this->rows;
+        }
+        return [];
+    }
 }

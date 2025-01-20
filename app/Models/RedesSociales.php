@@ -96,4 +96,15 @@ class RedesSociales extends DBAbstractModel
         $this->get_results_from_query();
         $this->mensaje = 'Red social eliminada';
     }
+
+    // Para obtener todas las redes sociales de un usuario
+    public function getRedesSocialesById($userId){
+        $this->query = "SELECT * FROM redes_sociales WHERE usuarios_id = :usuarios_id";
+        $this->parametros['usuarios_id'] = $userId;
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return $this->rows;
+        }
+        return [];
+    }
 }

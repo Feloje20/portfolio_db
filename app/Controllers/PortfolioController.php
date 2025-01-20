@@ -15,19 +15,27 @@ class PortfolioController extends BaseController
     {
         // Creamos una instancia de usuarios
         $usuario = Usuarios::getInstancia();
+        $trabajo = Trabajos::getInstancia();
+        $proyecto = Proyectos::getInstancia();
+        $skills = Skills::getInstancia();
+        $redesSociales = RedesSociales::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
         // Tomamos la id del usuario de la URL
         $id = explode('/', $_SERVER['REQUEST_URI'])[2];
 
-        // Comprobamos si el portfolio del usuario tiene la visibilidad activa
-        if ($portfolio->checkVisibility($id) == 0) {
+        // Comprobamos si el portfolio del usuario tiene la visibilidad activa o sí el usuario logeado es el dueño del portfolio
+        if ($portfolio->checkVisibility($id) == 0 && $id != $_SESSION['id']) {
             $this->renderHTML('../app/views/error.php', ['error' => 'Error: Este portfolio es privado']);
         } 
         else 
         {
             // Alamacenamos los datos en $data
             $data['usuario'] = $usuario->get($id);
+            $data['trabajos'] = $trabajo->getTrabajosVisibles($id);
+            $data['proyectos'] = $proyecto->getProyectosVisibles($id);
+            $data['skills'] = $skills->getSkillsVisibles($id);
+            $data['redesSociales'] = $redesSociales->getRedesSocialesById($id);
 
             // Llamamos a la función renderHTML
             $this->renderHTML('../app/views/portfolio.php', $data);
@@ -73,6 +81,8 @@ class PortfolioController extends BaseController
         // Comprobamos si se ha enviado un formulario
         if (isset($_POST['crear'])) {
             
+            // FALTA MODIFICAR LA VISIBILIDAD EL PORTFOLIO *******************************************************
+
             // Recogemos los datos mientras los saneamos usando sanearDatos
 
             // Trabajo
@@ -137,7 +147,7 @@ class PortfolioController extends BaseController
 
             // Marcamos en la sesión actual que el portfolio ha sido creado
             $_SESSION['isPorfolioCreated'] = true;
-            
+
             // Redirigimos al usuario a la página de inicio
             header('Location: /');
         }

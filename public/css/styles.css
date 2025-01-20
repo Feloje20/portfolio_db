@@ -23,7 +23,7 @@ header {
     display: flex; 
     justify-content: space-between; 
     align-items: center;
-    background-color: rgb(127, 202, 127)
+    background-color: rgb(127, 202, 127);
 }
 
 .header-list {
@@ -192,4 +192,61 @@ header {
 
 .registerForm input[type="submit"]:hover {
     background-color: #555;
+}
+
+/* Portfolios personales */
+
+.portfolioMain {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    padding: 0 5em 0 5em;
+}
+
+.portfolioMain p {
+    display: flex;
+    align-items: center;
+    gap: 5px;  
+}
+
+.portfolioUserData {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 10em 0 10em;
+}
+
+.portfolioImg {
+    width: auto;
+    height: 300px;
+    border-radius: 10px;
+}
+
+.trabajos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    justify-content: center;
+    padding: 0 5em 5em 5em;
+}
+
+.trabajo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgb(127, 202, 127);
+    padding: 10px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    text-align: center;
+    flex: 1 1 20%;
+    min-width: 100px;
+    max-width: 400px;
+}
+
+.trabajo p {
+    display: flex;
+    align-items: center;
+    gap: 5px; 
 }

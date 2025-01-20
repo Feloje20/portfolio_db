@@ -120,4 +120,15 @@ class Trabajos extends DBAbstractModel
         $this->get_results_from_query();
         $this->mensaje = 'Trabajo eliminado';
     }
+
+    // Función para mostrar los trabajos que sean visibles
+    public function getTrabajosVisibles($userId) {
+        $this->query = "SELECT * FROM trabajos WHERE usuarios_id = :usuarios_id AND visible = 1";
+        $this->parametros['usuarios_id'] = $userId;
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return $this->rows;
+        }
+        return [];
+    }
 }
