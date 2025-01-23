@@ -209,5 +209,13 @@ class Usuarios extends DBAbstractModel
         }
     }
 
+    // Método que devuelve el tipo de usuario
+    public function getProfileByEmail($email){
+        $this->query = "SELECT perfil FROM usuarios WHERE email = :email";
+        $this->parametros['email'] = $email;
+        $this->get_results_from_query();
+        return $this->rows[0]['perfil'];
+    }
+
 }
 ?>

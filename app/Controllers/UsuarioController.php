@@ -177,6 +177,7 @@ class UsuarioController extends BaseController
                 $_SESSION['nombre'] = $objUsuario->getNameByEmail($data['email']);
                 $_SESSION['apellidos'] = $objUsuario->getLastNameByEmail($data['email']);
                 $_SESSION['id'] = $objUsuario->getIdByEmail($data['email']);
+                $_SESSION['perfil'] = $objUsuario->getProfileByEmail($data['email']);
 
                 $portfolio = Portfolios::getInstancia();
                 $_SESSION['isPorfolioCreated'] = $portfolio->isPortfolioCreated($_SESSION['id']);

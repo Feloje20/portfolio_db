@@ -131,4 +131,15 @@ class Trabajos extends DBAbstractModel
         }
         return [];
     }
+
+    // Método para mostrar todos los trabajos
+    public function getAll($userId) {
+        $this->query = "SELECT * FROM trabajos WHERE usuarios_id = :usuarios_id";
+        $this->parametros['usuarios_id'] = $userId;
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return $this->rows;
+        }
+        return [];
+    }
 }

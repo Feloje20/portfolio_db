@@ -63,8 +63,8 @@ class Portfolios extends DBAbstractModel
     }
 
     // Función que determina si el usuario logeado es el dueño del portfolio
-    function isOwner($id) {
-        $this->query = "SELECT id FROM usuarios WHERE id = '$id' AND email = '$_SESSION[email]'";
+    function isOwner($id, $email = null) {
+        $this->query = "SELECT id FROM usuarios WHERE id = '$id' AND email = '$email'";
         $this->get_results_from_query();
         if (count($this->rows) > 0) {
             return true;

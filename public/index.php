@@ -43,6 +43,13 @@ $router->add([  'name' => 'Ver portfolio',
                 'path' => '/^\/view\/([a-zA-Z0-9_-]+)$/',
                 'action' => [PortfolioController::class, 'viewPortfolio']]);
 
+                // Ruta para permitir la modificación del portfolio al dueño y al administrador.
+$router->add([  'name' => 'Modificar portfolio',
+                'path' => '/^\/edit\/([a-zA-Z0-9_-]+)$/',
+                'action' => [PortfolioController::class, 'editPortfolio']]);
+
+                // Ruta para permitir la eliminación del portfolio al dueño y al administrador.
+
 //$request = $_SERVER['REQUEST_URI'];
 // Esto limpia la ruta de la petición
 $request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

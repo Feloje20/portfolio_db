@@ -21,11 +21,21 @@ class PortfolioController extends BaseController
         $redesSociales = RedesSociales::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
+        // Iniciamos la sesión
+        session_start();
+
+        // Si no se ha iniciado sesión, inicializamos la variable $sessionId a null
+        if (isset($_SESSION['id'])) {
+            $sessionId = $_SESSION['id'];
+        } else {
+            $sessionId = null;
+        }
+
         // Tomamos la id del usuario de la URL
         $id = explode('/', $_SERVER['REQUEST_URI'])[2];
 
         // Comprobamos si el portfolio del usuario tiene la visibilidad activa o sí el usuario logeado es el dueño del portfolio
-        if ($portfolio->checkVisibility($id) == 0 && $id != $_SESSION['id']) {
+        if ($portfolio->checkVisibility($id) == 0 && $id != $sessionId) {
             $this->renderHTML('../app/views/error.php', ['error' => 'Error: Este portfolio es privado']);
         } 
         else 
@@ -69,7 +79,7 @@ class PortfolioController extends BaseController
 
         // Recuperamos la id del usuario logeado
         $usuario = Usuarios::getInstancia();
-        $userId = $usuario->getIdByEmail($_SESSION['email']);
+        $userId = $_SESSION['id'];
 
         // Comprobamos si el usuario ha iniciado sesión o si ya ha creado su portfolio, si no, lo redirigimos a la página de inicio
         $portfolio = Portfolios::getInstancia();
@@ -160,9 +170,37 @@ class PortfolioController extends BaseController
     }
 
     // Función que permite modificar un portfolio, solo el dueño o el administrador pueden hacerlo
-    public function modifyPortfolio() {
+    public function editPortfolio() {
+        session_start();
 
+        $id = explode('/', $_SERVER['REQUEST_URI'])[2];
+
+        // Si el usuario no está logeado, inicializamos la variable $userEmail a null
+        $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : null;
+        
+        // Si el usuario no está logeado, inicializamos la variable $userProfile a null
+        $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
+
+        $portfolio = Portfolios::getInstancia();
+        $usuario = Usuarios::getInstancia();
+        $trabajo = Trabajos::getInstancia();
+        $proyecto = Proyectos::getInstancia();
+        $skills = Skills::getInstancia();
+        $redesSociales = RedesSociales::getInstancia();
+
+        // Comprobamos si el usuario está logeado y es dueño del portfolio o es administrador
+        if ($portfolio->isOwner($id, $userEmail) || $userProfile === 'admin') {
+            // Alamacenamos los datos en $data
+            $data['usuario'] = $usuario->get($id);
+            $data['trabajos'] = $trabajo->getAll($id);
+            $data['proyectos'] = $proyecto->getAll($id);
+            $data['skills'] = $skills->getAll($id);
+            $data['redesSociales'] = $redesSociales->getRedesSocialesById($id);
+
+            $this->renderHTML('../app/views/editarPortfolio.php', $data);
+        } else {
+            // Si no se cumplen las condiciones, volvemos a la página de inicio
+            header('Location: /');
+        }
     }
-
-
 }

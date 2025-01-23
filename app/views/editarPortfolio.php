@@ -1,6 +1,19 @@
 <?php
     $user = $data['usuario'];
     $trabajos = $data['trabajos'];
+
+    // Función para mostrar los botones de edición.
+    function botones($visibilidad = 2) {
+        echo '<div class="botonesEdicion">';
+        if ($visibilidad == 1) {
+            echo '<button class="btn-visibility"><span class="material-symbols-outlined">visibility</span></button>';
+        } else if ($visibilidad == 0) {
+            echo '<button class="btn-visibility"><span class="material-symbols-outlined">visibility_off</span></button>';
+        }
+        echo '<button class="btn-edit">Editar</button>';
+        echo '<button class="btn-delete">Eliminar</button>';
+        echo '</div>';
+    }
 ?>
 
 <!DOCTYPE html>
@@ -10,6 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
     <link rel="stylesheet" href="<?php echo BASE_URL?>css/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=visibility,visibility_off" />
 </head>
 <body>
     <?php include 'header.php'; ?>
@@ -28,15 +42,20 @@
                 echo '<p  class="parrafoVacio">No hay trabajos para mostrar</p>';
             } else {
                 echo '<div class="trabajos">';
-                foreach ($data['trabajos'] as $trabajo) {
+                foreach ($trabajos as $trabajo) {
                     $fechaInicio = date('d-m-Y', strtotime($trabajo['fecha_inicio']));
                     $fechaFinal = date('d-m-Y', strtotime($trabajo['fecha_final']));
-                    echo '<div class="trabajo">';
+                    if ($trabajo['visible'] == 1) {
+                        echo '<div class="trabajo">';
+                    } else {
+                        echo '<div class="trabajo trabajoOculto">';
+                    }
                     echo '<h4>' . $trabajo['titulo'] . '</h4>';
                     echo '<p>' . $trabajo['descripcion'] . '</p>';
                     echo '<p><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M180-380q-42 0-71-29t-29-71q0-42 29-71t71-29q31 0 56 17t36 43h608v80H272q-11 26-36 43t-56 17Z"/></svg> ' . $fechaInicio . '</p>';
                     echo '<p><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M780-380q-31 0-56-17t-36-43H80v-80h608q11-26 36-43t56-17q42 0 71 29t29 71q0 42-29 71t-71 29Z"/></svg> ' . $fechaFinal . '</p>';
                     echo '<p>' . $trabajo['logros'] . '</p>';
+                    botones($trabajo['visible']);
                     echo '</div>';
                 }
                 echo '</div>';
@@ -54,6 +73,7 @@
                     // EL LOGO HAY QUE CAMBIARLO A UNA IMAGEN DE VERDAD ****************************************************
                     echo '<p>' . $proyecto['logo'] . '</p>';
                     echo '<p>' . $proyecto['tecnologias'] . '</p>';
+                    botones($proyecto['visible']);
                     echo '</div>';
                 }
                 echo '</div>';
@@ -69,6 +89,7 @@
                     echo '<div class="trabajo">';
                     echo '<p>' . $skill['categorias_skills_categoria'] . '</p>';
                     echo '<h4>' . $skill['habilidades'] . '</h4>';
+                    botones($skill['visible']);
                     echo '</div>';
                 }
                 echo '</div>';
@@ -84,6 +105,7 @@
                     echo '<div class="trabajo">';
                     echo '<h4>' . $red_social['redes_sociales'] . '</h4>';
                     echo '<p>' . $red_social['url'] . '</p>';
+                    botones();
                     echo '</div>';
                 }
                 echo '</div>';
