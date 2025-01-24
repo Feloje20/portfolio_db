@@ -3,15 +3,15 @@
     $trabajos = $data['trabajos'];
 
     // Función para mostrar los botones de edición.
-    function botones($visibilidad = 2) {
+    function botones($campo, $campoId, $userId, $visibilidad = 2) {
         echo '<div class="botonesEdicion">';
         if ($visibilidad == 1) {
-            echo '<button class="btn-visibility"><span class="material-symbols-outlined">visibility</span></button>';
+            echo '<a class="btn-visibility" href="/' . $campo . '/visibilityRow/' . $userId . '/' . $campoId . '"><span class="material-symbols-outlined">visibility</span></a>';
         } else if ($visibilidad == 0) {
-            echo '<button class="btn-visibility"><span class="material-symbols-outlined">visibility_off</span></button>';
+            echo '<a class="btn-novisibility" href="/' . $campo . '/novisibilityRow/' . $userId . '/' . $campoId . '"><span class="material-symbols-outlined">visibility_off</span></a>';
         }
-        echo '<button class="btn-edit">Editar</button>';
-        echo '<button class="btn-delete">Eliminar</button>';
+        echo '<a class="btn-edit" href="/' . $campo . '/editRow/' . $userId . '/' . $campoId . '">Editar</a>';
+        echo '<a class="btn-delete" href="/' . $campo . '/delRow/' . $userId . '/' . $campoId . '">Eliminar</a>';
         echo '</div>';
     }
 ?>
@@ -55,7 +55,7 @@
                     echo '<p><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M180-380q-42 0-71-29t-29-71q0-42 29-71t71-29q31 0 56 17t36 43h608v80H272q-11 26-36 43t-56 17Z"/></svg> ' . $fechaInicio . '</p>';
                     echo '<p><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M780-380q-31 0-56-17t-36-43H80v-80h608q11-26 36-43t56-17q42 0 71 29t29 71q0 42-29 71t-71 29Z"/></svg> ' . $fechaFinal . '</p>';
                     echo '<p>' . $trabajo['logros'] . '</p>';
-                    botones($trabajo['visible']);
+                    botones('trabajo', $trabajo['id'], $user['id'], $trabajo['visible']);
                     echo '</div>';
                 }
                 echo '</div>';
@@ -73,7 +73,7 @@
                     // EL LOGO HAY QUE CAMBIARLO A UNA IMAGEN DE VERDAD ****************************************************
                     echo '<p>' . $proyecto['logo'] . '</p>';
                     echo '<p>' . $proyecto['tecnologias'] . '</p>';
-                    botones($proyecto['visible']);
+                    botones('proyectos', $proyecto['id'], $user['id'], $proyecto['visible']);
                     echo '</div>';
                 }
                 echo '</div>';
@@ -89,7 +89,7 @@
                     echo '<div class="trabajo">';
                     echo '<p>' . $skill['categorias_skills_categoria'] . '</p>';
                     echo '<h4>' . $skill['habilidades'] . '</h4>';
-                    botones($skill['visible']);
+                    botones('skills', $skill['id'], $user['id'], $skill['visible']);
                     echo '</div>';
                 }
                 echo '</div>';
@@ -105,7 +105,7 @@
                     echo '<div class="trabajo">';
                     echo '<h4>' . $red_social['redes_sociales'] . '</h4>';
                     echo '<p>' . $red_social['url'] . '</p>';
-                    botones();
+                    botones('redes_sociales', $red_social['id'], $user['id']);
                     echo '</div>';
                 }
                 echo '</div>';

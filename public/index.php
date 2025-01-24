@@ -8,6 +8,7 @@ require_once "../app/Controllers/UsuarioController.php";
 use App\Core\Router;
 use App\Controllers\UsuarioController;
 use App\Controllers\PortfolioController;
+use App\Controllers\TrabajoController;
 
 // Creamos una instancia de la clase Router
 $router = new Router();
@@ -49,6 +50,12 @@ $router->add([  'name' => 'Modificar portfolio',
                 'action' => [PortfolioController::class, 'editPortfolio']]);
 
                 // Ruta para permitir la eliminación del portfolio al dueño y al administrador.
+
+                // Rutas para cambiar las tablas trabajos, proyectos, skills, redes_sociales
+                // Ruta de modificación de la visibilidad de los trabajos
+$router->add([  'name' => 'Cambiar visibilidad de trabajos',
+                'path' => '/^\/trabajo\/(no)?visibilityRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
+                'action' => [TrabajoController::class, 'changeVisibility']]);
 
 //$request = $_SERVER['REQUEST_URI'];
 // Esto limpia la ruta de la petición

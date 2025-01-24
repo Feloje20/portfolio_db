@@ -67,8 +67,8 @@
                 echo '<div class="trabajos">';
                 foreach ($data['skills'] as $skill) {
                     echo '<div class="trabajo">';
-                    echo '<p>' . $skill['categorias_skills_categoria'] . '</p>';
-                    echo '<h4>' . $skill['habilidades'] . '</h4>';
+                    echo '<h4>' . $skill['categorias_skills_categoria'] . '</h4>';
+                    echo '<p>' . $skill['habilidades'] . '</p>';
                     echo '</div>';
                 }
                 echo '</div>';

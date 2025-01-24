@@ -248,7 +248,7 @@ header {
 }
 
 .trabajoOculto {
-    background-color: #e6e6e6;
+    background-color: #c9c9c9;
 }
 
 .trabajo p {
@@ -263,4 +263,53 @@ header {
     display: flex;
     justify-content: center;
     gap: 10px;
+}
+
+.botonesEdicion a {
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-visibility {
+    background-color: #1ac7c7;
+    transition: background-color 0.3s, color 0.3;
+}
+
+.btn-visibility:hover {
+    background-color: #68d3e6;
+}
+
+.btn-novisibility {
+    background-color: #0f9797;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-novisibility:hover {
+    background-color: #68d3e6;
+}
+
+.btn-edit {
+    background-color: #c7ca1a;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-edit:hover {
+    background-color: #d3e668;
+}
+
+.btn-delete {
+    background-color: #ca1a1a;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-delete:hover {
+    background-color: #e66868;
 }
