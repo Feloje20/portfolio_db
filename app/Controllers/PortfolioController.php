@@ -115,8 +115,8 @@ class PortfolioController extends BaseController
             $skillsCategoria = $_POST['skills']['categoria'];
 
             // Redes sociales
-            $redesNombre = $this->sanearDatos($_POST['redes_sociales'][0]['nombre']);
-            $redesUrl = $this->sanearDatos($_POST['redes_sociales'][1]['enlace']);
+            $redesNombre = $this->sanearDatos($_POST['redes_sociales']['nombre']);
+            $redesUrl = $this->sanearDatos($_POST['redes_sociales']['enlace']);
             
             // COMPROBAR ERRORES EN LOS CAMPOS ****************************************************
 

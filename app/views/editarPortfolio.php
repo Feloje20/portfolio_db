@@ -114,7 +114,7 @@
         ?>
         <div class='tituloConBoton'>        
             <h2>Redes sociales</h2>
-            <?php echo '<a class="btn-new" href="/redes_sociales' . '/new/' . $userId . '"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></a>';?>
+            <?php echo '<a class="btn-new" href="/redsocial' . '/new/' . $userId . '"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></a>';?>
         </div>
         <?php
             if (empty($data['redesSociales'])) {
@@ -125,7 +125,7 @@
                     echo '<div class="trabajo">';
                     echo '<h4>' . $red_social['redes_sociales'] . '</h4>';
                     echo '<p>' . $red_social['url'] . '</p>';
-                    botones('redes_sociales', $red_social['id'], $user['id']);
+                    botones('redsocial', $red_social['id'], $user['id']);
                     echo '</div>';
                 }
                 echo '</div>';
