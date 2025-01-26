@@ -96,23 +96,23 @@ class PortfolioController extends BaseController
             // Recogemos los datos mientras los saneamos usando sanearDatos
 
             // Trabajo
-            $trabajoTitulo = $this->sanearDatos($_POST['trabajos'][0]['titulo']);
-            $trabajoDescripcion = $this->sanearDatos($_POST['trabajos'][1]['descripcion']);
-            $trabajoFechaInicio = $_POST['trabajos'][2]['fecha_inicio'];
-            $trabajoFechaFinal = $_POST['trabajos'][3]['fecha_final'];
-            $trabajoLogros = $this->sanearDatos($_POST['trabajos'][4]['logros']);
-            $trabajoVisible = $_POST['trabajos'][5]['visible'] ?? 0;
+            $trabajoTitulo = $this->sanearDatos($_POST['trabajos']['titulo']);
+            $trabajoDescripcion = $this->sanearDatos($_POST['trabajos']['descripcion']);
+            $trabajoFechaInicio = $_POST['trabajos']['fecha_inicio'];
+            $trabajoFechaFinal = $_POST['trabajos']['fecha_final'];
+            $trabajoLogros = $this->sanearDatos($_POST['trabajos']['logros']);
+            $trabajoVisible = $_POST['trabajos']['visible'] ?? 0;
 
             // Proyectos
-            $proyectoTitulo = $this->sanearDatos($_POST['proyectos'][0]['titulo']);
-            $proyectoLogo = $this->sanearDatos($_POST['proyectos'][1]['logo']);
-            $proyectoTecnologias = $this->sanearDatos($_POST['proyectos'][2]['tecnologias']);
-            $proyectoVisible = $_POST['proyectos'][3]['visible'] ?? 0;
+            $proyectoTitulo = $this->sanearDatos($_POST['proyectos']['titulo']);
+            $proyectoLogo = $this->sanearDatos($_POST['proyectos']['logo']);
+            $proyectoTecnologias = $this->sanearDatos($_POST['proyectos']['tecnologias']);
+            $proyectoVisible = $_POST['proyectos']['visible'] ?? 0;
 
             // Skills
-            $skillsHabilidades = $this->sanearDatos($_POST['skills'][0]['habilidades']);
-            $skillsVisible = $_POST['skills'][1]['visible'] ?? 0;
-            $skillsCategoria = $_POST['skills'][2]['categoria'];
+            $skillsHabilidades = $this->sanearDatos($_POST['skills']['habilidades']);
+            $skillsVisible = $_POST['skills']['visible'] ?? 0;
+            $skillsCategoria = $_POST['skills']['categoria'];
 
             // Redes sociales
             $redesNombre = $this->sanearDatos($_POST['redes_sociales'][0]['nombre']);

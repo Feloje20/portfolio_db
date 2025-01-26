@@ -29,6 +29,9 @@ class RedesSociales extends DBAbstractModel
     private $usuarios_id;
 
     // Creo los setters
+    public function setId($id) {
+        $this->id = $id;
+    }
     public function setRedesSociales($redes_sociales) {
         $this->redes_sociales = $redes_sociales;
     }

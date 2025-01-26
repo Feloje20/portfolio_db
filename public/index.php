@@ -57,6 +57,21 @@ $router->add([  'name' => 'Cambiar visibilidad de trabajos',
                 'path' => '/^\/trabajo\/(no)?visibilityRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
                 'action' => [TrabajoController::class, 'changeVisibility']]);
 
+                // Ruta de modificación de los datos de los trabajos
+$router->add([  'name' => 'Cambiar datos de trabajos',
+                'path' => '/^\/trabajo\/editRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
+                'action' => [TrabajoController::class, 'editWork']]);
+
+                // Ruta de eliminación de trabajos
+$router->add([  'name' => 'Eliminar un trabajo',
+                'path' => '/^\/trabajo\/delRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
+                'action' => [TrabajoController::class, 'deleteWork']]);
+
+                // Ruta de adición de trabajo
+$router->add([  'name' => 'Crear un nuevo trabajo',
+                'path' => '/^\/trabajo\/new\/([a-zA-Z0-9_-]+)$/',
+                'action' => [TrabajoController::class, 'createWork']]);
+
 //$request = $_SERVER['REQUEST_URI'];
 // Esto limpia la ruta de la petición
 $request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

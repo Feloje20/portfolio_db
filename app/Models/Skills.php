@@ -30,6 +30,9 @@ class Skills extends DBAbstractModel
     private $usuarios_id;
 
     // Creo los setters
+    public function setId($id) {
+        $this->id = $id;
+    }
     public function setHabilidades($habilidades) {
         $this->habilidades = $habilidades;
     }

@@ -259,6 +259,13 @@ header {
 }
 
 /* Botones de edición de los campos del portfolio */
+.tituloConBoton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
 .botonesEdicion {
     display: flex;
     justify-content: center;
@@ -312,4 +319,23 @@ header {
 
 .btn-delete:hover {
     background-color: #e66868;
+}
+
+.btn-new {
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #79e179;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-new:hover {
+    background-color: #9aef9a;
 }

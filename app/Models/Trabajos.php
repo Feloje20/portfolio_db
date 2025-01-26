@@ -33,6 +33,9 @@ class Trabajos extends DBAbstractModel
     private $usuarios_id;
 
     // Creo los setters
+    public function setId($id) {
+        $this->id = $id;
+    }
     public function setTitulo($titulo) {
         $this->titulo = $titulo;
     }
