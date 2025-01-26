@@ -136,4 +136,14 @@ class Skills extends DBAbstractModel
         }
         return [];
     }
+
+    // Método para cambiar la visibilidad
+    public function changeVisibility($id, $userId) {
+        $this->query = "UPDATE skills SET visible = :visible WHERE id = :id AND usuarios_id = :usuarios_id";
+        $this->parametros['visible'] = $this->visible;
+        $this->parametros['id'] = $id;
+        $this->parametros['usuarios_id'] = $userId;
+        $this->get_results_from_query();
+        $this->mensaje = 'Visibilidad cambiada';
+    }
 }

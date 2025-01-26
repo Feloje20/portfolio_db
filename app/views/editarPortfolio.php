@@ -99,7 +99,11 @@
             } else {
                 echo '<div class="trabajos">';
                 foreach ($data['skills'] as $skill) {
-                    echo '<div class="trabajo">';
+                    if ($skill['visible'] == 1) {
+                        echo '<div class="trabajo">';
+                    } else {
+                        echo '<div class="trabajo trabajoOculto">';
+                    }
                     echo '<p>' . $skill['categorias_skills_categoria'] . '</p>';
                     echo '<h4>' . $skill['habilidades'] . '</h4>';
                     botones('skill', $skill['id'], $user['id'], $skill['visible']);

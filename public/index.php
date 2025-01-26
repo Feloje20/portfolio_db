@@ -10,6 +10,7 @@ use App\Controllers\UsuarioController;
 use App\Controllers\PortfolioController;
 use App\Controllers\TrabajoController;
 use App\Controllers\ProyectoController;
+use App\Controllers\SkillController;
 
 // Creamos una instancia de la clase Router
 $router = new Router();
@@ -94,6 +95,27 @@ $router->add([  'name' => 'Eliminar un proyecto',
 $router->add([  'name' => 'Crear un nuevo proyecto',
                 'path' => '/^\/proyecto\/new\/([a-zA-Z0-9_-]+)$/',
                 'action' => [ProyectoController::class, 'create']]);
+
+                // --------------------SKILLS------------------------------
+                // Ruta de modificación de la visibilidad de los proyectos
+$router->add([  'name' => 'Cambiar visibilidad de skills',
+'path' => '/^\/skill\/(no)?visibilityRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
+'action' => [SkillController::class, 'changeVisibility']]);
+
+// Ruta de modificación de los datos de los skills
+$router->add([  'name' => 'Cambiar datos de skills',
+'path' => '/^\/skill\/editRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
+'action' => [SkillController::class, 'edit']]);
+
+// Ruta de eliminación de skills
+$router->add([  'name' => 'Eliminar un skill',
+'path' => '/^\/skill\/delRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
+'action' => [SkillController::class, 'delete']]);
+
+// Ruta de adición de skill
+$router->add([  'name' => 'Crear un nuevo skill',
+'path' => '/^\/skill\/new\/([a-zA-Z0-9_-]+)$/',
+'action' => [SkillController::class, 'create']]);
 
 //$request = $_SERVER['REQUEST_URI'];
 // Esto limpia la ruta de la petición
