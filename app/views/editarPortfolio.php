@@ -66,7 +66,7 @@
         ?>
         <div class='tituloConBoton'>
             <h2>Proyectos</h2>
-            <?php echo '<a class="btn-new" href="/proyectos' . '/new/' . $userId . '"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></a>';?>
+            <?php echo '<a class="btn-new" href="/proyecto' . '/new/' . $userId . '"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></a>';?>
         </div>
         <?php
             if (empty($data['proyectos'])) {
@@ -74,12 +74,16 @@
             } else {
                 echo '<div class="trabajos">';
                 foreach ($data['proyectos'] as $proyecto) {
-                    echo '<div class="trabajo">';
+                    if ($proyecto['visible'] == 1) {
+                        echo '<div class="trabajo">';
+                    } else {
+                        echo '<div class="trabajo trabajoOculto">';
+                    }
                     echo '<h4>' . $proyecto['titulo'] . '</h4>';
                     // EL LOGO HAY QUE CAMBIARLO A UNA IMAGEN DE VERDAD ****************************************************
                     echo '<p>' . $proyecto['logo'] . '</p>';
                     echo '<p>' . $proyecto['tecnologias'] . '</p>';
-                    botones('proyectos', $proyecto['id'], $user['id'], $proyecto['visible']);
+                    botones('proyecto', $proyecto['id'], $user['id'], $proyecto['visible']);
                     echo '</div>';
                 }
                 echo '</div>';
@@ -87,7 +91,7 @@
         ?>
         <div class='tituloConBoton'>
             <h2>Skills</h2>
-            <?php echo '<a class="btn-new" href="/skills' . '/new/' . $userId . '"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></a>';?>
+            <?php echo '<a class="btn-new" href="/skill' . '/new/' . $userId . '"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></a>';?>
         </div>
         <?php
             if (empty($data['skills'])) {
@@ -98,7 +102,7 @@
                     echo '<div class="trabajo">';
                     echo '<p>' . $skill['categorias_skills_categoria'] . '</p>';
                     echo '<h4>' . $skill['habilidades'] . '</h4>';
-                    botones('skills', $skill['id'], $user['id'], $skill['visible']);
+                    botones('skill', $skill['id'], $user['id'], $skill['visible']);
                     echo '</div>';
                 }
                 echo '</div>';

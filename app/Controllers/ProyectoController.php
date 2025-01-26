@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\Trabajos;
+use App\Models\Proyectos;
 use App\Models\Portfolios;
 
-class TrabajoController extends BaseController
+class ProyectoController extends BaseController
 {
     // Método para crear un trabajo
     public function create() {
         session_start();
-        $trabajo = Trabajos::getInstancia();
+        $proyecto = Proyectos::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
         // Recuperamos la información mediante la ruta
@@ -22,14 +22,13 @@ class TrabajoController extends BaseController
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
             // COMPROBAR SI SE HA DEJADO ALGÚN CAMPO VACÍO************************************************
-            $trabajo->setTitulo($_POST['trabajos']['titulo']);
-            $trabajo->setDescripcion($_POST['trabajos']['descripcion']);
-            $trabajo->setFechaInicio($_POST['trabajos']['fecha_inicio']);
-            $trabajo->setFechaFinal($_POST['trabajos']['fecha_final']);
-            $trabajo->setLogros($_POST['trabajos']['logros']);
-            $trabajo->setVisible(isset($_POST['trabajos']['visible']) ? 1 : 0);
-            $trabajo->setUsuariosId($userId);
-            $trabajo->set();
+            // CAMBIAR EL LOGO POR UNA IMAGEN DE VERDAD***************************************************
+            $proyecto->setTitulo($_POST['proyectos']['titulo']);
+            $proyecto->setLogo($_POST['proyectos']['logo']);
+            $proyecto->setTecnologias($_POST['proyectos']['tecnologias']);
+            $proyecto->setVisible(isset($_POST['proyectos']['visible']) ? 1 : 0);
+            $proyecto->setUsuariosId($userId);
+            $proyecto->set();
             header('Location: /edit/' . $userId);
             exit();
         }
@@ -44,7 +43,7 @@ class TrabajoController extends BaseController
         $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
 
         if ($portfolio->isOwner($userId, $userEmail) || $userProfile === 'admin') {
-            $data['tipo'] = 'trabajo';
+            $data['tipo'] = 'proyecto';
             $this->renderHTML('../app/views/editarFormulario.php', $data);
         } else {
             header('Location: /');
@@ -55,7 +54,7 @@ class TrabajoController extends BaseController
     // Método que cambia la visibilidad de un trabajo
     public function changeVisibility() {
         session_start();
-        $trabajo = Trabajos::getInstancia();
+        $proyecto = Proyectos::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
         // Recuperamos la información mediante la ruta
@@ -72,8 +71,8 @@ class TrabajoController extends BaseController
         $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
 
         if ($portfolio->isOwner($userId, $userEmail) || $userProfile === 'admin') {
-            $trabajo->setVisible($visibility ? 0 : 1);
-            $trabajo->changeVisibility($id, $userId);
+            $proyecto->setVisible($visibility ? 0 : 1);
+            $proyecto->changeVisibility($id, $userId);
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit();
         } else {
@@ -85,7 +84,7 @@ class TrabajoController extends BaseController
     // Método para editar un trabajo
     public function edit() {
         session_start();
-        $trabajo = Trabajos::getInstancia();
+        $proyecto = Proyectos::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
         // Recuperamos la información mediante la ruta
@@ -99,15 +98,13 @@ class TrabajoController extends BaseController
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
             // COMPROBAR SI SE HA DEJADO ALGÚN CAMPO VACÍO************************************************
-            $trabajo->setId($id);
-            $trabajo->setTitulo($_POST['trabajos']['titulo']);
-            $trabajo->setDescripcion($_POST['trabajos']['descripcion']);
-            $trabajo->setFechaInicio($_POST['trabajos']['fecha_inicio']);
-            $trabajo->setFechaFinal($_POST['trabajos']['fecha_final']);
-            $trabajo->setLogros($_POST['trabajos']['logros']);
-            $trabajo->setVisible(isset($_POST['trabajos']['visible']) ? 1 : 0);
-            $trabajo->setUsuariosId($userId);
-            $trabajo->edit();
+            $proyecto->setId($id);
+            $proyecto->setTitulo($_POST['proyectos']['titulo']);
+            $proyecto->setLogo($_POST['proyectos']['logo']);
+            $proyecto->setTecnologias($_POST['proyectos']['tecnologias']);
+            $proyecto->setVisible(isset($_POST['proyectos']['visible']) ? 1 : 0);
+            $proyecto->setUsuariosId($userId);
+            $proyecto->edit();
             header('Location: /edit/' . $userId);
             exit();
         }
@@ -122,8 +119,8 @@ class TrabajoController extends BaseController
         $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
 
         if ($portfolio->isOwner($userId, $userEmail) || $userProfile === 'admin') {
-            $data = $trabajo->get($id);
-            $data['tipo'] = 'trabajo';
+            $data = $proyecto->get($id);
+            $data['tipo'] = 'proyecto';
             $this->renderHTML('../app/views/editarFormulario.php', $data);
         } else {
             header('Location: /');
@@ -134,7 +131,7 @@ class TrabajoController extends BaseController
     // Método para eliminar un trabajo
     public function delete() {
         session_start();
-        $trabajo = Trabajos::getInstancia();
+        $proyecto = Proyectos::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
         // Recuperamos la información mediante la ruta
@@ -150,8 +147,8 @@ class TrabajoController extends BaseController
         $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
 
         if ($portfolio->isOwner($userId, $userEmail) || $userProfile === 'admin') {
-            $trabajo->setId($id);
-            $trabajo->delete();
+            $proyecto->setId($id);
+            $proyecto->delete();
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit();
         } else {
