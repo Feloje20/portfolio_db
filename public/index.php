@@ -53,6 +53,9 @@ $router->add([  'name' => 'Modificar portfolio',
                 'action' => [PortfolioController::class, 'editPortfolio']]);
 
                 // Ruta para permitir la eliminación del portfolio al dueño y al administrador.
+$router->add([  'name' => 'Eliminar portfolio',
+                'path' => '/^\/delete\/([a-zA-Z0-9_-]+)$/',
+                'action' => [PortfolioController::class, 'deletePortfolio']]);
 
                 // Rutas para cambiar las tablas trabajos, proyectos, skills, redes_sociales
                 // --------------------TRABAJOS------------------------------

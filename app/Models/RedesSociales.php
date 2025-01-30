@@ -110,4 +110,12 @@ class RedesSociales extends DBAbstractModel
         }
         return [];
     }
+
+    // Método para eliminar todos los trabajos asociados a una ID de usuario
+    public function deleteAll($userId) {
+        $this->query = "DELETE FROM redes_sociales WHERE usuarios_id = :usuarios_id";
+        $this->parametros['usuarios_id'] = $userId;
+        $this->get_results_from_query();
+        $this->mensaje = 'Trabajos eliminados';
+    }
 }

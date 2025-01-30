@@ -203,4 +203,44 @@ class PortfolioController extends BaseController
             header('Location: /');
         }
     }
+
+    // Método para borrar toda la información de un portfolio
+    public function deletePortfolio() {
+        session_start();
+
+        $id = explode('/', $_SERVER['REQUEST_URI'])[2];
+
+        // Si el usuario no está logeado, inicializamos la variable $userEmail a null
+        $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : null;
+        
+        // Si el usuario no está logeado, inicializamos la variable $userProfile a null
+        $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
+
+        $portfolio = Portfolios::getInstancia();
+        $trabajo = Trabajos::getInstancia();
+        $proyecto = Proyectos::getInstancia();
+        $skills = Skills::getInstancia();
+        $redesSociales = RedesSociales::getInstancia();
+
+        // Comprobamos si el usuario está logeado y es dueño del portfolio o es administrador
+        if ($portfolio->isOwner($id, $userEmail) || $userProfile === 'admin') {
+            // Borramos toda la información del portfolio
+            $trabajo->deleteAll($id);
+            $proyecto->deleteAll($id);
+            $skills->deleteAll($id);
+            $redesSociales->deleteAll($id);
+
+            // Ponemos la variable de sesión isPortfolioCreated a false
+            $_SESSION['isPorfolioCreated'] = false;
+
+            // Cambiamos la visibilidad del portfolio a 0
+            $portfolio->changeVisibility($id, 0);
+
+            // Redirigimos al usuario a la página de inicio
+            header('Location: /');
+        } else {
+            // Si no se cumplen las condiciones, volvemos a la página de inicio
+            header('Location: /');
+        }
+    }
 }
