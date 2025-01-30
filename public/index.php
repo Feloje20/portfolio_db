@@ -17,7 +17,8 @@ use App\Controllers\RedSocialController;
 $router = new Router();
 
 // Añadimos rutas al array
-// Landing page con un buscador y todos los portfolios que sean públicos
+                // --------------------USUARIOS------------------------------
+                // Landing page con un buscador y todos los portfolios que sean públicos
 $router->add([  'name' => 'Todos los usuarios',
                 'path' => '/^\/$/',
                 'action' => [PortfolioController::class, 'viewPublicPortfoliosAction']]);
@@ -37,6 +38,12 @@ $router->add([  'name' => 'Cerrar sesión de usuario',
                 'path' => '/^\/usuarios\/logout$/',
                 'action' => [UsuarioController::class, 'LogoutAction']]);
 
+                // Ruta de edición de usuarios
+$router->add([  'name' => 'Editar usuario',
+                'path' => '/^\/editUser\/([a-zA-Z0-9_-]+)$/',
+                'action' => [UsuarioController::class, 'ModifyAction']]);
+
+                // --------------------PORTFOLIOS------------------------------
                 // Ruta para crear un portfolio.
 $router->add([  'name' => 'Crear un portfolio nuevo',
                 'path' => '/^\/newPortfolio$/',

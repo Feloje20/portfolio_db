@@ -35,6 +35,9 @@ class Usuarios extends DBAbstractModel
     private $cuenta_activa;
 
     // Creo los setters
+    public function setId($id) {
+        $this->id = $id;
+    }
     public function setNombre($nombre) {
         $this->nombre = $nombre;
     }
@@ -53,8 +56,31 @@ class Usuarios extends DBAbstractModel
     public function setProfileSummary($resumen_perfil) {
         $this->resumen_perfil = $resumen_perfil ;
     }
+    public function setVisible($visible) {
+        $this->visible = $visible ;
+    }
     public function setToken($token) {
         $this->token = $token ;
+    }
+
+    // Creo los getters
+    public function getNombre() {
+        return $this->nombre;
+    }
+    public function getApellidos() {
+        return $this->apellidos;
+    }
+    public function getEmail() {
+        return $this->email;
+    }
+    public function getFoto() {
+        return $this->foto;
+    }
+    public function getPassword() {
+        return $this->password;
+    }
+    public function getProfileSummary() {
+        return $this->resumen_perfil;
     }
 
     public function getMensaje(){
@@ -111,11 +137,8 @@ class Usuarios extends DBAbstractModel
         $this->parametros['email'] = $this->email;
         $this->parametros['password'] = $this->password;
         $this->parametros['resumen_perfil'] = $this->resumen_perfil;
-        $this->parametros['token'] = $this->token;
         $this->parametros['update_at'] = date( 'Y-m-d H:i:s', $fecha->getTimestamp());
         $this->parametros['visible'] = $this->visible;
-        $this->parametros['cuenta_activa'] = $this->cuenta_activa;
-        $this->parametros['id'] = $this->id;
         $this->get_results_from_query();
         $this->mensaje = 'Usuario modificado';
     }
@@ -217,5 +240,17 @@ class Usuarios extends DBAbstractModel
         return $this->rows[0]['perfil'];
     }
 
+    // Método que comprueba que el id pertenece al email
+    public function checkIdEmail($id, $email){
+        $this->query = "SELECT * FROM usuarios WHERE id = :id AND email = :email";
+        $this->parametros['id'] = $id;
+        $this->parametros['email'] = $email;
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 ?>

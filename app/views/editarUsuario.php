@@ -1,31 +1,3 @@
-<?php
-
-// Requisitos para el envío de correos
-use Symfony\Component\Mailer\Transport;
-use Symfony\Component\Mailer\Mailer;
-use Symfony\Component\Mime\Email;
-
-/*
-// Ejemplo de envío de correo
-$transport = Transport::fromDsn('smtp://a22feloje@iesgrancapitan.org:abhcgxgE!681@smtp://smtp.gmail.com:587?encryption=tls&auth_mode=login');
-$mailer = new Mailer($transport);
-
-$email = (new Email())
-    ->from('a22feloje@iesgrancapitan.org')
-    ->to('a22feloje@iesgrancapitan.org')
-    //->cc('cc@example.com')
-    //->bcc('bcc@example.com')
-    //->replyTo('fabien@example.com')
-    //->priority(Email::PRIORITY_HIGH)
-    ->subject('Time for Symfony Mailer!')
-    ->text('Esto es una prueba')
-    ->html('<p>See Twig integration for better HTML integration!</p>');
-
-$mailer->send($email);
-*/
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +8,7 @@ $mailer->send($email);
 </head>
 <body>
     <?php include 'header.php'; ?>
-    <h2>Registro de usuario</h2>
+    <h2>Cambiar datos de cuenta</h2>
     <form class="registerForm" action="" method="post" enctype="multipart/form-data">
         <label for="first_name">Nombre</label>
         <input type="text" id="first_name" name="first_name" placeholder="Nombre..." value="<?php echo $data["nombre"]?>" required><?php echo $data["msjErrorNombre"]?><br><br>
@@ -55,12 +27,13 @@ $mailer->send($email);
 
         <!-- Campo en el que se sube una imagen-->
         <label for="profile_picture">Imagen de Perfil</label>
-        <input type="file" id="profile_picture" name="profile_picture" accept="image/*" required><?php echo $data["msjErrorImagen"]?><br><br>
+        <input type="file" id="profile_picture" name="profile_picture" accept="image/*"><?php echo $data["msjErrorImagen"]?><br><br>
 
         <label for="profile_summary">Resumen del Perfil</label>
         <textarea id="profile_summary" name="profile_summary" maxlength="255" rows="4" cols="50"><?php echo $data["profile_summary"]?></textarea><br><br>
         
-        <input type="submit" value="Crear">
+        <input type="submit" value="Guardar">
+        <button type="submit" class="btnCancelarEdit" name="cancelar" formnovalidate>Cancelar</button>
     </form>
 </body>
 </html>
