@@ -11,7 +11,7 @@ use App\Models\RedesSociales;
 class PortfolioController extends BaseController
 {
     // Función que muestra el portfolio de un usuario
-    public function viewPortfolio()
+    public function viewPortfolioAction()
     {
         // Creamos una instancia de usuarios
         $usuario = Usuarios::getInstancia();
@@ -72,7 +72,7 @@ class PortfolioController extends BaseController
     }
 
     // Función que muestra el formulario para crear un nuevo portfolio
-    public function newPortfolio() {
+    public function newPortfolioAction() {
         session_start();
         $data = [];
         $data['categorias'] = [];
@@ -170,7 +170,7 @@ class PortfolioController extends BaseController
     }
 
     // Función que permite modificar un portfolio, solo el dueño o el administrador pueden hacerlo
-    public function editPortfolio() {
+    public function editPortfolioAction() {
         session_start();
 
         $id = explode('/', $_SERVER['REQUEST_URI'])[2];
@@ -205,7 +205,7 @@ class PortfolioController extends BaseController
     }
 
     // Método para borrar toda la información de un portfolio
-    public function deletePortfolio() {
+    public function deletePortfolioAction() {
         session_start();
 
         $id = explode('/', $_SERVER['REQUEST_URI'])[2];

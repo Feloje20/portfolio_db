@@ -32,5 +32,6 @@
         <button type="submit" class="" name="modificar">Guardar cambios</button>
         <button type="submit" class="" name="cancelar" formnovalidate>Cancelar</button>
     </form>
+    <?php include 'footer.php'; ?>
 </body>
 </html>

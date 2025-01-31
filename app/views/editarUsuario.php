@@ -35,5 +35,6 @@
         <input type="submit" value="Guardar">
         <button type="submit" class="btnCancelarEdit" name="cancelar" formnovalidate>Cancelar</button>
     </form>
+    <?php include 'footer.php'; ?>
 </body>
 </html>

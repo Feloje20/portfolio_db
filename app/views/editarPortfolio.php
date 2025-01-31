@@ -132,16 +132,7 @@
             }
         ?>
     </main>
-    <script>
-    document.querySelectorAll(".btn-delete").forEach(function (element) {
-      element.addEventListener("click", function (e) {
-        e.preventDefault(); // Evita la redirección automática
-        const confirmacion = confirm("¿Estás seguro de que deseas eliminar este elemento?");
-        if (confirmacion) {
-          window.location.href = this.href; // Redirige a la URL del enlace
-        }
-      });
-    });
-  </script>
+    <?php include 'footer.php'; ?>
+    
 </body>
 </html>

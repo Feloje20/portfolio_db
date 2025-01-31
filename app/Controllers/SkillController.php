@@ -7,7 +7,7 @@ use App\Models\Portfolios;
 class SkillController extends BaseController
 {
     // Método para crear un trabajo
-    public function create() {
+    public function createAction() {
         session_start();
         $skill = Skills::getInstancia();
         $portfolio = Portfolios::getInstancia();
@@ -51,7 +51,7 @@ class SkillController extends BaseController
     }
 
     // Método que cambia la visibilidad de un trabajo
-    public function changeVisibility() {
+    public function changeVisibilityAction() {
         session_start();
         $skill = Skills::getInstancia();
         $portfolio = Portfolios::getInstancia();
@@ -81,7 +81,7 @@ class SkillController extends BaseController
     }
 
     // Método para editar un trabajo
-    public function edit() {
+    public function editAction() {
         session_start();
         $skill = Skills::getInstancia();
         $portfolio = Portfolios::getInstancia();
@@ -127,7 +127,7 @@ class SkillController extends BaseController
     }
 
     // Método para eliminar un trabajo
-    public function delete() {
+    public function deleteAction() {
         session_start();
         $skill = Skills::getInstancia();
         $portfolio = Portfolios::getInstancia();

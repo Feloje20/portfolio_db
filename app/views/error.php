@@ -9,5 +9,6 @@
 <body>
     <?php include 'header.php'; ?>
     <h2><?php echo $data["error"]?></h2>
+    <?php include 'footer.php'; ?>
 </body>
 </html>

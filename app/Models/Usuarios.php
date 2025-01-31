@@ -129,7 +129,7 @@ class Usuarios extends DBAbstractModel
     public function edit(){
         $fecha = new \DateTime();
         $this->query = "UPDATE usuarios 
-                        SET nombre = :nombre, apellidos = :apellidos, foto = :foto, email = :email, password = :password, resumen_perfil = :resumen_perfil, token = :token, updated_at = :update_at, visible = :visible, cuenta_activa = :cuenta_activa
+                        SET nombre = :nombre, apellidos = :apellidos, foto = :foto, email = :email, password = :password, resumen_perfil = :resumen_perfil, updated_at = :update_at, visible = :visible
                         WHERE id = :id";
         $this->parametros['nombre'] = $this->nombre;
         $this->parametros['apellidos'] = $this->apellidos;

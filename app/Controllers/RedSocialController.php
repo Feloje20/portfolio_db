@@ -7,7 +7,7 @@ use App\Models\Portfolios;
 class RedSocialController extends BaseController
 {
     // Método para crear un trabajo
-    public function create() {
+    public function createAction() {
         session_start();
         $redSocial = RedesSociales::getInstancia();
         $portfolio = Portfolios::getInstancia();
@@ -49,7 +49,7 @@ class RedSocialController extends BaseController
     }
 
     // Método para editar un trabajo
-    public function edit() {
+    public function editAction() {
         session_start();
         $redSocial = RedesSociales::getInstancia();
         $portfolio = Portfolios::getInstancia();
@@ -94,7 +94,7 @@ class RedSocialController extends BaseController
     }
 
     // Método para eliminar un trabajo
-    public function delete() {
+    public function deleteAction() {
         session_start();
         $redSocial = RedesSociales::getInstancia();
         $portfolio = Portfolios::getInstancia();

@@ -1,4 +1,4 @@
-<div class="trabajo">
+<div class="formTrabajo">
     <input type="text" name="trabajos[titulo]" placeholder="Título del Trabajo " class="search-input" required value="<?php echo isset($data['titulo']) ? $data['titulo'] : '' ?>">
     <textarea name="trabajos[descripcion]" placeholder="Descripción del Trabajo " class="search-input" required><?php echo isset($data['descripcion']) ? $data['descripcion'] : '' ?></textarea>
     <input type="date" name="trabajos[fecha_inicio]" placeholder="Fecha Inicio" class="search-input" required value="<?php echo isset($data['fecha_inicio']) ? $data['fecha_inicio'] : '' ?>">

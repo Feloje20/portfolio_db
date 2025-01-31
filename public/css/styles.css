@@ -354,3 +354,18 @@ header {
 .btn-new:hover {
     background-color: #9aef9a;
 }
+
+/* FOOTER */
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+footer p {
+    color: #fff;
+}

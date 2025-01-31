@@ -340,7 +340,7 @@ class UsuarioController extends BaseController
     }
 
     // Manejo del logout de usuarios en la base de datos
-    public function LogoutAction()
+    public function LogOutAction()
     {
         // Iniciar sesión
         session_start();

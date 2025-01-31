@@ -62,5 +62,6 @@ $mailer->send($email);
         
         <input type="submit" value="Crear">
     </form>
+    <?php include 'footer.php'; ?>
 </body>
 </html>

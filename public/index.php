@@ -36,7 +36,7 @@ $router->add([  'name' => 'Iniciar sesión de usuario',
                 // Ruta de cierre de sesión de usuarios
 $router->add([  'name' => 'Cerrar sesión de usuario',
                 'path' => '/^\/usuarios\/logout$/',
-                'action' => [UsuarioController::class, 'LogoutAction']]);
+                'action' => [UsuarioController::class, 'LogOutAction']]);
 
                 // Ruta de edición de usuarios
 $router->add([  'name' => 'Editar usuario',
@@ -47,102 +47,102 @@ $router->add([  'name' => 'Editar usuario',
                 // Ruta para crear un portfolio.
 $router->add([  'name' => 'Crear un portfolio nuevo',
                 'path' => '/^\/newPortfolio$/',
-                'action' => [PortfolioController::class, 'newPortfolio']]);
+                'action' => [PortfolioController::class, 'newPortfolioAction']]);
 
                 // Ruta de ver portfolio individual.
 $router->add([  'name' => 'Ver portfolio',
                 'path' => '/^\/view\/([a-zA-Z0-9_-]+)$/',
-                'action' => [PortfolioController::class, 'viewPortfolio']]);
+                'action' => [PortfolioController::class, 'viewPortfolioAction']]);
 
                 // Ruta para permitir la modificación del portfolio al dueño y al administrador.
 $router->add([  'name' => 'Modificar portfolio',
                 'path' => '/^\/edit\/([a-zA-Z0-9_-]+)$/',
-                'action' => [PortfolioController::class, 'editPortfolio']]);
+                'action' => [PortfolioController::class, 'editPortfolioAction']]);
 
                 // Ruta para permitir la eliminación del portfolio al dueño y al administrador.
 $router->add([  'name' => 'Eliminar portfolio',
                 'path' => '/^\/delete\/([a-zA-Z0-9_-]+)$/',
-                'action' => [PortfolioController::class, 'deletePortfolio']]);
+                'action' => [PortfolioController::class, 'deletePortfolioAction']]);
 
                 // Rutas para cambiar las tablas trabajos, proyectos, skills, redes_sociales
                 // --------------------TRABAJOS------------------------------
                 // Ruta de modificación de la visibilidad de los trabajos
 $router->add([  'name' => 'Cambiar visibilidad de trabajos',
                 'path' => '/^\/trabajo\/(no)?visibilityRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
-                'action' => [TrabajoController::class, 'changeVisibility']]);
+                'action' => [TrabajoController::class, 'changeVisibilityAction']]);
 
                 // Ruta de modificación de los datos de los trabajos
 $router->add([  'name' => 'Cambiar datos de trabajos',
                 'path' => '/^\/trabajo\/editRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
-                'action' => [TrabajoController::class, 'edit']]);
+                'action' => [TrabajoController::class, 'editAction']]);
 
                 // Ruta de eliminación de trabajos
 $router->add([  'name' => 'Eliminar un trabajo',
                 'path' => '/^\/trabajo\/delRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
-                'action' => [TrabajoController::class, 'delete']]);
+                'action' => [TrabajoController::class, 'deleteAction']]);
 
                 // Ruta de adición de trabajo
 $router->add([  'name' => 'Crear un nuevo trabajo',
                 'path' => '/^\/trabajo\/new\/([a-zA-Z0-9_-]+)$/',
-                'action' => [TrabajoController::class, 'create']]);
+                'action' => [TrabajoController::class, 'createAction']]);
 
                 // --------------------PROYECTOS------------------------------
                 // Ruta de modificación de la visibilidad de los proyectos
 $router->add([  'name' => 'Cambiar visibilidad de proyectos',
                 'path' => '/^\/proyecto\/(no)?visibilityRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
-                'action' => [ProyectoController::class, 'changeVisibility']]);
+                'action' => [ProyectoController::class, 'changeVisibilityAction']]);
 
                 // Ruta de modificación de los datos de los proyectos
 $router->add([  'name' => 'Cambiar datos de proyectos',
                 'path' => '/^\/proyecto\/editRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
-                'action' => [ProyectoController::class, 'edit']]);
+                'action' => [ProyectoController::class, 'editAction']]);
 
                 // Ruta de eliminación de proyectos
 $router->add([  'name' => 'Eliminar un proyecto',
                 'path' => '/^\/proyecto\/delRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
-                'action' => [ProyectoController::class, 'delete']]);
+                'action' => [ProyectoController::class, 'deleteAction']]);
 
                 // Ruta de adición de proyecto
 $router->add([  'name' => 'Crear un nuevo proyecto',
                 'path' => '/^\/proyecto\/new\/([a-zA-Z0-9_-]+)$/',
-                'action' => [ProyectoController::class, 'create']]);
+                'action' => [ProyectoController::class, 'createAction']]);
 
                 // --------------------SKILLS------------------------------
                 // Ruta de modificación de la visibilidad de los proyectos
 $router->add([  'name' => 'Cambiar visibilidad de skills',
                 'path' => '/^\/skill\/(no)?visibilityRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
-                'action' => [SkillController::class, 'changeVisibility']]);
+                'action' => [SkillController::class, 'changeVisibilityAction']]);
 
                 // Ruta de modificación de los datos de los skills
 $router->add([  'name' => 'Cambiar datos de skills',
                 'path' => '/^\/skill\/editRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
-                'action' => [SkillController::class, 'edit']]);
+                'action' => [SkillController::class, 'editAction']]);
 
                 // Ruta de eliminación de skills
 $router->add([  'name' => 'Eliminar un skill',
                 'path' => '/^\/skill\/delRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
-                'action' => [SkillController::class, 'delete']]);
+                'action' => [SkillController::class, 'deleteAction']]);
 
                 // Ruta de adición de skill
 $router->add([  'name' => 'Crear un nuevo skill',
                 'path' => '/^\/skill\/new\/([a-zA-Z0-9_-]+)$/',
-                'action' => [SkillController::class, 'create']]);
+                'action' => [SkillController::class, 'createAction']]);
 
                 // --------------------REDES SOCIALES------------------------------
                 // Ruta de modificación de los datos de las redes sociales
 $router->add([  'name' => 'Cambiar datos de redes sociales',
                 'path' => '/^\/redsocial\/editRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
-                'action' => [RedSocialController::class, 'edit']]);
+                'action' => [RedSocialController::class, 'editAction']]);
 
                 // Ruta de eliminación de redes sociales
 $router->add([  'name' => 'Eliminar una red social',
                 'path' => '/^\/redsocial\/delRow\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/',
-                'action' => [RedSocialController::class, 'delete']]);
+                'action' => [RedSocialController::class, 'deleteAction']]);
 
                 // Ruta de adición de red social
 $router->add([  'name' => 'Crear una nueva red social',
                 'path' => '/^\/redsocial\/new\/([a-zA-Z0-9_-]+)$/',
-                'action' => [RedSocialController::class, 'create']]);
+                'action' => [RedSocialController::class, 'createAction']]);
 
 //$request = $_SERVER['REQUEST_URI'];
 // Esto limpia la ruta de la petición
