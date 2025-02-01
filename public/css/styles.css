@@ -428,21 +428,21 @@ header {
 }
 
 .btn-edit {
-    background-color: #c7ca1a;
+    background-color: #dee202;
     transition: background-color 0.3s, color 0.3s;
 }
 
 .btn-edit:hover {
-    background-color: #d3e668;
+    background-color: rgb(233, 255, 88);
 }
 
 .btn-delete {
-    background-color: #ca1a1a;
+    background-color: #e20b0bcf;
     transition: background-color 0.3s, color 0.3s;
 }
 
 .btn-delete:hover {
-    background-color: #e66868;
+    background-color: #f85e5e;
 }
 
 .btn-new {
