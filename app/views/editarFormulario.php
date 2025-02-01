@@ -9,7 +9,7 @@
 <body>
     <?php include 'header.php'; ?>
     <h2>Modificar <?php echo $data['tipo']?></h2>
-    <form action="" method="POST" class="newPortfolioForm">
+    <form action="" method="POST" class="newPortfolioForm" enctype="multipart/form-data">
         <?php
         switch ($data['tipo']) {
             case 'trabajo':

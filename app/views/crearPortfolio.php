@@ -9,7 +9,7 @@
 <body>
     <?php include 'header.php'; ?>
     <h2>Crear portfolio</h2>
-    <form action="" method="POST" class="newPortfolioForm">
+    <form action="" method="POST" class="newPortfolioForm" enctype="multipart/form-data">
         <!---- HAY QUE PONER SI QUIERE CAMBIAR LA VISIBILIDAD A PUBLICO O PRIVADO ---->
         <h3>Primer trabajo</h3>
         <?php include 'crearTrabajo.php'; ?>

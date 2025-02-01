@@ -53,6 +53,11 @@ class Proyectos extends DBAbstractModel
         $this->usuarios_id = $usuarios_id;
     }
 
+    // Solo necesito el getter del logo
+    public function getLogo() {
+        return $this->logo;
+    }
+
     /*Método para registrar un proyecto en la base de datos*/
     public function set() {
         $fecha = new \DateTime();

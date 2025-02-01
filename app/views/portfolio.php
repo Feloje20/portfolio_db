@@ -24,11 +24,9 @@
             echo '</div>';
             echo '</div>';
         ?>
-        <h2>Trabajos</h2>
         <?php
-            if (empty($trabajos)) {
-                echo '<p  class="parrafoVacio">No hay trabajos para mostrar</p>';
-            } else {
+            if (!empty($trabajos)) {
+                echo "<h2>Trabajos</h2>";
                 echo '<div class="trabajos">';
                 foreach ($data['trabajos'] as $trabajo) {
                     $fechaInicio = date('d-m-Y', strtotime($trabajo['fecha_inicio']));
@@ -44,28 +42,25 @@
                 echo '</div>';
             }
         ?>
-        <h2>Proyectos</h2>
         <?php
-            if (empty($data['proyectos'])) {
-                echo '<p  class="parrafoVacio">No hay proyectos para mostrar</p>';
-            } else {
+            if (!empty($data['proyectos'])) {
+                echo "<h2>Proyectos</h2>";
                 echo '<div class="trabajos">';
                 foreach ($data['proyectos'] as $proyecto) {
-                    echo '<div class="trabajo">';
+                    echo '<div class="proyecto">';
+                    echo '<img src="' . BASE_URL . 'img/' . $proyecto['logo'] . '" alt="Logo de proyecto" class="portfolioImg">';
+                    echo '<div>';
                     echo '<h4>' . $proyecto['titulo'] . '</h4>';
-                    // EL LOGO HAY QUE CAMBIARLO A UNA IMAGEN DE VERDAD ****************************************************
-                    echo '<p>' . $proyecto['logo'] . '</p>';
                     echo '<p>' . $proyecto['tecnologias'] . '</p>';
+                    echo '</div>';
                     echo '</div>';
                 }
                 echo '</div>';
             }
         ?>
-        <h2>Skills</h2>
         <?php
-            if (empty($data['skills'])) {
-                echo '<p  class="parrafoVacio">No hay skills para mostrar</p>';
-            } else {
+            if (!empty($data['skills'])) {
+                echo "<h2>Skills</h2>";
                 echo '<div class="trabajos">';
                 foreach ($data['skills'] as $skill) {
                     echo '<div class="trabajo">';
@@ -76,11 +71,9 @@
                 echo '</div>';
             }
         ?>
-        <h2>Redes sociales</h2>
         <?php
-            if (empty($data['redesSociales'])) {
-                echo '<p class="parrafoVacio">No hay redes sociales para mostrar</p>';
-            } else {
+            if (!empty($data['redesSociales'])) {
+                echo "<h2>Redes sociales</h2>";
                 echo '<div class="trabajos">';
                 foreach ($data['redesSociales'] as $red_social) {
                     echo '<div class="trabajo">';

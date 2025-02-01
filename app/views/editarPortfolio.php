@@ -43,9 +43,7 @@
             <?php echo '<a class="btn-new" href="/trabajo' . '/new/' . $userId . '"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></a>';?>
         </div>
         <?php
-            if (empty($trabajos)) {
-                echo '<p  class="parrafoVacio">No hay trabajos para mostrar</p>';
-            } else {
+            if (!empty($trabajos)) {
                 echo '<div class="trabajos">';
                 foreach ($trabajos as $trabajo) {
                     $fechaInicio = date('d-m-Y', strtotime($trabajo['fecha_inicio']));
@@ -71,34 +69,31 @@
             <?php echo '<a class="btn-new" href="/proyecto' . '/new/' . $userId . '"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></a>';?>
         </div>
         <?php
-            if (empty($data['proyectos'])) {
-                echo '<p  class="parrafoVacio">No hay proyectos para mostrar</p>';
-            } else {
+            if (!empty($data['proyectos'])) {
                 echo '<div class="trabajos">';
                 foreach ($data['proyectos'] as $proyecto) {
                     if ($proyecto['visible'] == 1) {
-                        echo '<div class="trabajo">';
+                        echo '<div class="proyecto">';
                     } else {
-                        echo '<div class="trabajo trabajoOculto">';
+                        echo '<div class="proyecto trabajoOculto">';
                     }
+                    echo '<img src="' . BASE_URL . 'img/' . $proyecto['logo'] . '" alt="Logo de proyecto" class="portfolioImg">';
+                    echo '<div>';
                     echo '<h4>' . $proyecto['titulo'] . '</h4>';
-                    // EL LOGO HAY QUE CAMBIARLO A UNA IMAGEN DE VERDAD ****************************************************
-                    echo '<p>' . $proyecto['logo'] . '</p>';
                     echo '<p>' . $proyecto['tecnologias'] . '</p>';
+                    echo '</div>';
                     botones('proyecto', $proyecto['id'], $user['id'], $proyecto['visible']);
                     echo '</div>';
                 }
                 echo '</div>';
-            }
+            } 
         ?>
         <div class='tituloConBoton'>
             <h2>Skills</h2>
             <?php echo '<a class="btn-new" href="/skill' . '/new/' . $userId . '"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></a>';?>
         </div>
         <?php
-            if (empty($data['skills'])) {
-                echo '<p  class="parrafoVacio">No hay skills para mostrar</p>';
-            } else {
+            if (!empty($data['skills'])) {
                 echo '<div class="trabajos">';
                 foreach ($data['skills'] as $skill) {
                     if ($skill['visible'] == 1) {
@@ -112,16 +107,14 @@
                     echo '</div>';
                 }
                 echo '</div>';
-            }
+            } 
         ?>
         <div class='tituloConBoton'>        
             <h2>Redes sociales</h2>
             <?php echo '<a class="btn-new" href="/redsocial' . '/new/' . $userId . '"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></a>';?>
         </div>
         <?php
-            if (empty($data['redesSociales'])) {
-                echo '<p class="parrafoVacio">No hay redes sociales para mostrar</p>';
-            } else {
+            if (!empty($data['redesSociales'])) {
                 echo '<div class="trabajos">';
                 foreach ($data['redesSociales'] as $red_social) {
                     echo '<div class="trabajo">';

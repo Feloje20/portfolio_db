@@ -31,6 +31,7 @@ class Usuarios extends DBAbstractModel
     private $token;
     private $created_at;
     private $updated_at;
+    private $fecha_creacion_token;
     private $visible;
     private $cuenta_activa;
 

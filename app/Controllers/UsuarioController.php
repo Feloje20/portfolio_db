@@ -90,15 +90,18 @@ class UsuarioController extends BaseController
                 $data['msjErrorPassword2'] = "* Las contraseñas no coinciden";
             }
 
-            // Comprobamos si se ha subido una imagen
-            if ($data['picture']['error'] == 0) {
+            // Si no se ha subido una imagen, la imagen será la que hay por defecto "defaultPic.jpg".
+            // En caso contrario procesamos la subida.
+            if ($data['picture']['name'] == '') {
+                $data['picture']['name'] = 'defaultPic.jpg';
+            } else if ($data['picture']['error'] == 0) {
                 // Comprobamos si el archivo subido es una imagen
                 if ($data['picture']['type'] == 'image/jpeg' || $data['picture']['type'] == 'image/png' || $data['picture']['type'] == 'image/PNG') {
                     // Comprobamos si el archivo subido no supera los 2MB
                     if ($data['picture']['size'] <= 2000000) {
                         // Generamos un nombre para la imagen al azar
                         // OPCIONAL GUARDAR SOLO EL UNIQID Y LA EXTENSIÓN ******************************
-                        $data['picture']['name'] = uniqid() . $data['picture']['name'];
+                        $data['picture']['name'] = 'profilePicture_' . uniqid() . $data['picture']['name'];
                     } else {
                         $lprocesaFormulario = false;
                         $data['msjErrorImagen'] = "* La imagen no puede superar los 2MB";
@@ -235,7 +238,7 @@ class UsuarioController extends BaseController
                     if ($data['picture']['size'] <= 2000000) {
                         // Generamos un nombre para la imagen al azar
                         // OPCIONAL GUARDAR SOLO EL UNIQID Y LA EXTENSIÓN ******************************
-                        $data['picture']['name'] = uniqid() . $data['picture']['name'];
+                        $data['picture']['name'] = 'profilePicture_' . uniqid() . $data['picture']['name'];
                     } else {
                         $lprocesaFormulario = false;
                         $data['msjErrorImagen'] = "* La imagen no puede superar los 2MB";
@@ -251,7 +254,10 @@ class UsuarioController extends BaseController
         if ($lprocesaFormulario) {
             // Si el usuario ha subido una imagen, borramos la antigua, subimos la nueva y la modificamos en la base de datos.
             if ($data['picture']['name'] != '') {
-                unlink(dirname(__DIR__, 2) . '/public/img/' . $objUsuario->getFoto());
+                // Si la imagen anterior es la imagen por defecto, no la borramos
+                if ($objUsuario->getFoto() != 'defaultPic.jpg') {
+                    unlink(dirname(__DIR__, 2) . '/public/img/' . $objUsuario->getFoto());
+                }
                 move_uploaded_file($data['picture']['tmp_name'], dirname(__DIR__, 2) . '/public/img/' . $data['picture']['name']);
                 $objUsuario->setFoto($data['picture']['name']);
             } else {

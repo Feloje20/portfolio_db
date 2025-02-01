@@ -90,7 +90,7 @@ class PortfolioController extends BaseController
 
         // Comprobamos si se ha enviado un formulario
         if (isset($_POST['crear'])) {
-            
+            $data['picture'] = $_FILES['proyecto_logo'];
             // FALTA MODIFICAR LA VISIBILIDAD EL PORTFOLIO *******************************************************
 
             // Recogemos los datos mientras los saneamos usando sanearDatos
@@ -105,7 +105,30 @@ class PortfolioController extends BaseController
 
             // Proyectos
             $proyectoTitulo = $this->sanearDatos($_POST['proyectos']['titulo']);
-            $proyectoLogo = $this->sanearDatos($_POST['proyectos']['logo']);
+
+            // Si no se ha subido una imagen, la imagen será la que hay por defecto "defaultLogo.jpg".
+            // En caso contrario procesamos la subida.
+            if ($data['picture']['name'] == '') {
+                // $data['picture']['name'] = 'defaultLogo.png';
+                $proyectoLogo = 'defaultLogo.png';
+            } else if ($data['picture']['error'] == 0) {
+                // Comprobamos si el archivo subido es una imagen
+                if ($data['picture']['type'] == 'image/jpeg' || $data['picture']['type'] == 'image/png' || $data['picture']['type'] == 'image/PNG') {
+                    // Comprobamos si el archivo subido no supera los 2MB
+                    if ($data['picture']['size'] <= 2000000) {
+                        // Generamos un nombre para la imagen al azar
+                        //$data['picture']['name'] = 'logo_' . uniqid() . $data['picture']['name'];
+                        $proyectoLogo = 'logo_' . uniqid() . $data['picture']['name'];
+                    } else {
+                        $lprocesaFormulario = false;
+                        $data['msjErrorImagen'] = "* La imagen no puede superar los 2MB";
+                    }
+                } else {
+                    $lprocesaFormulario = false;
+                    $data['msjErrorImagen'] = "* El archivo subido no es una imagen";
+                }
+            }
+
             $proyectoTecnologias = $this->sanearDatos($_POST['proyectos']['tecnologias']);
             $proyectoVisible = $_POST['proyectos']['visible'] ?? 0;
 
