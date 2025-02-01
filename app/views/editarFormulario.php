@@ -9,7 +9,7 @@
 <body>
     <?php include 'header.php'; ?>
     <h2>Modificar <?php echo $data['tipo']?></h2>
-    <form action="" method="POST" class="">
+    <form action="" method="POST" class="newPortfolioForm">
         <?php
         switch ($data['tipo']) {
             case 'trabajo':
@@ -29,8 +29,8 @@
                 break;
         }
         ?>
-        <button type="submit" class="" name="modificar">Guardar cambios</button>
-        <button type="submit" class="" name="cancelar" formnovalidate>Cancelar</button>
+        <input type="submit" class="" name="modificar" value="Guardar cambios">
+        <button type="submit" class="btnCancelarEdit" name="cancelar" formnovalidate>Cancelar</button>
     </form>
     <?php include 'footer.php'; ?>
 </body>

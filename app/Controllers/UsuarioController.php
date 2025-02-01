@@ -33,6 +33,12 @@ class UsuarioController extends BaseController
         $data['nombre'] = $data['apellidos'] = $data['email'] = $data['password'] = $data['password_confirmation'] = $data['profile_summary'] = $data['picture'] = '';
         $data['msjErrorNombre'] = $data['msjErrorApellidos'] = $data['msjErrorEmail'] = $data['msjErrorPassword'] = $data['msjErrorPassword2'] = $data['msjErrorImagen'] = '';
 
+        // Si el usuario cancela la creación, vuelve al index.
+        if (isset($_POST['cancelar'])) {
+            header('Location: /');
+            exit();
+        }
+
         if(!empty($_POST)){
             // Saneamos las entradas antes de utilizarlas
             $data['nombre'] = $this->sanearDatos($_POST['first_name']);

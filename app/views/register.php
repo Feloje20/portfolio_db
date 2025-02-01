@@ -60,7 +60,8 @@ $mailer->send($email);
         <label for="profile_summary">Resumen del Perfil</label>
         <textarea id="profile_summary" name="profile_summary" maxlength="255" rows="4" cols="50"><?php echo $data["profile_summary"]?></textarea><br><br>
         
-        <input type="submit" value="Crear">
+        <input type="submit" value="Registrarse">
+        <button type="submit" class="btnCancelarEdit" name="cancelar" formnovalidate>Cancelar</button>
     </form>
     <?php include 'footer.php'; ?>
 </body>
