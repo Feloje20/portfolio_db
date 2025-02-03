@@ -1,2 +1,5 @@
 .env
 vendor
+public/img/*
+!public/img/defaultLogo.png
+!public/img/defaultPic.jpg

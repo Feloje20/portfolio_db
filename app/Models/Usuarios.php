@@ -83,6 +83,9 @@ class Usuarios extends DBAbstractModel
     public function getProfileSummary() {
         return $this->resumen_perfil;
     }
+    public function getVisible() {
+        return $this->visible;
+    }
 
     public function getMensaje(){
         return $this->mensaje;
@@ -103,7 +106,7 @@ class Usuarios extends DBAbstractModel
         $this->parametros['token']= $this->token;
         $this->parametros['created_at'] = date( 'Y-m-d H:i:s', $fecha->getTimestamp());
         $this->parametros['visible'] = 0;
-        $this->parametros['cuenta_activa'] = 0;
+        $this->parametros['cuenta_activa'] = 1;
         $this->get_results_from_query();
         $this->mensaje = 'Usuario añadido.';
     }

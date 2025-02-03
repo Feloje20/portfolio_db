@@ -119,6 +119,8 @@ class PortfolioController extends BaseController
                         // Generamos un nombre para la imagen al azar
                         //$data['picture']['name'] = 'logo_' . uniqid() . $data['picture']['name'];
                         $proyectoLogo = 'logo_' . uniqid() . $data['picture']['name'];
+                        // Movemos el archivo a la carpeta de imágenes
+                        move_uploaded_file($proyectoLogo, dirname(__DIR__, 2) . '/public/img/' . $data['picture']['name']);
                     } else {
                         $lprocesaFormulario = false;
                         $data['msjErrorImagen'] = "* La imagen no puede superar los 2MB";
@@ -140,6 +142,9 @@ class PortfolioController extends BaseController
             // Redes sociales
             $redesNombre = $this->sanearDatos($_POST['redes_sociales']['nombre']);
             $redesUrl = $this->sanearDatos($_POST['redes_sociales']['enlace']);
+
+            // Visibilidad del portfolio
+            $data['isVisible'] = isset($_POST['isVisible']) ?? 0;
             
             // COMPROBAR ERRORES EN LOS CAMPOS ****************************************************
 
@@ -148,6 +153,7 @@ class PortfolioController extends BaseController
             $proyecto = Proyectos::getInstancia();
             $skills = Skills::getInstancia();
             $redes = RedesSociales::getInstancia();
+            $portfolio = Portfolios::getInstancia();
 
             // Añadimos los datos a la base de datos
             // Añadimos los datos a la base de datos usando setters individuales
@@ -177,6 +183,8 @@ class PortfolioController extends BaseController
             $redes->setUrl($redesUrl);
             $redes->setUsuariosId($userId);
             $redes->set();
+
+            $portfolio->changeVisibility($userId, $data['isVisible']);
 
             // Marcamos en la sesión actual que el portfolio ha sido creado
             $_SESSION['isPorfolioCreated'] = true;

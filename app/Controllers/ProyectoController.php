@@ -35,6 +35,8 @@ class ProyectoController extends BaseController
                         // Generamos un nombre para la imagen al azar
                         // OPCIONAL GUARDAR SOLO EL UNIQID Y LA EXTENSIÓN ******************************
                         $data['picture']['name'] = 'logo_' . uniqid() . $data['picture']['name'];
+                        // Movemos el archivo a la carpeta de imágenes
+                        move_uploaded_file($data['picture']['tmp_name'], dirname(__DIR__, 2) . '/public/img/' . $data['picture']['name']);
                     } else {
                         $lprocesaFormulario = false;
                         $data['msjErrorImagen'] = "* La imagen no puede superar los 2MB";
@@ -45,8 +47,7 @@ class ProyectoController extends BaseController
                 }
             }
 
-            // Movemos el archivo a la carpeta de imágenes
-            move_uploaded_file($data['picture']['tmp_name'], dirname(__DIR__, 2) . '/public/img/' . $data['picture']['name']);
+            
 
             // COMPROBAR SI SE HA DEJADO ALGÚN CAMPO VACÍO************************************************
             $proyecto->setTitulo($_POST['proyectos']['titulo']);

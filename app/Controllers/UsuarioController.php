@@ -30,7 +30,7 @@ class UsuarioController extends BaseController
 
         $lprocesaFormulario = false;
         $data = array();
-        $data['nombre'] = $data['apellidos'] = $data['email'] = $data['password'] = $data['password_confirmation'] = $data['profile_summary'] = $data['picture'] = '';
+        $data['nombre'] = $data['apellidos'] = $data['email'] = $data['password'] = $data['password_confirmation'] = $data['profile_summary'] = $data['picture'] = $data['isVisible'] = '';
         $data['msjErrorNombre'] = $data['msjErrorApellidos'] = $data['msjErrorEmail'] = $data['msjErrorPassword'] = $data['msjErrorPassword2'] = $data['msjErrorImagen'] = '';
 
         // Si el usuario cancela la creación, vuelve al index.
@@ -144,6 +144,7 @@ class UsuarioController extends BaseController
     {
         session_start();
         $objUsuario = Usuarios::getInstancia();
+        $portfolio = Portfolios::getInstancia();
         $id = explode('/', $_SERVER['REQUEST_URI'])[2];
         
         // Si el usuario no está logeado, inicializamos la variable $userEmail a null
@@ -179,6 +180,7 @@ class UsuarioController extends BaseController
         $data['password_confirmation'] = $objUsuario->getPassword();
         $data['profile_summary'] = $objUsuario->getProfileSummary();
         $data['picture'] = $objUsuario->getFoto();
+        $data['visible'] = $objUsuario->getVisible();
 
         $data['msjErrorNombre'] = $data['msjErrorApellidos'] = $data['msjErrorEmail'] = $data['msjErrorPassword'] = $data['msjErrorPassword2'] = $data['msjErrorImagen'] = '';
 
@@ -191,6 +193,7 @@ class UsuarioController extends BaseController
             $data['password_confirmation'] = $this->sanearDatos($_POST['password_confirmation']);
             $data['profile_summary'] = $this->sanearDatos($_POST['profile_summary']);
             $data['picture'] = $_FILES['profile_picture'];
+            $data['isVisible'] = isset($_POST['isVisible']) ? 1 : 0;
 
             $lprocesaFormulario = true;
 
@@ -272,10 +275,12 @@ class UsuarioController extends BaseController
             $objUsuario->setPassword($data['password']);
             $objUsuario->setProfileSummary($data['profile_summary']);
             // SOLO SE PUEDE CAMBIAR LA VISIBILIDAD SI EL PORTFOLIO YA HA SIDO CREADO.
-            $objUsuario->setVisible(0);
+            $objUsuario->setVisible($data['isVisible']);
             $objUsuario->edit();
             header('Location: ..');
         } else {
+            // Si el portfolio no está creado, no mostraremos el campo de visibilidad del portfolio
+            $data['isPortfolioCreated'] = $portfolio->isPortfolioCreated($id);
             // Mostrar la vista de agregar usuario con los datos y errores
             $this->renderHTML('../app/views/editarUsuario.php', $data);
         }

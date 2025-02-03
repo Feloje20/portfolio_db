@@ -23,6 +23,10 @@
         <h3>Primera red social</h3>
         <?php include 'crearRedSocial.php'; ?>
 
+        <label for="isVisible">portfolio visible al público:
+            <input type="checkbox" id="isVisible" name="isVisible" value="1">
+        </label>
+
         <input type="submit" class="" name="crear" value="Crear">
         <button type="submit" class="btnCancelarEdit" name="cancelar" formnovalidate>Cancelar</button>
     </form>
