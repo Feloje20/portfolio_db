@@ -18,11 +18,6 @@ $router = new Router();
 
 // Añadimos rutas al array
                 // --------------------USUARIOS------------------------------
-                // Landing page con un buscador y todos los portfolios que sean públicos
-$router->add([  'name' => 'Todos los usuarios',
-                'path' => '/^\/$/',
-                'action' => [PortfolioController::class, 'viewPublicPortfoliosAction']]);
-
                 // Ruta de registro de usuarios nuevos
 $router->add([  'name' => 'añadir',
                 'path' => '/^\/usuarios\/add$/',
@@ -44,6 +39,16 @@ $router->add([  'name' => 'Editar usuario',
                 'action' => [UsuarioController::class, 'ModifyAction']]);
 
                 // --------------------PORTFOLIOS------------------------------
+                // Landing page con un buscador y todos los portfolios que sean públicos
+$router->add([  'name' => 'Todos los usuarios',
+                'path' => '/^\/$/',
+                'action' => [PortfolioController::class, 'viewPublicPortfoliosAction']]);
+
+                // Landing page pero con los portfolios que cumplen la búsqueda del usuario.
+$router->add([  'name' => 'Búsqueda de portfolios con query',
+                'path' => '/^\/search$/',
+                'action' => [PortfolioController::class, 'searchAction']]);
+
                 // Ruta para crear un portfolio.
 $router->add([  'name' => 'Crear un portfolio nuevo',
                 'path' => '/^\/newPortfolio$/',

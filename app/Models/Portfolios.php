@@ -34,7 +34,12 @@ class Portfolios extends DBAbstractModel
 
     // Devuelve los portfolios que son públicos (visible = 1)
     function getPublic() {
-        $this->query = "SELECT * FROM usuarios WHERE visible = 1";
+        $this->query = "SELECT u.*, GROUP_CONCAT(p.tecnologias SEPARATOR ', ') AS tecnologias 
+                FROM usuarios u 
+                LEFT JOIN proyectos p ON u.id = p.usuarios_id 
+                WHERE u.visible = :visible 
+                GROUP BY u.id";
+        $this->parametros['visible'] = 1;
         $this->get_results_from_query();
         if (count($this->rows) > 0) {
             return $this->rows;
@@ -54,7 +59,7 @@ class Portfolios extends DBAbstractModel
     // Función de búsqueda en la base de datos coincidencias con el parametro pasado
     function searchPortfolios($search) {
         // Se revisan los campos de nombre, apellidos y resumen de perfil
-        $this->query = "SELECT * FROM usuarios WHERE (nombre LIKE '%$search%' OR apellidos LIKE '%$search%') AND visible = 1";
+        $this->query = "SELECT u.*, p.tecnologias FROM usuarios u LEFT JOIN proyectos p ON u.id = p.usuarios_id WHERE (u.nombre LIKE '%$search%' OR u.apellidos LIKE '%$search%' OR p.tecnologias LIKE '%$search%') AND u.visible = 1";
         $this->get_results_from_query();
         if (count($this->rows) > 0) {
             return $this->rows;

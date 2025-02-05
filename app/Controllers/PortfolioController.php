@@ -58,13 +58,25 @@ class PortfolioController extends BaseController
         // Creamos una instancia de usuarios
         $portfolio = Portfolios::getInstancia();
 
+        // Almacenamos los datos en $data
+        $data['usuarios'] = $portfolio->getPublic();
+
+        // Llamamos a la función renderHTML
+        $this->renderHTML('../app/views/index_test.php', $data);
+    }
+
+    // Método que muestra el index_test.php con la información de búsqueda del usuario recibida por get
+    public function searchAction() {
+        // Creamos una instancia de usuarios
+        $portfolio = Portfolios::getInstancia();
+        
         // Comprobamos si se ha enviado un formulario de búsqueda
-        if (isset($_POST['query'])) {
+        if (isset($_GET['query'])) {
             // Almacenamos los datos en $data
-            $data['usuarios'] = $portfolio->searchPortfolios($_POST['query']);
+            $data['usuarios'] = $portfolio->searchPortfolios($_GET['query']);
         } else {
-            // Almacenamos los datos en $data
-            $data['usuarios'] = $portfolio->getPublic();
+            // Volvemos a la página inicial.
+            header('Location: /');
         }
 
         // Llamamos a la función renderHTML
