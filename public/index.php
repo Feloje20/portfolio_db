@@ -23,6 +23,10 @@ $router->add([  'name' => 'añadir',
                 'path' => '/^\/usuarios\/add$/',
                 'action' => [UsuarioController::class, 'AddAction']]);
 
+$router->add([  'name' => 'verificar usuario',
+                'path' => '/^\/usuarios\/verificar\/(.+)$/',
+                'action' => [UsuarioController::class, 'VerificarAction']]);
+
                 // Ruta de inicio de sesión de usuarios
 $router->add([  'name' => 'Iniciar sesión de usuario',
                 'path' => '/^\/login$/',

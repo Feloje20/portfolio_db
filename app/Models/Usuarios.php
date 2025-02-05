@@ -63,6 +63,9 @@ class Usuarios extends DBAbstractModel
     public function setToken($token) {
         $this->token = $token ;
     }
+    public function setCuentaActiva($cuenta_activa) {
+        $this->cuenta_activa = $cuenta_activa ;
+    }
 
     // Creo los getters
     public function getNombre() {
@@ -106,7 +109,7 @@ class Usuarios extends DBAbstractModel
         $this->parametros['token']= $this->token;
         $this->parametros['created_at'] = date( 'Y-m-d H:i:s', $fecha->getTimestamp());
         $this->parametros['visible'] = 0;
-        $this->parametros['cuenta_activa'] = 1;
+        $this->parametros['cuenta_activa'] = 0;
         $this->get_results_from_query();
         $this->mensaje = 'Usuario añadido.';
     }
@@ -255,6 +258,26 @@ class Usuarios extends DBAbstractModel
         } else {
             return false;
         }
+    }
+
+    // Método para verificar que un token existe y que la cuenta no está ya activa.
+    public function verifyToken($token) {
+        $this->query = "SELECT * FROM usuarios WHERE token = :token AND cuenta_activa = 0";
+        $this->parametros['token'] = $token;
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Método para activar la cuenta
+    public function activateAccount($token) {
+        $this->query = "UPDATE usuarios SET cuenta_activa = 1 WHERE token = :token";
+        $this->parametros['token'] = $token;
+        $this->get_results_from_query();
+        $this->mensaje = 'Cuenta activada';
     }
 }
 ?>

@@ -3,7 +3,7 @@
 namespace App\Controllers;
 use App\Models\Usuarios;
 use App\Models\Portfolios;
-
+use App\Core\EmailSender;
 class UsuarioController extends BaseController
 {
     public function IndexAction()
@@ -115,6 +115,9 @@ class UsuarioController extends BaseController
         }
 
         if ($lprocesaFormulario) {
+            // Creamos un objeto para enviar el correo
+            $emailSender = new EmailSender();
+
             // Generación de token
             $rb = random_bytes(32);
             $token = base64_encode($rb);
@@ -132,10 +135,28 @@ class UsuarioController extends BaseController
             $objUsuario->setProfileSummary($data['profile_summary']);
             $objUsuario->setToken($secureToken);
             $objUsuario->set();
+
+            $emailSender->sendConfirmationMail($data['nombre'], $data['apellidos'], $data['email'], $secureToken);
+
             header('Location: ..');
         } else {
             // Mostrar la vista de agregar usuario con los datos y errores
             $this->renderHTML('../app/views/register.php', $data);
+        }
+    }
+
+    // Método para verificar usuarios y activar su cuenta.
+    public function VerificarAction() {
+        // Recuperamos el token desde la URL
+        $token = explode('verificar/', $_SERVER['REQUEST_URI']);
+        $token = end($token);
+
+        $objUsuario = Usuarios::getInstancia();
+        if ($objUsuario->verifyToken($token)) {
+            $objUsuario->activateAccount($token);
+            header('Location: /');
+        } else {
+            header('Location: /');
         }
     }
 
