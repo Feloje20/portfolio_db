@@ -59,7 +59,19 @@ class Portfolios extends DBAbstractModel
     // Función de búsqueda en la base de datos coincidencias con el parametro pasado
     function searchPortfolios($search) {
         // Se revisan los campos de nombre, apellidos y resumen de perfil
-        $this->query = "SELECT u.*, p.tecnologias FROM usuarios u LEFT JOIN proyectos p ON u.id = p.usuarios_id WHERE (u.nombre LIKE '%$search%' OR u.apellidos LIKE '%$search%' OR p.tecnologias LIKE '%$search%') AND u.visible = 1";
+        $this->query = "
+        SELECT
+            u.*, 
+            GROUP_CONCAT(DISTINCT p.tecnologias SEPARATOR ', ') AS tecnologias
+        FROM usuarios u
+        LEFT JOIN proyectos p ON u.id = p.usuarios_id
+        WHERE 
+            (u.nombre LIKE '%$search%' 
+            OR u.apellidos LIKE '%$search%' 
+            OR p.tecnologias LIKE '%$search%') 
+            AND u.visible = 1
+        GROUP BY u.id";
+
         $this->get_results_from_query();
         if (count($this->rows) > 0) {
             return $this->rows;

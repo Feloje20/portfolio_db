@@ -61,6 +61,15 @@ class PortfolioController extends BaseController
         // Almacenamos los datos en $data
         $data['usuarios'] = $portfolio->getPublic();
 
+        // En cada usuario comprobamos que el string de tecnologías no contiene tecnologias repetidas.
+        foreach ($data['usuarios'] as $key => $usuario) {
+            $tecnologias = explode(',', $usuario['tecnologias']);
+            $tecnologias = array_unique($tecnologias);
+            $data['usuarios'][$key]['tecnologias'] = implode(', ', $tecnologias);
+        }
+        
+        $data['query'] = '';
+
         // Llamamos a la función renderHTML
         $this->renderHTML('../app/views/index_test.php', $data);
     }
@@ -69,11 +78,21 @@ class PortfolioController extends BaseController
     public function searchAction() {
         // Creamos una instancia de usuarios
         $portfolio = Portfolios::getInstancia();
+        $data['query'] = '';
         
         // Comprobamos si se ha enviado un formulario de búsqueda
         if (isset($_GET['query'])) {
             // Almacenamos los datos en $data
             $data['usuarios'] = $portfolio->searchPortfolios($_GET['query']);
+
+            // En cada usuario comprobamos que el string de tecnologías no contiene tecnologias repetidas.
+            foreach ($data['usuarios'] as $key => $usuario) {
+                $tecnologias = explode(',', $usuario['tecnologias']);
+                $tecnologias = array_unique($tecnologias);
+                $data['usuarios'][$key]['tecnologias'] = implode(', ', $tecnologias);
+            }
+
+            $data['query'] = $_GET['query'];
         } else {
             // Volvemos a la página inicial.
             header('Location: /');
@@ -122,7 +141,7 @@ class PortfolioController extends BaseController
             // En caso contrario procesamos la subida.
             if ($data['picture']['name'] == '') {
                 // $data['picture']['name'] = 'defaultLogo.png';
-                $proyectoLogo = 'defaultLogo.png';
+                $data['picture']['name'] = 'defaultLogo.png';
             } else if ($data['picture']['error'] == 0) {
                 // Comprobamos si el archivo subido es una imagen
                 if ($data['picture']['type'] == 'image/jpeg' || $data['picture']['type'] == 'image/png' || $data['picture']['type'] == 'image/PNG') {
@@ -130,9 +149,9 @@ class PortfolioController extends BaseController
                     if ($data['picture']['size'] <= 2000000) {
                         // Generamos un nombre para la imagen al azar
                         //$data['picture']['name'] = 'logo_' . uniqid() . $data['picture']['name'];
-                        $proyectoLogo = 'logo_' . uniqid() . $data['picture']['name'];
+                        $data['picture']['name'] = 'logo_' . uniqid() . $data['picture']['name'];
                         // Movemos el archivo a la carpeta de imágenes
-                        move_uploaded_file($proyectoLogo, dirname(__DIR__, 2) . '/public/img/' . $data['picture']['name']);
+                        move_uploaded_file($data['picture']['tmp_name'], dirname(__DIR__, 2) . '/public/img/' . $data['picture']['name']);
                     } else {
                         $lprocesaFormulario = false;
                         $data['msjErrorImagen'] = "* La imagen no puede superar los 2MB";
@@ -179,7 +198,7 @@ class PortfolioController extends BaseController
             $trabajo->set();
 
             $proyecto->setTitulo($proyectoTitulo);
-            $proyecto->setLogo($proyectoLogo);
+            $proyecto->setLogo($data['picture']['name']);
             $proyecto->setTecnologias($proyectoTecnologias);
             $proyecto->setVisible($proyectoVisible);
             $proyecto ->setUsuariosId($userId);
