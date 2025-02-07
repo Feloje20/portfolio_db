@@ -21,9 +21,6 @@ class PortfolioController extends BaseController
         $redesSociales = RedesSociales::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
-        // Iniciamos la sesión
-        session_start();
-
         // Si no se ha iniciado sesión, inicializamos la variable $sessionId a null
         if (isset($_SESSION['id'])) {
             $sessionId = $_SESSION['id'];
@@ -104,7 +101,6 @@ class PortfolioController extends BaseController
 
     // Función que muestra el formulario para crear un nuevo portfolio
     public function newPortfolioAction() {
-        session_start();
         $data = [];
         $data['categorias'] = [];
 
@@ -233,7 +229,6 @@ class PortfolioController extends BaseController
 
     // Función que permite modificar un portfolio, solo el dueño o el administrador pueden hacerlo
     public function editPortfolioAction() {
-        session_start();
 
         $id = explode('/', $_SERVER['REQUEST_URI'])[2];
 
@@ -268,8 +263,6 @@ class PortfolioController extends BaseController
 
     // Método para borrar toda la información de un portfolio
     public function deletePortfolioAction() {
-        session_start();
-
         $id = explode('/', $_SERVER['REQUEST_URI'])[2];
 
         // Si el usuario no está logeado, inicializamos la variable $userEmail a null

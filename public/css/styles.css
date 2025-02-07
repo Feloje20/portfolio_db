@@ -227,13 +227,13 @@ header {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    margin: 20px 0;
-    padding: 20px;
+    padding: 20px 40px 20px 40px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fff;
     max-width: 30%;
     margin: 0 auto;
+    margin-bottom: 1em;
 }
 
 .newPortfolioForm h3 {
@@ -477,4 +477,15 @@ footer {
 
 footer p {
     color: #fff;
+}
+
+/* Error */
+.error {
+    color: #ca1a1a;
+    font-size: 16px;
+    text-align: center;
+}
+
+.errorInput {
+    border: 1px solid #ca1a1a !important;
 }

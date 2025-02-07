@@ -8,7 +8,6 @@ class ProyectoController extends BaseController
 {
     // Método para crear un trabajo
     public function createAction() {
-        session_start();
         $proyecto = Proyectos::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
@@ -18,6 +17,15 @@ class ProyectoController extends BaseController
 
         // Extraemos la información de la ruta
         $userId = $urlParts[3];
+
+        // Si el usuario que accede a la ruta no es el dueño del portfolio o es administrador, redirigimos a la página principal
+        $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : null;
+        $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
+
+        if (!($portfolio->isOwner($userId, $userEmail)) && !($userProfile === 'admin')) {
+            header('Location: /');
+            exit();
+        }
 
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
@@ -47,8 +55,6 @@ class ProyectoController extends BaseController
                 }
             }
 
-            
-
             // COMPROBAR SI SE HA DEJADO ALGÚN CAMPO VACÍO************************************************
             $proyecto->setTitulo($_POST['proyectos']['titulo']);
             $proyecto->setLogo($data['picture']['name']);
@@ -65,22 +71,13 @@ class ProyectoController extends BaseController
             exit();
         }
 
-        // Si el usuario que accede a la ruta no es el dueño del portfolio o es administrador, redirigimos a la página principal
-        $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : null;
-        $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
-
-        if ($portfolio->isOwner($userId, $userEmail) || $userProfile === 'admin') {
-            $data['tipo'] = 'proyecto';
-            $this->renderHTML('../app/views/editarFormulario.php', $data);
-        } else {
-            header('Location: /');
-            exit();
-        }
+        $data['tipo'] = 'proyecto';
+        $data['accion'] = 'crear';
+        $this->renderHTML('../app/views/editarFormulario.php', $data);
     }
 
     // Método que cambia la visibilidad de un trabajo
     public function changeVisibilityAction() {
-        session_start();
         $proyecto = Proyectos::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
@@ -110,7 +107,6 @@ class ProyectoController extends BaseController
 
     // Método para editar un trabajo
     public function editAction() {
-        session_start();
         $proyecto = Proyectos::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
@@ -121,6 +117,15 @@ class ProyectoController extends BaseController
         // Extraemos la información de la ruta
         $userId = $urlParts[3];
         $id = $urlParts[4];
+
+        // Si el usuario que accede a la ruta no es el dueño del portfolio o es administrador, redirigimos a la página principal
+        $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : null;
+        $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
+
+        if (!($portfolio->isOwner($userId, $userEmail)) && !($userProfile === 'admin')) {
+            header('Location: /');
+            exit();
+        }
 
         $proyecto->setId($id);
         $proyecto->get($id);
@@ -176,23 +181,14 @@ class ProyectoController extends BaseController
             exit();
         }
 
-        // Si el usuario que accede a la ruta no es el dueño del portfolio o es administrador, redirigimos a la página principal
-        $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : null;
-        $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
-
-        if ($portfolio->isOwner($userId, $userEmail) || $userProfile === 'admin') {
-            $data = $proyecto->get($id);
-            $data['tipo'] = 'proyecto';
-            $this->renderHTML('../app/views/editarFormulario.php', $data);
-        } else {
-            header('Location: /');
-            exit();
-        }
+        $data = $proyecto->get($id);
+        $data['tipo'] = 'proyecto';
+        $data['accion'] = 'editar';
+        $this->renderHTML('../app/views/editarFormulario.php', $data);
     }
 
     // Método para eliminar un trabajo
     public function deleteAction() {
-        session_start();
         $proyecto = Proyectos::getInstancia();
         $portfolio = Portfolios::getInstancia();
 

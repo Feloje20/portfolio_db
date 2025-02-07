@@ -163,7 +163,6 @@ class UsuarioController extends BaseController
     // Método de modificación de usuarios en la base de datos.
     public function ModifyAction()
     {
-        session_start();
         $objUsuario = Usuarios::getInstancia();
         $portfolio = Portfolios::getInstancia();
         $id = explode('/', $_SERVER['REQUEST_URI'])[2];
@@ -345,8 +344,6 @@ class UsuarioController extends BaseController
 
             // Validamos que el email y la contraseña coincidan, además de comprobar si la cuenta está activa
             if ($objUsuario->emailPasswordExists($data['email'], $data['password']) && $objUsuario->isActive($data['email'])) {
-                // Iniciar sesión
-                session_start();
 
                 // Guardamos el email y el nombre y apellidos del usuario en la sesión
                 $_SESSION['email'] = $data['email'];

@@ -1,3 +1,4 @@
+<li>Hola invitado</li>
 <form action="<?php echo BASE_URL?>login" method="post">
     <input class="loginInput" type="email" id="email" name="email" placeholder="Correo" value="<?php echo isset($data["email"]) ? $data["email"] : '' ?>" required>
     <input class="loginInput" type="password" id="password" name="password" placeholder="Contraseña" value="<?php echo isset($data["password"]) ? $data["password"] : '' ?>" required>

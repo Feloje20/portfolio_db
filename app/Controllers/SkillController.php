@@ -8,7 +8,6 @@ class SkillController extends BaseController
 {
     // Método para crear un trabajo
     public function createAction() {
-        session_start();
         $skill = Skills::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
@@ -18,6 +17,15 @@ class SkillController extends BaseController
 
         // Extraemos la información de la ruta
         $userId = $urlParts[3];
+
+        // Si el usuario que accede a la ruta no es el dueño del portfolio o es administrador, redirigimos a la página principal
+        $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : null;
+        $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
+
+        if (!($portfolio->isOwner($userId, $userEmail)) && !($userProfile === 'admin')) {
+            header('Location: /');
+            exit();
+        }
 
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
@@ -36,23 +44,14 @@ class SkillController extends BaseController
             exit();
         }
 
-        // Si el usuario que accede a la ruta no es el dueño del portfolio o es administrador, redirigimos a la página principal
-        $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : null;
-        $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
-
-        if ($portfolio->isOwner($userId, $userEmail) || $userProfile === 'admin') {
-            $data['tipo'] = 'skill';
-            $data['categorias'] = $skill->getSkillsCategories();
-            $this->renderHTML('../app/views/editarFormulario.php', $data);
-        } else {
-            header('Location: /');
-            exit();
-        }
+        $data['tipo'] = 'skill';
+        $data['accion'] = 'crear';
+        $data['categorias'] = $skill->getSkillsCategories();
+        $this->renderHTML('../app/views/editarFormulario.php', $data);
     }
 
     // Método que cambia la visibilidad de un trabajo
     public function changeVisibilityAction() {
-        session_start();
         $skill = Skills::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
@@ -82,7 +81,6 @@ class SkillController extends BaseController
 
     // Método para editar un trabajo
     public function editAction() {
-        session_start();
         $skill = Skills::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
@@ -93,6 +91,15 @@ class SkillController extends BaseController
         // Extraemos la información de la ruta
         $userId = $urlParts[3];
         $id = $urlParts[4];
+
+        // Si el usuario que accede a la ruta no es el dueño del portfolio o es administrador, redirigimos a la página principal
+        $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : null;
+        $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
+
+        if (!($portfolio->isOwner($userId, $userEmail)) && !($userProfile === 'admin')) {
+            header('Location: /');
+            exit();
+        }
 
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
@@ -111,24 +118,15 @@ class SkillController extends BaseController
             exit();
         }
 
-        // Si el usuario que accede a la ruta no es el dueño del portfolio o es administrador, redirigimos a la página principal
-        $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : null;
-        $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
-
-        if ($portfolio->isOwner($userId, $userEmail) || $userProfile === 'admin') {
-            $data = $skill->get($id);
-            $data['tipo'] = 'skill';
-            $data['categorias'] = $skill->getSkillsCategories();
-            $this->renderHTML('../app/views/editarFormulario.php', $data);
-        } else {
-            header('Location: /');
-            exit();
-        }
+        $data = $skill->get($id);
+        $data['tipo'] = 'skill';
+        $data['accion'] = 'editar';
+        $data['categorias'] = $skill->getSkillsCategories();
+        $this->renderHTML('../app/views/editarFormulario.php', $data);
     }
 
     // Método para eliminar un trabajo
     public function deleteAction() {
-        session_start();
         $skill = Skills::getInstancia();
         $portfolio = Portfolios::getInstancia();
 

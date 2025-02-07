@@ -8,7 +8,6 @@ class RedSocialController extends BaseController
 {
     // Método para crear un trabajo
     public function createAction() {
-        session_start();
         $redSocial = RedesSociales::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
@@ -18,6 +17,15 @@ class RedSocialController extends BaseController
 
         // Extraemos la información de la ruta
         $userId = $urlParts[3];
+
+        // Si el usuario que accede a la ruta no es el dueño del portfolio o es administrador, redirigimos a la página principal
+        $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : null;
+        $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
+
+        if (!($portfolio->isOwner($userId, $userEmail)) && !($userProfile === 'admin')) {
+            header('Location: /');
+            exit();
+        }
 
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
@@ -35,22 +43,13 @@ class RedSocialController extends BaseController
             exit();
         }
 
-        // Si el usuario que accede a la ruta no es el dueño del portfolio o es administrador, redirigimos a la página principal
-        $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : null;
-        $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
-
-        if ($portfolio->isOwner($userId, $userEmail) || $userProfile === 'admin') {
-            $data['tipo'] = 'red_social';
-            $this->renderHTML('../app/views/editarFormulario.php', $data);
-        } else {
-            header('Location: /');
-            exit();
-        }
+        $data['tipo'] = 'red social';
+        $data['accion'] = 'crear';
+        $this->renderHTML('../app/views/editarFormulario.php', $data);
     }
 
     // Método para editar un trabajo
     public function editAction() {
-        session_start();
         $redSocial = RedesSociales::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
@@ -61,6 +60,15 @@ class RedSocialController extends BaseController
         // Extraemos la información de la ruta
         $userId = $urlParts[3];
         $id = $urlParts[4];
+
+        // Si el usuario que accede a la ruta no es el dueño del portfolio o es administrador, redirigimos a la página principal
+        $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : null;
+        $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
+
+        if (!($portfolio->isOwner($userId, $userEmail)) && !($userProfile === 'admin')) {
+            header('Location: /');
+            exit();
+        }
 
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
@@ -79,23 +87,14 @@ class RedSocialController extends BaseController
             exit();
         }
 
-        // Si el usuario que accede a la ruta no es el dueño del portfolio o es administrador, redirigimos a la página principal
-        $userEmail = isset($_SESSION['email']) ? $_SESSION['email'] : null;
-        $userProfile = isset($_SESSION['perfil']) ? $_SESSION['perfil'] : null;
-
-        if ($portfolio->isOwner($userId, $userEmail) || $userProfile === 'admin') {
-            $data = $redSocial->get($id);
-            $data['tipo'] = 'red_social';
-            $this->renderHTML('../app/views/editarFormulario.php', $data);
-        } else {
-            header('Location: /');
-            exit();
-        }
+        $data = $redSocial->get($id);
+        $data['tipo'] = 'red social';
+        $data['accion'] = 'editar';
+        $this->renderHTML('../app/views/editarFormulario.php', $data);
     }
 
     // Método para eliminar un trabajo
     public function deleteAction() {
-        session_start();
         $redSocial = RedesSociales::getInstancia();
         $portfolio = Portfolios::getInstancia();
 

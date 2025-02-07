@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>índice de portfolios</title>
     <link rel="stylesheet" href="<?php echo BASE_URL ?>css/styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=login" />
 </head>
@@ -12,7 +12,7 @@
     <h2>PORTFOLIOS</h2>
     <form action="<?php echo BASE_URL?>search" method="get" class="search-form">
         <input type="text" name="query" placeholder="Buscar portfolios..." value="<?php echo $data['query'] ?>" class="search-input">
-        <button type="submit" class="search-button" name="search">Buscar</button>
+        <button type="submit" class="search-button">Buscar</button>
     </form>
     <div class="user-cards">
         <?php 
