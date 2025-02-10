@@ -1,6 +1,6 @@
 <?php
     $user = $data['usuario'];
-    $trabajos = $data['trabajos'];
+    $trabajos = $user['trabajos'];
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +28,7 @@
             if (!empty($trabajos)) {
                 echo "<h2>Trabajos</h2>";
                 echo '<div class="trabajos">';
-                foreach ($data['trabajos'] as $trabajo) {
+                foreach ($trabajos as $trabajo) {
                     $fechaInicio = date('d-m-Y', strtotime($trabajo['fecha_inicio']));
                     $fechaFinal = date('d-m-Y', strtotime($trabajo['fecha_final']));
                     echo '<div class="trabajo">';
@@ -43,10 +43,10 @@
             }
         ?>
         <?php
-            if (!empty($data['proyectos'])) {
+            if (!empty($user['proyectos'])) {
                 echo "<h2>Proyectos</h2>";
                 echo '<div class="trabajos">';
-                foreach ($data['proyectos'] as $proyecto) {
+                foreach ($user['proyectos'] as $proyecto) {
                     echo '<div class="proyecto">';
                     echo '<img src="' . BASE_URL . 'img/' . $proyecto['logo'] . '" alt="Logo de proyecto" class="portfolioImg">';
                     echo '<div>';
@@ -59,10 +59,10 @@
             }
         ?>
         <?php
-            if (!empty($data['skills'])) {
+            if (!empty($user['skills'])) {
                 echo "<h2>Skills</h2>";
                 echo '<div class="trabajos">';
-                foreach ($data['skills'] as $skill) {
+                foreach ($user['skills'] as $skill) {
                     echo '<div class="trabajo">';
                     echo '<h4>' . $skill['categorias_skills_categoria'] . '</h4>';
                     echo '<p>' . $skill['habilidades'] . '</p>';
@@ -72,10 +72,10 @@
             }
         ?>
         <?php
-            if (!empty($data['redesSociales'])) {
+            if (!empty($user['redes_sociales'])) {
                 echo "<h2>Redes sociales</h2>";
                 echo '<div class="trabajos">';
-                foreach ($data['redesSociales'] as $red_social) {
+                foreach ($user['redes_sociales'] as $red_social) {
                     echo '<div class="trabajo">';
                     echo '<h4>' . $red_social['redes_sociales'] . '</h4>';
                     echo '<p>' . $red_social['url'] . '</p>';

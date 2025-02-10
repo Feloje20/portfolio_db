@@ -27,10 +27,25 @@ class SkillController extends BaseController
             exit();
         }
 
+        // Ahora que hemos validado que el usuario puede ejecutar esta acción, inicializamos variables.
+        $lprocesaFormulario = false;
+        $data = [];
+        $data['msjErrorHabilidades'] = '';
+
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
-            // COMPROBAR SI SE HA DEJADO ALGÚN CAMPO VACÍO************************************************
-            $skill->sethabilidades($_POST['skills']['habilidades']);
+            $lprocesaFormulario = true;
+            $data['habilidades'] = $this->sanearDatos($_POST['skills']['habilidades']);
+
+            if (empty($data['habilidades'])) {
+                $data['msjErrorHabilidades'] = 'Debes introducir al menos una habilidad';
+                $lprocesaFormulario = false;
+            } 
+        }
+
+        // En el caso de que no haya habido errores en el formulario, guardamos los datos en la base de datos.
+        if ($lprocesaFormulario) {
+            $skill->sethabilidades($data['habilidades']);
             $skill->setCategoriasSkillsCategoria($_POST['skills']['categoria']);
             $skill->setVisible(isset($_POST['skills']['visible']) ? 1 : 0);
             $skill->setUsuariosId($userId);
@@ -101,11 +116,27 @@ class SkillController extends BaseController
             exit();
         }
 
+        // Ahora que hemos validado que el usuario puede ejecutar esta acción, inicializamos variables.
+        $lprocesaFormulario = false;
+        $data = [];
+        $data['msjErrorHabilidades'] = '';
+
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
-            // COMPROBAR SI SE HA DEJADO ALGÚN CAMPO VACÍO************************************************
-            $skill->sethabilidades($_POST['skills']['habilidades']);
-            $skill->setcategorias_skills_categoria($_POST['skills']['categoria']);
+            $lprocesaFormulario = true;
+            $data['habilidades'] = $this->sanearDatos($_POST['skills']['habilidades']);
+
+            if (empty($data['habilidades'])) {
+                $data['msjErrorHabilidades'] = 'Debes introducir al menos una habilidad';
+                $lprocesaFormulario = false;
+            } 
+        }
+
+        // En el caso de que no haya habido errores en el formulario, guardamos los datos en la base de datos.
+        if ($lprocesaFormulario) {
+            $skill->get($id);
+            $skill->sethabilidades( $data['habilidades']);
+            $skill->setCategoriasSkillsCategoria($_POST['skills']['categoria']);
             $skill->setVisible(isset($_POST['skills']['visible']) ? 1 : 0);
             $skill->setUsuariosId($userId);
             $skill->edit();
@@ -118,7 +149,7 @@ class SkillController extends BaseController
             exit();
         }
 
-        $data = $skill->get($id);
+        $data += $skill->get($id);
         $data['tipo'] = 'skill';
         $data['accion'] = 'editar';
         $data['categorias'] = $skill->getSkillsCategories();

@@ -1,7 +1,7 @@
 <?php
     $user = $data['usuario'];
     $userId = $user['id'];
-    $trabajos = $data['trabajos'];
+    $trabajos = $user['trabajos'];
 
     // Función para mostrar los botones de edición.
     function botones($campo, $campoId, $userId, $visibilidad = 2) {
@@ -69,9 +69,9 @@
             <?php echo '<a class="btn-new" href="/proyecto' . '/new/' . $userId . '"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></a>';?>
         </div>
         <?php
-            if (!empty($data['proyectos'])) {
+            if (!empty($user['proyectos'])) {
                 echo '<div class="trabajos">';
-                foreach ($data['proyectos'] as $proyecto) {
+                foreach ($user['proyectos'] as $proyecto) {
                     if ($proyecto['visible'] == 1) {
                         echo '<div class="proyecto">';
                     } else {
@@ -93,9 +93,9 @@
             <?php echo '<a class="btn-new" href="/skill' . '/new/' . $userId . '"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></a>';?>
         </div>
         <?php
-            if (!empty($data['skills'])) {
+            if (!empty($user['skills'])) {
                 echo '<div class="trabajos">';
-                foreach ($data['skills'] as $skill) {
+                foreach ($user['skills'] as $skill) {
                     if ($skill['visible'] == 1) {
                         echo '<div class="trabajo">';
                     } else {
@@ -114,9 +114,9 @@
             <?php echo '<a class="btn-new" href="/redsocial' . '/new/' . $userId . '"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></a>';?>
         </div>
         <?php
-            if (!empty($data['redesSociales'])) {
+            if (!empty($user['redes_sociales'])) {
                 echo '<div class="trabajos">';
-                foreach ($data['redesSociales'] as $red_social) {
+                foreach ($user['redes_sociales'] as $red_social) {
                     echo '<div class="trabajo">';
                     echo '<h4>' . $red_social['redes_sociales'] . '</h4>';
                     echo '<p>' . $red_social['url'] . '</p>';

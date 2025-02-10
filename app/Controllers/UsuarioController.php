@@ -347,10 +347,11 @@ class UsuarioController extends BaseController
 
                 // Guardamos el email y el nombre y apellidos del usuario en la sesión
                 $_SESSION['email'] = $data['email'];
-                $_SESSION['nombre'] = $objUsuario->getNameByEmail($data['email']);
-                $_SESSION['apellidos'] = $objUsuario->getLastNameByEmail($data['email']);
                 $_SESSION['id'] = $objUsuario->getIdByEmail($data['email']);
-                $_SESSION['perfil'] = $objUsuario->getProfileByEmail($data['email']);
+                $objUsuario->get($_SESSION['id']);
+                $_SESSION['nombre'] = $objUsuario->getNombre();
+                $_SESSION['apellidos'] = $objUsuario->getApellidos();
+                $_SESSION['perfil'] = $objUsuario->getPerfil();
 
                 $portfolio = Portfolios::getInstancia();
                 $_SESSION['isPorfolioCreated'] = $portfolio->isPortfolioCreated($_SESSION['id']);

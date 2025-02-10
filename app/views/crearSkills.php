@@ -1,4 +1,4 @@
-<input type="text" name="skills[habilidades]" placeholder="[Programacion, organizacion, ingles...]" class="search-input" required value="<?php echo isset($data['habilidades']) ? $data['habilidades'] : '' ?>">
+<input type="text" name="skills[habilidades]" placeholder="[Programacion, organizacion, ingles...]" class="search-input <?php echo !empty($data["msjErrorHabilidades"]) ? 'errorInput' : '';?>" value="<?php echo isset($data['habilidades']) ? $data['habilidades'] : '' ?>"><?php if ($data["msjErrorHabilidades"] != "") echo "<p class='error'>" . $data["msjErrorHabilidades"] . "</p>";?>
 <label>
 Categoría
     <select name="skills[categoria]" class="search-input">

@@ -15,10 +15,6 @@ class PortfolioController extends BaseController
     {
         // Creamos una instancia de usuarios
         $usuario = Usuarios::getInstancia();
-        $trabajo = Trabajos::getInstancia();
-        $proyecto = Proyectos::getInstancia();
-        $skills = Skills::getInstancia();
-        $redesSociales = RedesSociales::getInstancia();
         $portfolio = Portfolios::getInstancia();
 
         // Si no se ha iniciado sesión, inicializamos la variable $sessionId a null
@@ -39,10 +35,6 @@ class PortfolioController extends BaseController
         {
             // Alamacenamos los datos en $data
             $data['usuario'] = $usuario->get($id);
-            $data['trabajos'] = $trabajo->getTrabajosVisibles($id);
-            $data['proyectos'] = $proyecto->getProyectosVisibles($id);
-            $data['skills'] = $skills->getSkillsVisibles($id);
-            $data['redesSociales'] = $redesSociales->getRedesSocialesById($id);
 
             // Llamamos a la función renderHTML
             $this->renderHTML('../app/views/portfolio.php', $data);
@@ -54,17 +46,25 @@ class PortfolioController extends BaseController
     {
         // Creamos una instancia de usuarios
         $portfolio = Portfolios::getInstancia();
+        $usuario = Usuarios::getInstancia();
 
-        // Almacenamos los datos en $data
-        $data['usuarios'] = $portfolio->getPublic();
+        // Recorremos las IDs y recuperamos los datos de los usuarios.
+        $data['ids'] = $portfolio->getPublic();
+        $data['usuarios'] = [];
+        foreach ($data['ids'] as $id) {
+            $data['usuario'] = $usuario->get($id['id']);
+            $tecnologias = '';
 
-        // En cada usuario comprobamos que el string de tecnologías no contiene tecnologias repetidas.
-        foreach ($data['usuarios'] as $key => $usuario) {
-            $tecnologias = explode(',', $usuario['tecnologias']);
-            $tecnologias = array_unique($tecnologias);
-            $data['usuarios'][$key]['tecnologias'] = implode(', ', $tecnologias);
+            // Recorremos la información del usuario y extraemos las tecnologías no repetidas de sus proyectos.
+            foreach ($data['usuario']['proyectos'] as $proyecto) {
+                $tecnologiasArray = explode(',', $proyecto['tecnologias']);
+                $tecnologiasArray = array_unique($tecnologiasArray);
+                $tecnologias .= implode(', ', $tecnologiasArray) . ', ';
+            }
+            $data['usuario']['tecnologias'] = substr($tecnologias, 0, -2);
+            $data['usuarios'][] = $data['usuario'];
         }
-        
+
         $data['query'] = '';
 
         // Llamamos a la función renderHTML
@@ -75,21 +75,56 @@ class PortfolioController extends BaseController
     public function searchAction() {
         // Creamos una instancia de usuarios
         $portfolio = Portfolios::getInstancia();
+        $proyecto = Proyectos::getInstancia();
+        $usuario = Usuarios::getInstancia();
         $data['query'] = '';
-        
-        // Comprobamos si se ha enviado un formulario de búsqueda
-        if (isset($_GET['query'])) {
-            // Almacenamos los datos en $data
-            $data['usuarios'] = $portfolio->searchPortfolios($_GET['query']);
 
-            // En cada usuario comprobamos que el string de tecnologías no contiene tecnologias repetidas.
-            foreach ($data['usuarios'] as $key => $usuario) {
-                $tecnologias = explode(',', $usuario['tecnologias']);
-                $tecnologias = array_unique($tecnologias);
-                $data['usuarios'][$key]['tecnologias'] = implode(', ', $tecnologias);
+        if (isset($_GET['query'])) {
+            // Almacenamos los las IDs de los usuarios
+            $data['ids'] = $portfolio->getPublic();
+
+            // Almacenamos las IDs válidas por el nombre o el apellido
+            $validIds = $portfolio->searchPortfolios($_GET['query']);
+
+            // Recorremos todas las ids filtrando los usuarios que cumplan con la búsqueda.
+            if($data['ids']) {
+                $data['usuarios'] = [];
+                foreach ($data['ids'] as $id) {
+                    if (in_array($id, $validIds)) {
+                        $data['usuario'] = $usuario->get($id['id']);
+                        $tecnologias = '';
+
+                        // Recorremos la información del usuario y extraemos las tecnologías no repetidas de sus proyectos.
+                        foreach ($data['usuario']['proyectos'] as $proyecto) {
+                            $tecnologiasArray = explode(',', $proyecto['tecnologias']);
+                            $tecnologiasArray = array_unique($tecnologiasArray);
+                            $tecnologias .= implode(', ', $tecnologiasArray) . ', ';
+                        }
+
+                        $data['usuario']['tecnologias'] = substr($tecnologias, 0, -2);
+                        $data['usuarios'][] = $data['usuario'];
+                    } else {
+                        // Comprobamos si alguna de las tecnologías del usuario cumple con la búsqueda
+                        $data['usuario'] = $usuario->get($id['id']);
+                        $tecnologias = '';
+
+                        foreach ($data['usuario']['proyectos'] as $proyecto) {
+                            $tecnologiasArray = explode(',', $proyecto['tecnologias']);
+                            $tecnologiasArray = array_unique($tecnologiasArray);
+                            $tecnologias .= implode(', ', $tecnologiasArray) . ', ';
+                            foreach ($tecnologiasArray as $tecnologia) {
+                                // En el caso de que se cumpla con la búsqueda, añadimos los datos para mostrar en la vista.
+                                if (stripos($tecnologia, $_GET['query']) !== false) {
+                                    $data['usuario']['tecnologias'] = substr($tecnologias, 0, -2);
+                                    $data['usuarios'][] = $data['usuario'];
+                                    break 2;
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
-            $data['query'] = $_GET['query'];
         } else {
             // Volvemos a la página inicial.
             header('Location: /');
@@ -240,19 +275,11 @@ class PortfolioController extends BaseController
 
         $portfolio = Portfolios::getInstancia();
         $usuario = Usuarios::getInstancia();
-        $trabajo = Trabajos::getInstancia();
-        $proyecto = Proyectos::getInstancia();
-        $skills = Skills::getInstancia();
-        $redesSociales = RedesSociales::getInstancia();
 
         // Comprobamos si el usuario está logeado y es dueño del portfolio o es administrador
         if ($portfolio->isOwner($id, $userEmail) || $userProfile === 'admin') {
             // Alamacenamos los datos en $data
             $data['usuario'] = $usuario->get($id);
-            $data['trabajos'] = $trabajo->getAll($id);
-            $data['proyectos'] = $proyecto->getAll($id);
-            $data['skills'] = $skills->getAll($id);
-            $data['redesSociales'] = $redesSociales->getRedesSocialesById($id);
 
             $this->renderHTML('../app/views/editarPortfolio.php', $data);
         } else {

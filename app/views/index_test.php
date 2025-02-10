@@ -11,7 +11,7 @@
     <?php include 'header.php'; ?>
     <h2>PORTFOLIOS</h2>
     <form action="<?php echo BASE_URL?>search" method="get" class="search-form">
-        <input type="text" name="query" placeholder="Buscar portfolios..." value="<?php echo $data['query'] ?>" class="search-input">
+        <input type="text" name="query" placeholder="Buscar (Nombre o tecnologias) ..." value="<?php echo $data['query'] ?>" class="search-input">
         <button type="submit" class="search-button">Buscar</button>
     </form>
     <div class="user-cards">

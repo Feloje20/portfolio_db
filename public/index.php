@@ -184,7 +184,7 @@ $request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $route = $router->match($request); // Comprobamos que coincide una ruta
 
 if($route){
-    // Check if the session profile matches any profile in route['perfil']
+    // Verifica si el perfil de la sesión coincide con algún perfil en route['perfil']
     if (isset($route['perfil']) && (!isset($_SESSION['perfil']) || !in_array($_SESSION['perfil'], $route['perfil']))) {
         header('Location: /');
     } else {

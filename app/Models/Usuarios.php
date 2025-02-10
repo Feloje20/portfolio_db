@@ -2,6 +2,11 @@
 namespace App\Models;
 require_once "DBAbstractModel.php";
 
+use App\Models\Trabajos;
+use App\Models\Proyectos;
+use App\Models\Skills;
+use App\Models\RedesSociales;
+
 class Usuarios extends DBAbstractModel
 {
     private static $instancia;
@@ -34,6 +39,10 @@ class Usuarios extends DBAbstractModel
     private $fecha_creacion_token;
     private $visible;
     private $cuenta_activa;
+    private $trabajos;
+    private $proyectos;
+    private $skills;
+    private $redes_sociales;
 
     // Creo los setters
     public function setId($id) {
@@ -73,6 +82,9 @@ class Usuarios extends DBAbstractModel
     }
     public function getApellidos() {
         return $this->apellidos;
+    }
+    public function getPerfil() {
+        return $this->perfil;
     }
     public function getEmail() {
         return $this->email;
@@ -125,6 +137,22 @@ class Usuarios extends DBAbstractModel
                     $this->$propiedad = $valor;
                 }
             }
+            // Ahora rellenamos la información de los trabajos, proyectos, redes sociales y skills.
+            $trabajos = Trabajos::getInstancia();
+            $proyectos = Proyectos::getInstancia();
+            $skills = Skills::getInstancia();
+            $redes_sociales = RedesSociales::getInstancia();
+
+            $this->trabajos = $trabajos->getAll($this->id);
+            $this->proyectos = $proyectos->getAll($this->id);
+            $this->skills = $skills->getAll($this->id);
+            $this->redes_sociales = $redes_sociales->getRedesSocialesById($this->id);
+
+            // Luego lo añadimos a lo que se da a devolver en el getter.
+            $this->rows[0]['trabajos'] = $this->trabajos;
+            $this->rows[0]['proyectos'] = $this->proyectos;
+            $this->rows[0]['skills'] = $this->skills;
+            $this->rows[0]['redes_sociales'] = $this->redes_sociales;
             $this->mensaje = 'Usuario encontrado';
         } else {
             $this->mensaje = 'Usuario no encontrado';
@@ -190,30 +218,6 @@ class Usuarios extends DBAbstractModel
         }
     }
 
-    // Función para obtener el nombre usando el email
-    public function getNameByEmail($email){
-        $this->query = "SELECT nombre FROM usuarios WHERE email = :email";
-        $this->parametros['email'] = $email;
-        $this->get_results_from_query();
-        if (count($this->rows) > 0) {
-            return $this->rows[0]['nombre'];
-        } else {
-            return null;
-        }
-    }
-
-    // Función para obtener el apellido usando el email
-    public function getLastNameByEmail($email){
-        $this->query = "SELECT apellidos FROM usuarios WHERE email = :email";
-        $this->parametros['email'] = $email;
-        $this->get_results_from_query();
-        if (count($this->rows) > 0) {
-            return $this->rows[0]['apellidos'];
-        } else {
-            return null;
-        }
-    }
-
     // Función para obtener el id usando el email
     public function getIdByEmail($email){
         $this->query = "SELECT id FROM usuarios WHERE email = :email";
@@ -237,14 +241,6 @@ class Usuarios extends DBAbstractModel
         } else {
             return false;
         }
-    }
-
-    // Método que devuelve el tipo de usuario
-    public function getProfileByEmail($email){
-        $this->query = "SELECT perfil FROM usuarios WHERE email = :email";
-        $this->parametros['email'] = $email;
-        $this->get_results_from_query();
-        return $this->rows[0]['perfil'];
     }
 
     // Método que comprueba que el id pertenece al email
