@@ -165,7 +165,7 @@ class ProyectoController extends BaseController
             $data['titulo'] = $this->sanearDatos($_POST['proyectos']['titulo']);
             $data['tecnologias'] = $this->sanearDatos($_POST['proyectos']['tecnologias']);
 
-            if ($data['picture']['error'] == 0) {
+            if ($data['picture']['error'] == 0 && isset($data['picture']['name']) && $data['picture']['name'] != '') {
                 // Comprobamos si el archivo subido es una imagen
                 if ($data['picture']['type'] == 'image/jpeg' || $data['picture']['type'] == 'image/png' || $data['picture']['type'] == 'image/PNG') {
                     // Comprobamos si el archivo subido no supera los 2MB
@@ -213,7 +213,9 @@ class ProyectoController extends BaseController
 
             $proyecto->get($id);
             $proyecto->setTitulo($data['titulo']);
-            $proyecto->setLogo($data['picture']['name']);
+            if (isset($data['picture']['name']) && $data['picture']['name'] != '') {
+                $proyecto->setLogo($data['picture']['name']);
+            }
             $proyecto->setTecnologias($data['tecnologias']);
             $proyecto->setVisible(isset($_POST['proyectos']['visible']) ? 1 : 0);
             $proyecto->edit();

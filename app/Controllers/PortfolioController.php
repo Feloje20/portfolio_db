@@ -150,10 +150,24 @@ class PortfolioController extends BaseController
             header('Location: /');
         }
 
+        // Inicializamos los errores a vacíos.
+        $data["msjErrorTitulo"] = $data["msjErrorDescripcion"] = $data["msjErrorFechaInicial"] = $data["msjErrorFechaFinal"] = $data["msjErrorLogros"] = '';
+        $data["msjErrorTecnologias"] = '';
+        $data["msjErrorNombre"] = $data["msjErrorUrl"] = '';
+        $data["msjErrorHabilidades"] = '';
+
+        $lprocesaFormulario = false;
+
+        // Si el usuario clicka el botón cancelar, lo devolvemos a la página de edición.
+        if (isset($_POST['cancelar'])) {
+            header('Location: /edit/' . $userId);
+            exit();
+        }
+        
         // Comprobamos si se ha enviado un formulario
         if (isset($_POST['crear'])) {
             $data['picture'] = $_FILES['proyecto_logo'];
-            // FALTA MODIFICAR LA VISIBILIDAD EL PORTFOLIO *******************************************************
+            $lprocesaFormulario = true;
 
             // Recogemos los datos mientras los saneamos usando sanearDatos
 
@@ -167,6 +181,48 @@ class PortfolioController extends BaseController
 
             // Proyectos
             $proyectoTitulo = $this->sanearDatos($_POST['proyectos']['titulo']);
+            $proyectoTecnologias = $this->sanearDatos($_POST['proyectos']['tecnologias']);
+            $proyectoVisible = $_POST['proyectos']['visible'] ?? 0;
+
+            // Skills
+            $skillsHabilidades = $this->sanearDatos($_POST['skills']['habilidades']);
+            $skillsVisible = $_POST['skills']['visible'] ?? 0;
+            $skillsCategoria = $_POST['skills']['categoria'];
+
+            // Redes sociales
+            $redesNombre = $this->sanearDatos($_POST['redes_sociales']['nombre']);
+            $redesUrl = $this->sanearDatos($_POST['redes_sociales']['enlace']);
+
+            // Visibilidad del portfolio
+            $data['isVisible'] = isset($_POST['isVisible']) ?? 0;
+
+            // Validamos los campos TRABAJO
+            if ($trabajoTitulo == '') {
+                $data['msjErrorTitulo'] = 'El título no puede estar vacío';
+                $lprocesaFormulario = false;
+            }
+
+            if ($trabajoDescripcion == '') {
+                $data['msjErrorDescripcion'] = 'La descripción no puede estar vacía';
+                $lprocesaFormulario = false;
+            }
+
+            if ($trabajoFechaInicio == '') {
+                $data['msjErrorFechaInicial'] = 'La fecha de inicio no puede estar vacía';
+                $lprocesaFormulario = false;
+            }
+
+            if ($trabajoFechaFinal == '') {
+                $data['msjErrorFechaFinal'] = 'La fecha final no puede estar vacía';
+                $lprocesaFormulario = false;
+            }
+
+            if ($trabajoLogros == '') {
+                $data['msjErrorLogros'] = 'Los logros no pueden estar vacíos';
+                $lprocesaFormulario = false;
+            }
+
+            // Validamos los campos PROYECTOS
 
             // Si no se ha subido una imagen, la imagen será la que hay por defecto "defaultLogo.jpg".
             // En caso contrario procesamos la subida.
@@ -193,23 +249,37 @@ class PortfolioController extends BaseController
                 }
             }
 
-            $proyectoTecnologias = $this->sanearDatos($_POST['proyectos']['tecnologias']);
-            $proyectoVisible = $_POST['proyectos']['visible'] ?? 0;
+            if ($proyectoTitulo == '') {
+                $lprocesaFormulario = false;
+                $data['msjErrorTitulo'] = "* El título no puede estar vacío";
+            }
 
-            // Skills
-            $skillsHabilidades = $this->sanearDatos($_POST['skills']['habilidades']);
-            $skillsVisible = $_POST['skills']['visible'] ?? 0;
-            $skillsCategoria = $_POST['skills']['categoria'];
+            if ($proyectoTecnologias == '') {
+                $lprocesaFormulario = false;
+                $data['msjErrorTecnologias'] = "* Las tecnologías no pueden estar vacías";
+            }
 
-            // Redes sociales
-            $redesNombre = $this->sanearDatos($_POST['redes_sociales']['nombre']);
-            $redesUrl = $this->sanearDatos($_POST['redes_sociales']['enlace']);
+            // Validación de campos SKILLS
 
-            // Visibilidad del portfolio
-            $data['isVisible'] = isset($_POST['isVisible']) ?? 0;
-            
-            // COMPROBAR ERRORES EN LOS CAMPOS ****************************************************
+            if (empty($skillsHabilidades)) {
+                $data['msjErrorHabilidades'] = 'Debes introducir al menos una habilidad';
+                $lprocesaFormulario = false;
+            } 
 
+            // Validación de campos redes sociales
+
+            if ($redesNombre == '') {
+                $data['msjErrorNombre'] = 'El nombre no puede estar vacío';
+                $lprocesaFormulario = false;
+            }
+
+            if ($redesUrl == '') {
+                $data['msjErrorUrl'] = 'La URL no puede estar vacía';
+                $lprocesaFormulario = false;
+            }
+        }
+
+        if($lprocesaFormulario) {
             // Creamos instancias de los modelos a usar
             $trabajo = Trabajos::getInstancia();
             $proyecto = Proyectos::getInstancia();

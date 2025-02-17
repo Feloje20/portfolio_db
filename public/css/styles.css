@@ -346,6 +346,19 @@ header {
     max-width: 400px;
 }
 
+.redsocial_portfolio {
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.redsocial_portfolio h4{
+    color: black;
+}
+
+.redsocial_portfolio:hover {
+    background-color: rgb(150, 216, 150);
+}
+
 .proyecto {
     display: flex;
     flex-wrap: wrap;

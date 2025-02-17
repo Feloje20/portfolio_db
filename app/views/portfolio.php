@@ -76,10 +76,9 @@
                 echo "<h2>Redes sociales</h2>";
                 echo '<div class="trabajos">';
                 foreach ($user['redes_sociales'] as $red_social) {
-                    echo '<div class="trabajo">';
+                    echo '<a href="' . $red_social['url'] . '" target="_blank" class="trabajo redsocial_portfolio">';
                     echo '<h4>' . $red_social['redes_sociales'] . '</h4>';
-                    echo '<p>' . $red_social['url'] . '</p>';
-                    echo '</div>';
+                    echo '</a>';
                 }
                 echo '</div>';
             }
