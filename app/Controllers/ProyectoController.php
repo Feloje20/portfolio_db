@@ -30,15 +30,16 @@ class ProyectoController extends BaseController
         // Ahora que hemos validado que el usuario puede ejecutar esta acción, inicializamos variables.
         $lprocesaFormulario = false;
         $data = [];
-        $data['msjErrorTitulo'] = $data['msjErrorTecnologias'] = $data['msjErrorImagen'] = '';
+        $data['proyecto']['msjErrorTitulo'] = $data['proyecto']['msjErrorTecnologias'] = $data['proyecto']['msjErrorImagen'] = '';
 
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
             $lprocesaFormulario = true;
 
             $data['picture'] = $_FILES['proyecto_logo'];
-            $data['titulo'] = $this->sanearDatos($_POST['proyectos']['titulo']);
-            $data['tecnologias'] = $this->sanearDatos($_POST['proyectos']['tecnologias']);
+            $data['proyecto']['titulo'] = $this->sanearDatos($_POST['proyectos']['titulo']);
+            $data['proyecto']['tecnologias'] = $this->sanearDatos($_POST['proyectos']['tecnologias']);
+            $data['proyecto']['visible'] = isset($_POST['proyectos']['visible']) ? 1 : 0;
 
             // Si no se ha subido una imagen, la imagen será la que hay por defecto "defaultPic.jpg".
             // En caso contrario procesamos la subida.
@@ -52,8 +53,6 @@ class ProyectoController extends BaseController
                         // Generamos un nombre para la imagen al azar
                         // OPCIONAL GUARDAR SOLO EL UNIQID Y LA EXTENSIÓN ******************************
                         $data['picture']['name'] = 'logo_' . uniqid() . $data['picture']['name'];
-                        // Movemos el archivo a la carpeta de imágenes
-                        move_uploaded_file($data['picture']['tmp_name'], dirname(__DIR__, 2) . '/public/img/' . $data['picture']['name']);
                     } else {
                         $lprocesaFormulario = false;
                         $data['msjErrorImagen'] = "* La imagen no puede superar los 2MB";
@@ -65,25 +64,29 @@ class ProyectoController extends BaseController
             }
 
             // Comprobamos los campos en los que el usuario puede introducir información libremente.
-            if ($data['titulo'] == '') {
+            if ($data['proyecto']['titulo'] == '') {
                 $lprocesaFormulario = false;
-                $data['msjErrorTitulo'] = "* El título no puede estar vacío";
+                $data['proyecto']['msjErrorTitulo'] = "* El título no puede estar vacío";
             }
 
-            if ($data['tecnologias'] == '') {
+            if ($data['proyecto']['tecnologias'] == '') {
                 $lprocesaFormulario = false;
-                $data['msjErrorTecnologias'] = "* Las tecnologías no pueden estar vacías";
+                $data['proyecto']['msjErrorTecnologias'] = "* Las tecnologías no pueden estar vacías";
             }
         }
 
         // En el caso de que no haya habido errores en el formulario, guardamos los datos en la base de datos.
         if ($lprocesaFormulario) {
-            $proyecto->setTitulo($data['titulo']);
+            $proyecto->setTitulo($data['proyecto']['titulo']);
             $proyecto->setLogo($data['picture']['name']);
-            $proyecto->setTecnologias($data['tecnologias']);
-            $proyecto->setVisible(isset($_POST['proyectos']['visible']) ? 1 : 0);
+            $proyecto->setTecnologias($data['proyecto']['tecnologias']);
+            $proyecto->setVisible($data['proyecto']['visible']);
             $proyecto->setUsuariosId($userId);
             $proyecto->set();
+
+            // Movemos el archivo a la carpeta de imágenes
+            move_uploaded_file($data['picture']['tmp_name'], dirname(__DIR__, 2) . '/public/img/' . $data['picture']['name']);
+
             header('Location: /edit/' . $userId);
             exit();
         }
@@ -155,15 +158,16 @@ class ProyectoController extends BaseController
         // Ahora que hemos validado que el usuario puede ejecutar esta acción, inicializamos variables.
         $lprocesaFormulario = false;
         $data = [];
-        $data['msjErrorTitulo'] = $data['msjErrorTecnologias'] = $data['msjErrorImagen'] = '';
+        $data['proyecto']['msjErrorTitulo'] = $data['proyecto']['msjErrorTecnologias'] = $data['proyecto']['msjErrorImagen'] = '';
 
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
             // Declaración de variables. 
             $lprocesaFormulario = true;
             $data['picture'] = $_FILES['proyecto_logo'];
-            $data['titulo'] = $this->sanearDatos($_POST['proyectos']['titulo']);
-            $data['tecnologias'] = $this->sanearDatos($_POST['proyectos']['tecnologias']);
+            $data['proyecto']['titulo'] = $this->sanearDatos($_POST['proyectos']['titulo']);
+            $data['proyecto']['tecnologias'] = $this->sanearDatos($_POST['proyectos']['tecnologias']);
+            $data['proyecto']['visible'] = isset($_POST['proyectos']['visible']) ? 1 : 0;
 
             if ($data['picture']['error'] == 0 && isset($data['picture']['name']) && $data['picture']['name'] != '') {
                 // Comprobamos si el archivo subido es una imagen
@@ -184,15 +188,18 @@ class ProyectoController extends BaseController
             }
 
             // Comprobamos los campos en los que el usuario puede introducir información libremente.
-            if ($data['titulo'] == '') {
+            if ($data['proyecto']['titulo'] == '') {
                 $lprocesaFormulario = false;
-                $data['msjErrorTitulo'] = "* El título no puede estar vacío";
+                $data['proyecto']['msjErrorTitulo'] = "* El título no puede estar vacío";
             }
 
-            if ($data['tecnologias'] == '') {
+            if ($data['proyecto']['tecnologias'] == '') {
                 $lprocesaFormulario = false;
-                $data['msjErrorTecnologias'] = "* Las tecnologías no pueden estar vacías";
+                $data['proyecto']['msjErrorTecnologias'] = "* Las tecnologías no pueden estar vacías";
             }
+        } else {
+            // Si no estamos recibiendo un post, rellenamos los campos con los datos del proyecto.
+            $data['proyecto'] += $proyecto->get($id);
         }
 
         // En el caso de que no haya habido errores en el formulario, guardamos los datos en la base de datos.
@@ -212,12 +219,12 @@ class ProyectoController extends BaseController
             }
 
             $proyecto->get($id);
-            $proyecto->setTitulo($data['titulo']);
+            $proyecto->setTitulo($data['proyecto']['titulo']);
             if (isset($data['picture']['name']) && $data['picture']['name'] != '') {
                 $proyecto->setLogo($data['picture']['name']);
             }
-            $proyecto->setTecnologias($data['tecnologias']);
-            $proyecto->setVisible(isset($_POST['proyectos']['visible']) ? 1 : 0);
+            $proyecto->setTecnologias($data['proyecto']['tecnologias']);
+            $proyecto->setVisible($data['proyecto']['visible']);
             $proyecto->edit();
             header('Location: /edit/' . $userId);
             exit();
@@ -228,7 +235,6 @@ class ProyectoController extends BaseController
             exit();
         }
 
-        $data += $proyecto->get($id);
         $data['tipo'] = 'proyecto';
         $data['accion'] = 'editar';
         $this->renderHTML('../app/views/editarFormulario.php', $data);

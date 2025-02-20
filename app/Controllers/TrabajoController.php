@@ -30,52 +30,53 @@ class TrabajoController extends BaseController
         // Ahora que hemos validado que el usuario puede ejecutar esta acción, inicializamos variables.
         $lprocesaFormulario = false;
         $data = [];
-        $data['msjErrorTitulo'] = $data['msjErrorDescripcion'] = $data['msjErrorFechaInicial'] = $data['msjErrorFechaFinal'] = $data['msjErrorLogros'] = '';
+        $data['trabajo']['msjErrorTitulo'] = $data['trabajo']['msjErrorDescripcion'] = $data['trabajo']['msjErrorFechaInicial'] = $data['trabajo']['msjErrorFechaFinal'] = $data['trabajo']['msjErrorLogros'] = '';
 
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
             $lprocesaFormulario = true;
-            $data['titulo'] = $this->sanearDatos($_POST['trabajos']['titulo']);
-            $data['descripcion'] = $this->sanearDatos($_POST['trabajos']['descripcion']);
-            $data['fecha_inicio'] = $_POST['trabajos']['fecha_inicio'];
-            $data['fecha_final'] = $_POST['trabajos']['fecha_final'];
-            $data['logros'] = $this->sanearDatos($_POST['trabajos']['logros']);
+            $data['trabajo']['titulo'] = $this->sanearDatos($_POST['trabajos']['titulo']);
+            $data['trabajo']['descripcion'] = $this->sanearDatos($_POST['trabajos']['descripcion']);
+            $data['trabajo']['fecha_inicio'] = $_POST['trabajos']['fecha_inicio'];
+            $data['trabajo']['fecha_final'] = $_POST['trabajos']['fecha_final'];
+            $data['trabajo']['logros'] = $this->sanearDatos($_POST['trabajos']['logros']);
+            $data['trabajo']['visible'] = isset($_POST['trabajos']['visible']) ? 1 : 0;
 
             // Validamos los campos
-            if ($data['titulo'] == '') {
-                $data['msjErrorTitulo'] = 'El título no puede estar vacío';
+            if ($data['trabajo']['titulo'] == '') {
+                $data['trabajo']['msjErrorTitulo'] = 'El título no puede estar vacío';
                 $lprocesaFormulario = false;
             }
 
-            if ($data['descripcion'] == '') {
-                $data['msjErrorDescripcion'] = 'La descripción no puede estar vacía';
+            if ($data['trabajo']['descripcion'] == '') {
+                $data['trabajo']['msjErrorDescripcion'] = 'La descripción no puede estar vacía';
                 $lprocesaFormulario = false;
             }
 
-            if ($data['fecha_inicio'] == '') {
-                $data['msjErrorFechaInicial'] = 'La fecha de inicio no puede estar vacía';
+            if ($data['trabajo']['fecha_inicio'] == '') {
+                $data['trabajo']['msjErrorFechaInicial'] = 'La fecha de inicio no puede estar vacía';
                 $lprocesaFormulario = false;
             }
 
-            if ($data['fecha_final'] == '') {
-                $data['msjErrorFechaFinal'] = 'La fecha final no puede estar vacía';
+            if ($data['trabajo']['fecha_final'] == '') {
+                $data['trabajo']['msjErrorFechaFinal'] = 'La fecha final no puede estar vacía';
                 $lprocesaFormulario = false;
             }
 
-            if ($data['logros'] == '') {
-                $data['msjErrorLogros'] = 'Los logros no pueden estar vacíos';
+            if ($data['trabajo']['logros'] == '') {
+                $data['trabajo']['msjErrorLogros'] = 'Los logros no pueden estar vacíos';
                 $lprocesaFormulario = false;
             }
         }
 
          // En el caso de que no haya habido errores en el formulario, guardamos los datos en la base de datos.
         if ($lprocesaFormulario) {
-            $trabajo->setTitulo($data['titulo']);
-            $trabajo->setDescripcion($data['descripcion']);
-            $trabajo->setFechaInicio($data['fecha_inicio']);
-            $trabajo->setFechaFinal($data['fecha_final']);
-            $trabajo->setLogros($data['logros']);
-            $trabajo->setVisible(isset($_POST['trabajos']['visible']) ? 1 : 0);
+            $trabajo->setTitulo($data['trabajo']['titulo']);
+            $trabajo->setDescripcion($data['trabajo']['descripcion']);
+            $trabajo->setFechaInicio($data['trabajo']['fecha_inicio']);
+            $trabajo->setFechaFinal($data['trabajo']['fecha_final']);
+            $trabajo->setLogros($data['trabajo']['logros']);
+            $trabajo->setVisible($data['trabajo']['visible']);
             $trabajo->setUsuariosId($userId);
             $trabajo->set();
             header('Location: /edit/' . $userId);
@@ -146,52 +147,56 @@ class TrabajoController extends BaseController
         // Ahora que hemos validado que el usuario puede ejecutar esta acción, inicializamos variables.
         $lprocesaFormulario = false;
         $data = [];
-        $data['msjErrorTitulo'] = $data['msjErrorDescripcion'] = $data['msjErrorFechaInicial'] = $data['msjErrorFechaFinal'] = $data['msjErrorLogros'] = '';
+        $data['trabajo']['msjErrorTitulo'] = $data['trabajo']['msjErrorDescripcion'] = $data['trabajo']['msjErrorFechaInicial'] = $data['trabajo']['msjErrorFechaFinal'] = $data['trabajo']['msjErrorLogros'] = '';
 
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
             $lprocesaFormulario = true;
-            $data['titulo'] = $this->sanearDatos($_POST['trabajos']['titulo']);
-            $data['descripcion'] = $this->sanearDatos($_POST['trabajos']['descripcion']);
-            $data['fecha_inicio'] = $_POST['trabajos']['fecha_inicio'];
-            $data['fecha_final'] = $_POST['trabajos']['fecha_final'];
-            $data['logros'] = $this->sanearDatos($_POST['trabajos']['logros']);
+            $data['trabajo']['titulo'] = $this->sanearDatos($_POST['trabajos']['titulo']);
+            $data['trabajo']['descripcion'] = $this->sanearDatos($_POST['trabajos']['descripcion']);
+            $data['trabajo']['fecha_inicio'] = $_POST['trabajos']['fecha_inicio'];
+            $data['trabajo']['fecha_final'] = $_POST['trabajos']['fecha_final'];
+            $data['trabajo']['logros'] = $this->sanearDatos($_POST['trabajos']['logros']);
+            $data['trabajo']['visible'] = isset($_POST['trabajos']['visible']) ? 1 : 0;
 
             // Validamos los campos
-            if ($data['titulo'] == '') {
-                $data['msjErrorTitulo'] = 'El título no puede estar vacío';
+            if ($data['trabajo']['titulo'] == '') {
+                $data['trabajo']['msjErrorTitulo'] = 'El título no puede estar vacío';
                 $lprocesaFormulario = false;
             }
 
-            if ($data['descripcion'] == '') {
-                $data['msjErrorDescripcion'] = 'La descripción no puede estar vacía';
+            if ($data['trabajo']['descripcion'] == '') {
+                $data['trabajo']['msjErrorDescripcion'] = 'La descripción no puede estar vacía';
                 $lprocesaFormulario = false;
             }
 
-            if ($data['fecha_inicio'] == '') {
-                $data['msjErrorFechaInicial'] = 'La fecha de inicio no puede estar vacía';
+            if ($data['trabajo']['fecha_inicio'] == '') {
+                $data['trabajo']['msjErrorFechaInicial'] = 'La fecha de inicio no puede estar vacía';
                 $lprocesaFormulario = false;
             }
 
-            if ($data['fecha_final'] == '') {
-                $data['msjErrorFechaFinal'] = 'La fecha final no puede estar vacía';
+            if ($data['trabajo']['fecha_final'] == '') {
+                $data['trabajo']['msjErrorFechaFinal'] = 'La fecha final no puede estar vacía';
                 $lprocesaFormulario = false;
             }
 
-            if ($data['logros'] == '') {
-                $data['msjErrorLogros'] = 'Los logros no pueden estar vacíos';
+            if ($data['trabajo']['logros'] == '') {
+                $data['trabajo']['msjErrorLogros'] = 'Los logros no pueden estar vacíos';
                 $lprocesaFormulario = false;
             }
+        } else {
+            // Si no se ha enviado formulario, ponelos los datos del trabajo de la BD
+            $data['trabajo'] += $trabajo->get($id);
         }
 
         if ($lprocesaFormulario) {
             $trabajo->setId($id);
-            $trabajo->setTitulo($data['titulo']);
-            $trabajo->setDescripcion($data['descripcion']);
-            $trabajo->setFechaInicio($data['fecha_inicio']);
-            $trabajo->setFechaFinal($data['fecha_final']);
-            $trabajo->setLogros($data['logros']);
-            $trabajo->setVisible(isset($_POST['trabajos']['visible']) ? 1 : 0);
+            $trabajo->setTitulo($data['trabajo']['titulo']);
+            $trabajo->setDescripcion($data['trabajo']['descripcion']);
+            $trabajo->setFechaInicio($data['trabajo']['fecha_inicio']);
+            $trabajo->setFechaFinal($data['trabajo']['fecha_final']);
+            $trabajo->setLogros($data['trabajo']['logros']);
+            $trabajo->setVisible($data['trabajo']['visible']);
             $trabajo->setUsuariosId($userId);
             $trabajo->edit();
             header('Location: /edit/' . $userId);
@@ -203,7 +208,6 @@ class TrabajoController extends BaseController
             exit();
         }
 
-        $data += $trabajo->get($id);
         $data['tipo'] = 'trabajo';
         $data['accion'] = 'editar';
         $this->renderHTML('../app/views/editarFormulario.php', $data);

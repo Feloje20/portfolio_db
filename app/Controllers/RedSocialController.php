@@ -30,31 +30,31 @@ class RedSocialController extends BaseController
         // Ahora que hemos validado que el usuario puede ejecutar esta acción, inicializamos variables.
         $lprocesaFormulario = false;
         $data = [];
-        $data['msjErrorNombre'] = $data['msjErrorUrl'] = '';
+        $data['redsocial']['msjErrorNombre'] = $data['redsocial']['msjErrorUrl'] = '';
 
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
             // Inicializamos variables del formulario saneando los datos
             $lprocesaFormulario = true;
-            $data['nombre'] = $this->sanearDatos($_POST['redes_sociales']['nombre']);
-            $data['url'] = $this->sanearDatos($_POST['redes_sociales']['enlace']);
+            $data['redsocial']['redes_sociales'] = $this->sanearDatos($_POST['redes_sociales']['nombre']);
+            $data['redsocial']['url'] = $this->sanearDatos($_POST['redes_sociales']['enlace']);
 
             // Comprobamos si hay campos vacíos
-            if (empty($data['nombre'])) {
-                $data['msjErrorNombre'] = 'El nombre de la red social no puede estar vacío';
+            if (empty($data['redsocial']['redes_sociales'])) {
+                $data['redsocial']['msjErrorNombre'] = 'El nombre de la red social no puede estar vacío';
                 $lprocesaFormulario = false;
             }
 
-            if (empty($data['url'])) {
-                $data['msjErrorUrl'] = 'La URL de la red social no puede estar vacía';
+            if (empty($data['redsocial']['url'])) {
+                $data['redsocial']['msjErrorUrl'] = 'La URL de la red social no puede estar vacía';
                 $lprocesaFormulario = false;
             }
         }
 
         // Si se han validado los datos del formulario, creamos la red social.
         if($lprocesaFormulario) {
-            $redSocial->setRedesSociales($data['nombre']);
-            $redSocial->setUrl($data['url']);
+            $redSocial->setRedesSociales($data['redsocial']['redes_sociales']);
+            $redSocial->setUrl($data['redsocial']['url']);
             $redSocial->setUsuariosId($userId);
             $redSocial->set();
             header('Location: /edit/' . $userId);
@@ -97,32 +97,35 @@ class RedSocialController extends BaseController
         // Ahora que hemos validado que el usuario puede ejecutar esta acción, inicializamos variables.
         $lprocesaFormulario = false;
         $data = [];
-        $data['msjErrorNombre'] = $data['msjErrorUrl'] = '';
+        $data['redsocial']['msjErrorNombre'] = $data['redsocial']['msjErrorUrl'] = '';
 
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
             // Inicializamos variables del formulario saneando los datos
             $lprocesaFormulario = true;
-            $data['nombre'] = $this->sanearDatos($_POST['redes_sociales']['nombre']);
-            $data['url'] = $this->sanearDatos($_POST['redes_sociales']['enlace']);
+            $data['redsocial']['redes_sociales'] = $this->sanearDatos($_POST['redes_sociales']['nombre']);
+            $data['redsocial']['url'] = $this->sanearDatos($_POST['redes_sociales']['enlace']);
 
             // Comprobamos si hay campos vacíos
-            if (empty($data['nombre'])) {
-                $data['msjErrorNombre'] = 'El nombre de la red social no puede estar vacío';
+            if (empty($data['redsocial']['redes_sociales'])) {
+                $data['redsocial']['msjErrorNombre'] = 'El nombre de la red social no puede estar vacío';
                 $lprocesaFormulario = false;
             }
 
-            if (empty($data['url'])) {
-                $data['msjErrorUrl'] = 'La URL de la red social no puede estar vacía';
+            if (empty($data['redsocial']['url'])) {
+                $data['redsocial']['msjErrorUrl'] = 'La URL de la red social no puede estar vacía';
                 $lprocesaFormulario = false;
             }
+        } else {
+            // Si no estamos recibiendo un post, recuperamos los datos de la red social
+            $data['redsocial'] += $redSocial->get($id);
         }
 
         // Si se han validado los datos del formulario, modificamos la red social.
         if($lprocesaFormulario) {
             $redSocial->setId($id);
-            $redSocial->setRedesSociales($data['nombre']);
-            $redSocial->setUrl($data['url']);
+            $redSocial->setRedesSociales($data['redsocial']['redes_sociales']);
+            $redSocial->setUrl($data['redsocial']['url']);
             $redSocial->setUsuariosId($userId);
             $redSocial->edit();
             header('Location: /edit/' . $userId);
@@ -135,8 +138,6 @@ class RedSocialController extends BaseController
             exit();
         }
 
-
-        $data += $redSocial->get($id);
         $data['tipo'] = 'red social';
         $data['accion'] = 'editar';
         $this->renderHTML('../app/views/editarFormulario.php', $data);

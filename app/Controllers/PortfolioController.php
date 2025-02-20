@@ -85,6 +85,7 @@ class PortfolioController extends BaseController
 
             // Almacenamos las IDs válidas por el nombre o el apellido
             $validIds = $portfolio->searchPortfolios($_GET['query']);
+            $data['query'] = $_GET['query'];
 
             // Recorremos todas las ids filtrando los usuarios que cumplan con la búsqueda.
             if($data['ids']) {
@@ -151,10 +152,10 @@ class PortfolioController extends BaseController
         }
 
         // Inicializamos los errores a vacíos.
-        $data["msjErrorTitulo"] = $data["msjErrorDescripcion"] = $data["msjErrorFechaInicial"] = $data["msjErrorFechaFinal"] = $data["msjErrorLogros"] = '';
-        $data["msjErrorTecnologias"] = '';
-        $data["msjErrorNombre"] = $data["msjErrorUrl"] = '';
-        $data["msjErrorHabilidades"] = '';
+        $data['trabajo']['msjErrorTitulo'] = $data['trabajo']['msjErrorDescripcion'] = $data['trabajo']['msjErrorFechaInicial'] = $data['trabajo']['msjErrorFechaFinal'] = $data['trabajo']['msjErrorLogros'] = '';
+        $data['proyecto']['msjErrorTitulo'] = $data['proyecto']['msjErrorTecnologias'] = $data['proyecto']['msjErrorImagen'] = '';
+        $data['skill']['msjErrorHabilidades'] = '';
+        $data['redsocial']['msjErrorNombre'] = $data['redsocial']['msjErrorUrl'] = '';
 
         $lprocesaFormulario = false;
 
@@ -163,7 +164,7 @@ class PortfolioController extends BaseController
             header('Location: /edit/' . $userId);
             exit();
         }
-        
+
         // Comprobamos si se ha enviado un formulario
         if (isset($_POST['crear'])) {
             $data['picture'] = $_FILES['proyecto_logo'];
@@ -172,53 +173,54 @@ class PortfolioController extends BaseController
             // Recogemos los datos mientras los saneamos usando sanearDatos
 
             // Trabajo
-            $trabajoTitulo = $this->sanearDatos($_POST['trabajos']['titulo']);
-            $trabajoDescripcion = $this->sanearDatos($_POST['trabajos']['descripcion']);
-            $trabajoFechaInicio = $_POST['trabajos']['fecha_inicio'];
-            $trabajoFechaFinal = $_POST['trabajos']['fecha_final'];
-            $trabajoLogros = $this->sanearDatos($_POST['trabajos']['logros']);
-            $trabajoVisible = $_POST['trabajos']['visible'] ?? 0;
+            $data['trabajo']['titulo'] = $this->sanearDatos($_POST['trabajos']['titulo']);
+            $data['trabajo']['descripcion'] = $this->sanearDatos($_POST['trabajos']['descripcion']);
+            $data['trabajo']['fecha_inicio'] = $_POST['trabajos']['fecha_inicio'];
+            $data['trabajo']['fecha_final'] = $_POST['trabajos']['fecha_final'];
+            $data['trabajo']['logros'] = $this->sanearDatos($_POST['trabajos']['logros']);
+            $data['trabajo']['visible'] = isset($_POST['trabajos']['visible']) ? 1 : 0;
 
             // Proyectos
-            $proyectoTitulo = $this->sanearDatos($_POST['proyectos']['titulo']);
-            $proyectoTecnologias = $this->sanearDatos($_POST['proyectos']['tecnologias']);
-            $proyectoVisible = $_POST['proyectos']['visible'] ?? 0;
+            $data['picture'] = $_FILES['proyecto_logo'];
+            $data['proyecto']['titulo'] = $this->sanearDatos($_POST['proyectos']['titulo']);
+            $data['proyecto']['tecnologias'] = $this->sanearDatos($_POST['proyectos']['tecnologias']);
+            $data['proyecto']['visible'] = isset($_POST['proyectos']['visible']) ? 1 : 0;
 
             // Skills
-            $skillsHabilidades = $this->sanearDatos($_POST['skills']['habilidades']);
-            $skillsVisible = $_POST['skills']['visible'] ?? 0;
-            $skillsCategoria = $_POST['skills']['categoria'];
+            $data['skill']['habilidades'] = $this->sanearDatos($_POST['skills']['habilidades']);
+            $data['skill']['categorias_skills_categoria'] = $_POST['skills']['categoria'];
+            $data['skill']['visible'] = isset($_POST['skills']['visible']) ? 1 : 0;
 
             // Redes sociales
-            $redesNombre = $this->sanearDatos($_POST['redes_sociales']['nombre']);
-            $redesUrl = $this->sanearDatos($_POST['redes_sociales']['enlace']);
+            $data['redsocial']['redes_sociales'] = $this->sanearDatos($_POST['redes_sociales']['nombre']);
+            $data['redsocial']['url'] = $this->sanearDatos($_POST['redes_sociales']['enlace']);
 
             // Visibilidad del portfolio
             $data['isVisible'] = isset($_POST['isVisible']) ?? 0;
 
             // Validamos los campos TRABAJO
-            if ($trabajoTitulo == '') {
-                $data['msjErrorTitulo'] = 'El título no puede estar vacío';
+            if ($data['trabajo']['titulo'] == '') {
+                $data['trabajo']['msjErrorTitulo'] = 'El título no puede estar vacío';
                 $lprocesaFormulario = false;
             }
 
-            if ($trabajoDescripcion == '') {
-                $data['msjErrorDescripcion'] = 'La descripción no puede estar vacía';
+            if ($data['trabajo']['descripcion'] == '') {
+                $data['trabajo']['msjErrorDescripcion'] = 'La descripción no puede estar vacía';
                 $lprocesaFormulario = false;
             }
 
-            if ($trabajoFechaInicio == '') {
-                $data['msjErrorFechaInicial'] = 'La fecha de inicio no puede estar vacía';
+            if ($data['trabajo']['fecha_inicio'] == '') {
+                $data['trabajo']['msjErrorFechaInicial'] = 'La fecha de inicio no puede estar vacía';
                 $lprocesaFormulario = false;
             }
 
-            if ($trabajoFechaFinal == '') {
-                $data['msjErrorFechaFinal'] = 'La fecha final no puede estar vacía';
+            if ($data['trabajo']['fecha_final'] == '') {
+                $data['trabajo']['msjErrorFechaFinal'] = 'La fecha final no puede estar vacía';
                 $lprocesaFormulario = false;
             }
 
-            if ($trabajoLogros == '') {
-                $data['msjErrorLogros'] = 'Los logros no pueden estar vacíos';
+            if ($data['trabajo']['logros'] == '') {
+                $data['trabajo']['msjErrorLogros'] = 'Los logros no pueden estar vacíos';
                 $lprocesaFormulario = false;
             }
 
@@ -237,8 +239,6 @@ class PortfolioController extends BaseController
                         // Generamos un nombre para la imagen al azar
                         //$data['picture']['name'] = 'logo_' . uniqid() . $data['picture']['name'];
                         $data['picture']['name'] = 'logo_' . uniqid() . $data['picture']['name'];
-                        // Movemos el archivo a la carpeta de imágenes
-                        move_uploaded_file($data['picture']['tmp_name'], dirname(__DIR__, 2) . '/public/img/' . $data['picture']['name']);
                     } else {
                         $lprocesaFormulario = false;
                         $data['msjErrorImagen'] = "* La imagen no puede superar los 2MB";
@@ -249,32 +249,32 @@ class PortfolioController extends BaseController
                 }
             }
 
-            if ($proyectoTitulo == '') {
+            if ($data['proyecto']['titulo'] == '') {
                 $lprocesaFormulario = false;
-                $data['msjErrorTitulo'] = "* El título no puede estar vacío";
+                $data['proyecto']['msjErrorTitulo'] = "* El título no puede estar vacío";
             }
 
-            if ($proyectoTecnologias == '') {
+            if ($data['proyecto']['tecnologias'] == '') {
                 $lprocesaFormulario = false;
-                $data['msjErrorTecnologias'] = "* Las tecnologías no pueden estar vacías";
+                $data['proyecto']['msjErrorTecnologias'] = "* Las tecnologías no pueden estar vacías";
             }
 
             // Validación de campos SKILLS
 
-            if (empty($skillsHabilidades)) {
-                $data['msjErrorHabilidades'] = 'Debes introducir al menos una habilidad';
+            if (empty($data['skill']['habilidades'])) {
+                $data['skill']['msjErrorHabilidades'] = 'Debes introducir al menos una habilidad';
                 $lprocesaFormulario = false;
             } 
 
             // Validación de campos redes sociales
 
-            if ($redesNombre == '') {
-                $data['msjErrorNombre'] = 'El nombre no puede estar vacío';
+            if ($data['redsocial']['redes_sociales'] == '') {
+                $data['redsocial']['msjErrorNombre'] = 'El nombre no puede estar vacío';
                 $lprocesaFormulario = false;
             }
 
-            if ($redesUrl == '') {
-                $data['msjErrorUrl'] = 'La URL no puede estar vacía';
+            if ($data['redsocial']['url'] == '') {
+                $data['redsocial']['msjErrorUrl'] = 'La URL no puede estar vacía';
                 $lprocesaFormulario = false;
             }
         }
@@ -289,34 +289,37 @@ class PortfolioController extends BaseController
 
             // Añadimos los datos a la base de datos
             // Añadimos los datos a la base de datos usando setters individuales
-            $trabajo->setTitulo($trabajoTitulo);
-            $trabajo->setDescripcion($trabajoDescripcion);
-            $trabajo->setFechaInicio($trabajoFechaInicio);
-            $trabajo->setFechaFinal($trabajoFechaFinal);
-            $trabajo->setLogros($trabajoLogros);
-            $trabajo->setVisible($trabajoVisible);
+            $trabajo->setTitulo($data['trabajo']['titulo']);
+            $trabajo->setDescripcion($data['trabajo']['descripcion']);
+            $trabajo->setFechaInicio($data['trabajo']['fecha_inicio']);
+            $trabajo->setFechaFinal($data['trabajo']['fecha_final']);
+            $trabajo->setLogros($data['trabajo']['logros']);
+            $trabajo->setVisible($data['trabajo']['visible']);
             $trabajo->setUsuariosId($userId);
             $trabajo->set();
 
-            $proyecto->setTitulo($proyectoTitulo);
+            $proyecto->setTitulo($data['proyecto']['titulo']);
             $proyecto->setLogo($data['picture']['name']);
-            $proyecto->setTecnologias($proyectoTecnologias);
-            $proyecto->setVisible($proyectoVisible);
+            $proyecto->setTecnologias($data['proyecto']['tecnologias']);
+            $proyecto->setVisible($data['proyecto']['visible']);
             $proyecto ->setUsuariosId($userId);
             $proyecto->set();
 
-            $skills->setHabilidades($skillsHabilidades);
-            $skills->setVisible($skillsVisible);
-            $skills->setCategoriasSkillsCategoria($skillsCategoria);
+            $skills->setHabilidades($data['skill']['habilidades']);
+            $skills->setVisible($data['skill']['visible']);
+            $skills->setCategoriasSkillsCategoria($data['skill']['categorias_skills_categoria']);
             $skills->setUsuariosId($userId);
             $skills->set();
 
-            $redes->setRedesSociales($redesNombre);
-            $redes->setUrl($redesUrl);
+            $redes->setRedesSociales($data['redsocial']['redes_sociales']);
+            $redes->setUrl($data['redsocial']['url']);
             $redes->setUsuariosId($userId);
             $redes->set();
 
             $portfolio->changeVisibility($userId, $data['isVisible']);
+
+            // Movemos el archivo a la carpeta de imágenes
+            move_uploaded_file($data['picture']['tmp_name'], dirname(__DIR__, 2) . '/public/img/' . $data['picture']['name']);
 
             // Marcamos en la sesión actual que el portfolio ha sido creado
             $_SESSION['isPorfolioCreated'] = true;

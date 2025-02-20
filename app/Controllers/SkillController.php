@@ -30,24 +30,26 @@ class SkillController extends BaseController
         // Ahora que hemos validado que el usuario puede ejecutar esta acción, inicializamos variables.
         $lprocesaFormulario = false;
         $data = [];
-        $data['msjErrorHabilidades'] = '';
+        $data['skill']['msjErrorHabilidades'] = '';
 
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
             $lprocesaFormulario = true;
-            $data['habilidades'] = $this->sanearDatos($_POST['skills']['habilidades']);
+            $data['skill']['habilidades'] = $this->sanearDatos($_POST['skills']['habilidades']);
+            $data['skill']['categorias_skills_categoria'] = $_POST['skills']['categoria'];
+            $data['skill']['visible'] = isset($_POST['skills']['visible']) ? 1 : 0;
 
-            if (empty($data['habilidades'])) {
-                $data['msjErrorHabilidades'] = 'Debes introducir al menos una habilidad';
+            if (empty($data['skill']['habilidades'])) {
+                $data['skill']['msjErrorHabilidades'] = 'Debes introducir al menos una habilidad';
                 $lprocesaFormulario = false;
             } 
         }
 
         // En el caso de que no haya habido errores en el formulario, guardamos los datos en la base de datos.
         if ($lprocesaFormulario) {
-            $skill->sethabilidades($data['habilidades']);
-            $skill->setCategoriasSkillsCategoria($_POST['skills']['categoria']);
-            $skill->setVisible(isset($_POST['skills']['visible']) ? 1 : 0);
+            $skill->sethabilidades($data['skill']['habilidades']);
+            $skill->setCategoriasSkillsCategoria($data['skill']['categorias_skills_categoria']);
+            $skill->setVisible($data['skill']['visible']);
             $skill->setUsuariosId($userId);
             $skill->set();
             header('Location: /edit/' . $userId);
@@ -119,25 +121,30 @@ class SkillController extends BaseController
         // Ahora que hemos validado que el usuario puede ejecutar esta acción, inicializamos variables.
         $lprocesaFormulario = false;
         $data = [];
-        $data['msjErrorHabilidades'] = '';
+        $data['skill']['msjErrorHabilidades'] = '';
 
         // Comprobamos si estamos recibiendo un post
         if (isset($_POST['modificar'])) {
             $lprocesaFormulario = true;
-            $data['habilidades'] = $this->sanearDatos($_POST['skills']['habilidades']);
+            $data['skill']['habilidades'] = $this->sanearDatos($_POST['skills']['habilidades']);
+            $data['skill']['categorias_skills_categoria'] = $_POST['skills']['categoria'];
+            $data['skill']['visible'] = isset($_POST['skills']['visible']) ? 1 : 0;
 
-            if (empty($data['habilidades'])) {
-                $data['msjErrorHabilidades'] = 'Debes introducir al menos una habilidad';
+            if (empty($data['skill']['habilidades'])) {
+                $data['skill']['msjErrorHabilidades'] = 'Debes introducir al menos una habilidad';
                 $lprocesaFormulario = false;
             } 
+        } else {
+            // Si no estamos recibiendo un post, recuperamos los datos de la base de datos
+            $data['skill'] += $skill->get($id);
         }
 
         // En el caso de que no haya habido errores en el formulario, guardamos los datos en la base de datos.
         if ($lprocesaFormulario) {
             $skill->get($id);
-            $skill->sethabilidades( $data['habilidades']);
-            $skill->setCategoriasSkillsCategoria($_POST['skills']['categoria']);
-            $skill->setVisible(isset($_POST['skills']['visible']) ? 1 : 0);
+            $skill->sethabilidades( $data['skill']['habilidades']);
+            $skill->setCategoriasSkillsCategoria($data['skill']['categorias_skills_categoria']);
+            $skill->setVisible($data['skill']['visible'] ? 1 : 0);
             $skill->setUsuariosId($userId);
             $skill->edit();
             header('Location: /edit/' . $userId);
@@ -149,7 +156,6 @@ class SkillController extends BaseController
             exit();
         }
 
-        $data += $skill->get($id);
         $data['tipo'] = 'skill';
         $data['accion'] = 'editar';
         $data['categorias'] = $skill->getSkillsCategories();
